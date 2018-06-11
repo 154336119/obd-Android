@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GoldStyle">
+        <attr name="buttonTextColor" format="color|reference"/>
+        <attr name="buttonBg" format="color|reference"></attr>
+        <attr name="buttonBgClick" format="color|reference"></attr>
+        <attr name="buttonBgEnable" format="color|reference"></attr>
+    </declare-styleable>
+    <declare-styleable name="LoadLayout">
+        <attr name="error_view"  format="reference"/>
+        <attr name="empty_view"  format="reference"/>
+        <attr name="time_out_view"  format="reference"/>
+        <attr name="no_net_view"  format="reference"/>
+
+        <attr name="location_fail_view"  format="reference"/>
+        <attr name="no_order_view"  format="reference"/>
+        <attr name="no_message_view"  format="reference"/>
+        <attr name="no_collect_view"  format="reference"/>
+        <attr name="search_empty_view"  format="reference"/>
+        <attr name="no_login_view"  format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="ClearEditText">
+        <!-- 清除按钮的图标 -->
+        <attr name="iconClear" format="reference"/>
+        <attr name="hasClearButton" format="boolean"/>
+        <attr name="autoKey" format="string"/>
+        <attr name="isPhone" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="FloatLabeledEditText">
+        <!-- 自定义的样式 -->
+        <attr name="fletTextAppearance" format="reference" />
+        <attr name="fletBackground" format="reference|color" />
+        <!--间距-->
+        <attr name="fletPadding" format="reference|dimension" />
+        <attr name="fletPaddingLeft" format="reference|dimension" />
+        <attr name="fletPaddingTop" format="reference|dimension" />
+        <attr name="fletPaddingRight" format="reference|dimension" />
+        <attr name="fletPaddingBottom" format="reference|dimension" />
+
+        <attr name="fletText" format="reference|string"/>
+    </declare-styleable>
+    <attr name="fastscroll__style" format="reference" />
+    <declare-styleable name="fastscroll__fastScroller">
+        <attr name="fastscroll__bubbleColor" format="color" />
+        <attr name="fastscroll__handleColor" format="color" />
+        <attr name="fastscroll__bubbleTextAppearance" format="reference" />
+    </declare-styleable>
+</resources>

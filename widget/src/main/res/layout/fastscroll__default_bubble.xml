@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="80dp"
+    android:layout_height="40dp"
+    android:textColor="@color/white"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:background="@mipmap/ic_page"
+    android:visibility="invisible"
+    android:elevation="2dp"
+    android:layout_margin="50dp"
+    tools:text="1页"
+    tools:visibility="visible" />

@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="App_Theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <!--<item name="toolbarNavigationButtonStyle">@style/myToolbarNavigationButtonStyle</item>-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="actionMenuTextColor">@drawable/tool_bar_text_color</item>
+        <item name="android:windowBackground">@color/colors_d1</item>
+        <item name="toolbar_navigationIcon">@mipmap/ic_back</item>
+        <item name="toolbar_under_line">@color/colorPrimary</item>
+        <item name="toolbar_title_textcolor">@android:color/white</item>
+
+        <item name="android:textViewStyle">@style/BaseTextView</item>
+        <item name="android:buttonStyle">@style/btn_bottom_single</item>
+        <item name="android:editTextStyle">@style/edit_base</item>
+        <item name="buttonTextColor">@color/colors_a5</item>
+        <item name="buttonBg">@color/colorPrimary</item>
+        <item name="buttonBgClick">@color/colors_b2</item>
+        <item name="buttonBgEnable">@color/colors_b3</item>
+    </style>
+    <style name="wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="match">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+    <style name="wrap_match">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="match_wrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <!-- 高度 48dp-->
+    <style name="wrap_48p">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/heigt_edit</item>
+    </style>
+    <!-- 高度 48dp-->
+    <style name="match_48p">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/heigt_edit</item>
+    </style>
+    <!-- 左右边距16dp -->
+    <style name="match_wrap_margin_distance_bg" parent="match_wrap">
+        <item name="android:layout_marginLeft">@dimen/distance_bg</item>
+        <item name="android:layout_marginRight">@dimen/distance_bg</item>
+    </style>
+    <!-- 左右边距16dp -->
+    <style name="match_wrap_padding_distance_bg" parent="match_wrap">
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+    </style>
+    <!-- 左右边距16dp  上边距10dp-->
+    <style name="match_wrap_padding_distance_bg_top_10" parent="match_wrap_padding_distance_bg">
+        <item name="android:paddingTop">@dimen/distance_10</item>
+        <item name="android:paddingBottom">@dimen/distance_10</item>
+    </style>
+    <!-- 左右边距16dp -->
+    <style name="match_margin_distance_bg" parent="match">
+        <item name="android:layout_marginLeft">@dimen/distance_bg</item>
+        <item name="android:layout_marginRight">@dimen/distance_bg</item>
+    </style>
+    <!-- 左右边距16dp -->
+    <style name="match_padding_distance_bg" parent="match">
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+    </style>
+    <!-- 左右边距16dp  上边距10dp-->
+    <style name="match_padding_distance_bg_top_10" parent="match_padding_distance_bg">
+        <item name="android:paddingTop">@dimen/distance_10</item>
+        <item name="android:paddingBottom">@dimen/distance_10</item>
+    </style>
+    <!-- textview  -->
+    <style name="BaseTextView" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/colors_a2</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+    <!-- -->
+    <style name="text_hint" parent="match_48p">
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+        <item name="android:textColor">@color/colors_a1</item>
+        <item name="android:textSize">@dimen/t3</item>
+        <item name="android:textColorHint">@color/colors_a4</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!--edit 输入框 基本样式-->
+    <style name="edit_base" parent="match_48p">
+        <item name="android:background">@drawable/slt_edt_common</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+        <item name="android:textColor">@color/colors_a1</item>
+        <item name="android:textSize">@dimen/t3</item>
+        <item name="android:textColorHint">@color/colors_a4</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <!--edit 输入框  -->
+    <style name="edit_padding_10" parent="edit_base">
+        <item name="android:padding">@dimen/distance_10</item>
+    </style>
+    <!-- 按钮 基本样式-->
+    <style name="btn_base" parent="@android:style/Widget.Button">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/t4</item>
+        <item name="android:padding">@dimen/distance_drawablePadding</item>
+    </style>
+    <!--底部按钮 -->
+    <style name="btn_bottom_single" parent="btn_base">
+        <item name="android:background">@drawable/slt_btn_bottom</item>
+        <item name="android:textColor">@color/colors_a5</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+    <!--底部按钮 有边距-->
+    <style name="btn_bottom_single_bg" parent="btn_bottom_single">
+        <item name="android:layout_marginLeft">@dimen/distance_bg</item>
+        <item name="android:layout_marginRight">@dimen/distance_bg</item>
+        <item name="android:layout_marginTop">@dimen/distance_10</item>
+        <item name="android:layout_marginBottom">@dimen/distance_10</item>
+    </style>
+    <!--按钮 描边-->
+    <style name="btn_bottom_stroke" parent="btn_base">
+        <item name="android:background">@drawable/slt_btn_bottom_stroke</item>
+        <item name="android:textColor">@color/btn_small_stroke</item>
+    </style>
+    <!--小按钮 基本样式 -->
+    <style name="btn_small_base" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/t2</item>
+    </style>
+    <!-- 小按钮-->
+    <style name="btn_small" parent="btn_small_base">
+        <item name="android:background">@drawable/slt_btn_small</item>
+        <item name="android:textColor">@color/colors_a5</item>
+        <item name="android:paddingLeft">@dimen/distance_10</item>
+        <item name="android:paddingRight">@dimen/distance_10</item>
+    </style>
+    <!-- 小按钮 描边-->
+    <style name="btn_small_stroke" parent="btn_small_base">
+        <item name="android:background">@drawable/slt_btn_small_stroke</item>
+        <item name="android:textColor">@color/btn_small_stroke</item>
+    </style>
+    <!-- 文字按键 -->
+    <style name="btn_text_T3B1" parent="wrap">
+        <item name="android:textColor">@color/colors_b1</item>
+        <item name="android:textSize">@dimen/t3</item>
+    </style>
+    <!-- 警示按键 红色-->
+    <style name="btn_text_T3B5" parent="wrap">
+        <item name="android:textColor">@color/colors_b5</item>
+        <item name="android:textSize">@dimen/t3</item>
+    </style>
+    <!-- textview -->
+    <style name="textview_T4A1" parent="wrap">
+        <item name="android:textColor">@color/colors_a1</item>
+        <item name="android:textSize">@dimen/t4</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+    </style>
+    <!-- textview 宽度全屏-->
+    <style name="textview_T4A1_match" parent="match_wrap">
+        <item name="android:textColor">@color/colors_a1</item>
+        <item name="android:textSize">@dimen/t4</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+    </style>
+    <style name="textview_T4A2" parent="wrap">
+        <item name="android:textColor">@color/colors_a2</item>
+        <item name="android:textSize">@dimen/t4</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+    </style>
+    <!-- 左边有蓝色方块-->
+    <style name="textview_T4A2_left_b1" parent="textview_T4A2">
+        <item name="android:drawableLeft">@drawable/sp_noround_b1_rectangle</item>
+    </style>
+    <style name="textview_T2A2" parent="wrap">
+        <item name="android:textColor">@color/colors_a2</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+    </style>
+    <!-- 宽度全屏-->
+    <style name="textview_T2A2_match" parent="match_wrap">
+        <item name="android:textColor">@color/colors_a2</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+    </style>
+    <!-- 宽度全屏 有左右边距-->
+    <style name="textview_T2A2_match_padding_bg" parent="textview_T2A2_match">
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+    </style>
+    <style name="textview_T4B5" parent="wrap"> <!-- 金额-->
+        <item name="android:textColor">@color/colors_b5</item>
+        <item name="android:textSize">@dimen/t4</item>
+    </style>
+    <style name="textview_T3B5" parent="wrap"> <!-- -->
+        <item name="android:textColor">@color/colors_b5</item>
+        <item name="android:textSize">@dimen/t3</item>
+    </style>
+    <style name="textview_T1B5" parent="wrap"> <!-- 确认赎回-->
+        <item name="android:textColor">@color/colors_b5</item>
+        <item name="android:textSize">@dimen/t1</item>
+    </style>
+    <style name="textview_T1A3" parent="wrap"> <!-- 确认赎回-->
+        <item name="android:textColor">@color/colors_a3</item>
+        <item name="android:textSize">@dimen/t1</item>
+    </style>
+
+    <style name="textview_T3A1" parent="wrap">
+        <item name="android:textColor">@color/colors_a1</item>
+        <item name="android:textSize">@dimen/t3</item>
+        <item name="android:textColorHint">@color/colors_a4</item>
+    </style>
+    <style name="textview_T3A2" parent="wrap">
+        <item name="android:textColor">@color/colors_a2</item>
+        <item name="android:textSize">@dimen/t3</item>
+        <item name="android:textColorHint">@color/colors_a4</item>
+    </style>
+    <!-- 左边有 xin 图片-->
+    <style name="textview_T3A1_star" parent="wrap">
+        <item name="android:drawableLeft">@mipmap/ic_xin</item>
+        <item name="android:drawablePadding">@dimen/distance_2</item>
+    </style>
+    <!-- 两边距 16dp-->
+    <style name="textview_T3A1_padding_lr_bg" parent="textview_T3A1">
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+    </style>
+    <style name="textview_T3A4" parent="wrap">
+        <item name="android:textColor">@color/colors_a4</item>
+        <item name="android:textSize">@dimen/t3</item>
+    </style>
+    <style name="textview_T2A3" parent="wrap">
+        <item name="android:textColor">@color/colors_a3</item>
+        <item name="android:textSize">@dimen/t2</item>
+    </style>
+    <style name="textview_T2A5" parent="wrap">
+        <item name="android:textColor">@color/colors_a5</item>
+        <item name="android:textSize">@dimen/t2</item>
+    </style>
+    <style name="textview_T3A3" parent="wrap">
+        <item name="android:textColor">@color/colors_a3</item>
+        <item name="android:textSize">@dimen/t3</item>
+    </style>
+    <style name="textview_T2B4" parent="wrap">
+        <item name="android:textColor">@color/colors_b4</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+    </style>
+    <!-- 右边 有下一页图片-->
+    <style name="textview_T2B4_goto" parent="textview_T2B4">
+
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+        <item name="android:drawableRight">@mipmap/img_goto</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="textview_T2B5" parent="wrap">
+        <item name="android:textColor">@color/colors_b5</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+    </style>
+    <style name="textview_T2B2" parent="wrap">
+        <item name="android:textColor">@color/colors_b2</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+    </style>
+    <!-- 宽度 全屏 -->
+    <style name="textview_T2B2_match" parent="match_wrap">
+        <item name="android:textColor">@color/colors_b2</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="textview_T2B1" parent="wrap">
+        <item name="android:textColor">@color/colors_b1</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+    </style>
+    <!-- 右边 有下一页图片-->
+    <style name="textview_T3A4_goto" parent="textview_T3A4">
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+        <item name="android:drawableRight">@mipmap/img_goto</item>
+    </style>
+
+    <style name="textview_T1A4" parent="wrap">
+        <item name="android:textColor">@color/colors_a4</item>
+        <item name="android:textSize">@dimen/t1</item>
+    </style>
+    <!-- 搜索-->
+    <style name="edit_search" parent="match_wrap">
+        <item name="android:layout_height">@dimen/edit_search_height</item>
+        <item name="android:textColor">@color/colors_a1</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:textColorHint">@color/colors_a3</item>
+        <item name="android:background">@drawable/sp_bg_search_input</item>
+        <item name="android:drawableRight">@mipmap/close</item>
+        <item name="android:drawableLeft">@mipmap/ic_search</item>
+        <item name="android:layout_margin">@dimen/distance_10</item>
+
+    </style>
+    <!--主页底部tab-->
+    <style name="tab_bottom">
+        <item name="android:drawablePadding">@dimen/tab_bottom_drawablePadding</item>
+        <item name="android:paddingBottom">@dimen/tab_bottom_drawablePadding</item>
+        <item name="android:paddingTop">@dimen/tab_bottom_top</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:textColor">@color/tab_bottom_text_color</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!-- 画线 -->
+    <style name="line_horizontal" parent="line_horizontal_base">
+        <item name="android:layout_width">0dp</item>
+    </style>
+    <!-- 画线 -->
+    <style name="line_horizontal_base">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/line_height</item>
+        <item name="android:background">@color/colors_d2</item>
+    </style>
+    <!-- 画线 10dp 高度-->
+    <style name="line_horizontal_10">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/distance_10</item>
+        <item name="android:background">@color/colors_d1</item>
+    </style>
+    <!-- 画线 距离左右边距16dp-->
+    <style name="line_horizontal_padding_bg" parent="line_horizontal_base">
+        <item name="android:layout_marginLeft">@dimen/distance_bg</item>
+        <item name="android:layout_marginRight">@dimen/distance_bg</item>
+    </style>
+    <!-- 画线 距离左边距16dp-->
+    <style name="line_horizontal_padding_left_bg" parent="line_horizontal_base">
+        <item name="android:layout_marginLeft">@dimen/distance_bg</item>
+    </style>
+
+
+
+    <!-- 订单 详情 提示-->
+    <style name="order_detail_hint" parent="textview_T2A3">
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+        <item name="android:layout_height">@dimen/textview_hint_height</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <!-- 订单 详情 高度48dp-->
+    <style name="order_detail_layout" parent="match_wrap">
+        <item name="android:layout_height">@dimen/layout_48</item>
+    </style>
+    <!-- 订单详情 T3A1 文字-->
+    <style name="order_detail_text" parent="textview_T3A1">
+        <item name="android:gravity">right</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:lines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <!-- 订单详情 金额 文字-->
+    <style name="order_detail_amount_text" parent="textview_T3B5">
+        <item name="android:gravity">right</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+    <!-- 添加投资者顶部提示-->
+    <style name="investor_hint" parent="textview_T2A3"></style>
+    <!-- 添加投资者 dot -->
+    <style name="investor_dot" parent="textview_T2A5">
+        <item name="android:layout_width">@dimen/investor_dot_height</item>
+        <item name="android:layout_height">@dimen/investor_dot_height</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/sp_round_investor_dot</item>
+    </style>
+    <!--  五角星-->
+    <style name="pointed_star" parent="wrap">
+        <item name="android:textColor">@color/colors_b5</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:text">*</item>
+    </style>
+    <!-- 全屏 显示 在右边-->
+    <style name="investor_textview_right" parent="textview_T3A1">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">right</item>
+        <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
+        <item name="android:drawableRight">@mipmap/img_goto</item>
+    </style>
+    <!--添加投资者 顶部提示 -->
+    <style name="investor_textview_top_hint" parent="match_wrap">
+        <item name="android:background">@color/colors_d3</item>
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+        <item name="android:paddingTop">@dimen/distance_5</item>
+        <item name="android:paddingBottom">@dimen/distance_5</item>
+        <item name="android:textSize">@dimen/t2</item>
+        <item name="android:textColor">@color/colors_a2</item>
+        <item name="android:gravity">left</item>
+    </style>
+    <!-- 消息中心 -->
+    <!--消息红点-->
+    <style name="image_msg_dot">
+        <item name="android:layout_width">@dimen/dot_height</item>
+        <item name="android:layout_height">@dimen/dot_height</item>
+        <item name="android:src">@drawable/sp_round_msg_dot</item>
+    </style>
+    <!-- 图片大小 40dp-->
+    <style name="image_40">
+        <item name="android:layout_width">@dimen/image_height</item>
+        <item name="android:layout_height">@dimen/image_height</item>
+    </style>
+    <!-- 图片大小 40dp 有左右边距-->
+    <style name="image_40_bg" parent="image_40">
+        <item name="android:layout_marginLeft">@dimen/distance_bg</item>
+        <item name="android:layout_marginRight">@dimen/distance_bg</item>
+    </style>
+    <!-- 清除 图片 -->
+    <style name="image_close">
+        <item name="android:layout_width">@dimen/image_close</item>
+        <item name="android:layout_height">@dimen/image_close</item>
+        <item name="android:src">@mipmap/close</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:layout_gravity">right|bottom</item>
+        <item name="android:layout_marginBottom">@dimen/distance_5</item>
+    </style>
+    <!-- 下一页图片-->
+    <style name="image_goto" parent="wrap">
+        <item name="android:src">@mipmap/img_goto</item>
+        <item name="android:layout_gravity">right|bottom</item>
+        <item name="android:layout_marginBottom">@dimen/distance_10</item>
+    </style>
+    <style name="layout_48">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/layout_48</item>
+    </style>
+    <!--有白色背景 -->
+    <style name="layout_48_white" parent="layout_48">
+        <item name="android:background">@android:color/white</item>
+    </style>
+    <!--有左右边距-->
+    <style name="layout_48_padding_16" parent="layout_48">
+
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+    </style>
+    <!--白色背景 左右边距-->
+    <style name="layout_48_white_padding_16" parent="layout_48_padding_16">
+        <item name="android:background">@android:color/white</item>
+    </style>
+    <style name="layout_60">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/layout_60</item>
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+    </style>
+    <!-- 白色背景-->
+    <style name="layout_60_white" parent="layout_60">
+        <item name="android:background">@android:color/white</item>
+    </style>
+    <style name="layout_72">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/item_height</item>
+
+    </style>
+    <!-- 白色背景-->
+    <style name="layout_72_white" parent="layout_72">
+        <item name="android:background">@android:color/white</item>
+    </style>
+    <!--白色背景 左右边距-->
+    <style name="layout_72_white_distance_bg" parent="layout_72_white">
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+    </style>
+    <style name="layout_match_wrap_white" parent="match_wrap">
+        <item name="android:background">@android:color/white</item>
+    </style>
+    <style name="layout_match_wrap_white_distance_bg" parent="layout_match_wrap_white">
+
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+    </style>
+    <!--底部按键-->
+    <style name="layout_bottom_btn_signal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/layout_bottom_height</item>
+        <item name="android:paddingTop">@dimen/distance_10</item>
+        <item name="android:paddingBottom">@dimen/distance_10</item>
+        <item name="android:paddingLeft">@dimen/distance_bg</item>
+        <item name="android:paddingRight">@dimen/distance_bg</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="layout_investor" parent="match_wrap">
+        <item name="android:layout_marginLeft">@dimen/distance_bg</item>
+        <item name="android:layout_marginRight">@dimen/distance_bg</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">@dimen/distance_25</item>
+        <item name="android:layout_marginBottom">@dimen/distance_25</item>
+    </style>
+    <!-- 顶部tablayout-->
+    <style name="tablayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/tab_height</item>
+    </style>
+</resources>

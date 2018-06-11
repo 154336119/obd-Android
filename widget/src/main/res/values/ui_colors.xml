@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colors_a1">#222222</color>
+    <color name="colors_a2">#666666</color>
+    <color name="colors_a3">#999999</color>
+    <color name="colors_a4">#cccccc</color>
+    <color name="colors_a5">#ffffff</color>
+
+    <color name="colors_b2">#3388FF</color>
+    <color name="colors_b3">#DAE6FE</color>
+    <color name="colors_b4">#FF9800</color>
+    <color name="colors_b5">#FF3838</color>
+    <color name="colors_b6">#41C89D</color>
+    <color name="colors_d1">#F5F5F5</color>
+    <color name="colors_d2">#E0E0E0</color>
+    <color name="colors_d3">#FFDFDF</color>
+
+    <color name="tabTextColor">@color/colors_a2</color>
+    <color name="tabSelectColor">@color/colors_a1</color>
+    <color name="tabIndicatorcolor">@color/colors_a1</color>
+</resources>

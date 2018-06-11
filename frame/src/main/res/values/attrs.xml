@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LoadingSmall" parent="@android:style/Widget.ProgressBar.Small">
+        <item name="android:indeterminateDrawable">@drawable/custom_progressbar</item>
+        <!-- <item name="android:indeterminateDrawable">@drawable/loading_ani_list</item> -->
+        <item name="android:layout_width">40dip</item>
+        <item name="android:layout_height">40dip</item>
+    </style>
+    <declare-styleable name="AppTheme">
+        <attr name="toolbar_navigationIcon" format="reference"/>
+        <attr name="toolbar_under_line" format="reference"/>
+        <attr name="toolbar_title_textcolor" format="reference"/>
+    </declare-styleable>
+</resources>

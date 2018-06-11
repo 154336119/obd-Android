@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/IvImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_load_fail"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:id="@+id/TvTips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_a4a4a4"
+        android:textSize="16dp"
+        android:text="加载超时"
+        android:layout_gravity="center_horizontal"/>
+    <TextView
+        android:id="@+id/TvReload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_e64042"
+        android:textSize="16dp"
+        android:background="@drawable/shape_load_button"
+        android:layout_marginTop="30dp"
+        android:text="加载超时"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

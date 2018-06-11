@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <!--下拉刷新和上拉加载的布局控件-->
+    <com.canyinghao.canrefresh.CanRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/hidehead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible">
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@id/can_content_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"></android.support.v7.widget.RecyclerView>
+
+        <!--头部刷新转圈-->
+        <com.canyinghao.canrefresh.google.GoogleCircleHookRefreshView
+            android:id="@id/can_refresh_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.canyinghao.canrefresh.google.GoogleCircleHookRefreshView>
+
+        <!--底部刷新转圈-->
+        <com.canyinghao.canrefresh.google.GoogleCircleHookRefreshView
+            android:id="@id/can_refresh_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--<com.canyinghao.canrefresh.classic.ClassicRefreshView-->
+            <!--android:id="@id/can_refresh_header"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+
+        <!--<com.canyinghao.canrefresh.classic.ClassicRefreshView-->
+            <!--android:id="@id/can_refresh_footer"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+    </com.canyinghao.canrefresh.CanRefreshLayout>
+    <!--这里添加头部滑动隐藏栏-->
+</FrameLayout>
