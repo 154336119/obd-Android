@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.vp.veepeak.ui.MainActivity">
+
+    <!-- 蓝牙状态区域 -->
+    <LinearLayout
+        android:id="@+id/ll_bluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="蓝牙状态:"/>
+
+        <TextView
+            android:id="@+id/tv_bluetooth_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50px"
+            android:text="关"/>
+
+        <Button
+            android:id="@+id/btn_bluetooth_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50px"
+            android:text="打开"/>
+
+    </LinearLayout>
+
+    <!-- 蓝牙状态区域 -->
+    <LinearLayout
+        android:id="@+id/ll_obd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OBD状态:"/>
+
+        <TextView
+            android:id="@+id/tv_obd_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50px"
+            android:text="关"/>
+
+        <Button
+            android:id="@+id/btn_obd_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50px"
+            android:text="打开"/>
+
+        <Button
+            android:id="@+id/btn_obd_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50px"
+            android:text="清除故障码"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/data_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="top"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:elevation="2dp"
+        android:outlineProvider="bounds">
+
+        <TableLayout
+            android:id="@+id/data_table"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"></TableLayout>
+    </ScrollView>
+
+
+    <!-- 实时数据区域 -->
+    <!--<LinearLayout-->
+    <!--android:id="@+id/gl_obd"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="实时信息："/>-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--&lt;!&ndash; 车辆信息区域 &ndash;&gt;-->
+    <!--<TableLayout-->
+    <!--android:id="@+id/gl_vehicle"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--android:layout_above="@+id/ll_bluetooth">-->
+
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="车辆名字 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_VehicleName"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="车辆识别码 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_VehicleID"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="年代 : " />-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_VehicleYear"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="制造商 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_VehicleMake"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="型号 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_VehicleModel"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="车型 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_VehicleType"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="燃油类型 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_FuelType"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="引擎排量 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_EngineSize"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="油箱容量 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_FuelTankCapacity"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="油耗 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_FuelCostPerUnit"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="行驶速度 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_MPH"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="发动机温度 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_EngineTemp"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="发动机转速 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_RPM"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="空气流量 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_MAF"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="燃油率 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_FuelRate"/>-->
+    <!--</TableRow>-->
+    <!--<TableRow>-->
+    <!--<TextView-->
+    <!--android:text="电瓶 : "/>-->
+    <!--<TextView-->
+    <!--android:id="@+id/tv_Battery"/>-->
+    <!--</TableRow>-->
+
+
+    <!--</TableLayout>-->
+</LinearLayout>
+

@@ -3,8 +3,8 @@
     <style name="App_Theme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
         <!--<item name="toolbarNavigationButtonStyle">@style/myToolbarNavigationButtonStyle</item>-->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorPrimary">#3C444F</item>
+        <item name="colorPrimaryDark">#2B3139</item>
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="actionMenuTextColor">@drawable/tool_bar_text_color</item>
@@ -98,9 +98,9 @@
     <style name="edit_base" parent="match_48p">
         <item name="android:background">@drawable/slt_edt_common</item>
         <item name="android:drawablePadding">@dimen/distance_drawablePadding</item>
-        <item name="android:textColor">@color/colors_a1</item>
+        <item name="android:textColor">@color/colors_d4</item>
         <item name="android:textSize">@dimen/t3</item>
-        <item name="android:textColorHint">@color/colors_a4</item>
+        <item name="android:textColorHint">@color/colors_d4</item>
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:gravity">center_vertical</item>
     </style>

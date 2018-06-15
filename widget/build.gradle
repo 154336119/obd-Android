@@ -60,7 +60,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.slb.ttd:frame:0.0.1'
+    implementation project(':frame')
 }
 
 apply from: './widget-push.gradle'

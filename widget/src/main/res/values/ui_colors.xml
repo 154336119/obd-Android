@@ -6,7 +6,6 @@
     <color name="colors_a3">#999999</color>
     <color name="colors_a4">#cccccc</color>
     <color name="colors_a5">#ffffff</color>
-
     <color name="colors_b2">#3388FF</color>
     <color name="colors_b3">#DAE6FE</color>
     <color name="colors_b4">#FF9800</color>
@@ -15,8 +14,9 @@
     <color name="colors_d1">#F5F5F5</color>
     <color name="colors_d2">#E0E0E0</color>
     <color name="colors_d3">#FFDFDF</color>
-
+    <color name="colors_00A4EF">#00A4EF</color>
     <color name="tabTextColor">@color/colors_a2</color>
     <color name="tabSelectColor">@color/colors_a1</color>
     <color name="tabIndicatorcolor">@color/colors_a1</color>
+    <color name="colors_d4">#B3B3B3</color>
 </resources>

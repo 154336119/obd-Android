@@ -81,9 +81,6 @@ dependencies {
     compile 'me.yokeyword:fragmentation:0.10.1'
     //Log工具类
     compile 'com.orhanobut:logger:1.15'
-    //db数据库
-    compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile 'com.j256.ormlite:ormlite-android:4.48'
     //Recyclerview分割线
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
     compile 'com.nineoldandroids:library:2.4.0'
@@ -112,13 +109,6 @@ dependencies {
     compile 'com.mikepenz:fontawesome-typeface:4.4.0.1@aar'
     compile 'com.mikepenz:crossfader:1.5.0@aar'
     compile 'com.mikepenz:iconics-core:2.8.0@aar'
-    //内存泄漏框架
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    // andfix热修复
-    compile 'com.alipay.euler:andfix:0.5.0@aar'
-    compile files('libs/commons-codec-1.10-1.jar')
 }
 
 apply from: './frame-push.gradle'

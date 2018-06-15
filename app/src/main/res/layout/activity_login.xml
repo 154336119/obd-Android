@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#2B3139">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/distance_10"
+        android:text="登录"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:background="#3C444F"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/logo" />
+    </RelativeLayout>
+    <LinearLayout
+        style="@style/match_wrap_margin_distance_bg"
+        android:orientation="vertical">
+            <EditText
+                android:id="@+id/edtMobile"
+                style="@style/edit_padding_10"
+                android:completionThreshold="1"
+                android:hint="请输入您的邮箱"
+                android:lines="1"
+                android:drawableLeft="@mipmap/ic_phone"
+                android:drawablePadding="5dp"
+                android:layout_margin="10dp"/>
+            <EditText
+                android:id="@+id/edtPwd"
+                style="@style/edit_padding_10"
+                android:hint="请输入您的密码"
+                android:layout_margin="10dp"
+                android:lines="1"
+                android:drawableLeft="@mipmap/ic_pw"
+                android:drawablePadding="5dp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/tvRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/distance_10"
+                android:text="免费注册"
+                android:textColor="#B3B3B3"/>
+
+            <TextView
+                android:id="@+id/tvwForgotPwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="@dimen/distance_10"
+                android:text="找回密码"
+                android:textColor="#B3B3B3"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <Button
+            android:id="@+id/btnLogin"
+            style="@style/btn_bottom_single"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/distance_30"
+            android:text="登录" />
+    </LinearLayout>
+</LinearLayout>

@@ -69,7 +69,7 @@ public class MyFastJsonResponseBodyConverter<T> implements Converter<ResponseBod
 			bufferedSource.request(Long.MAX_VALUE);
 			okio.Buffer buffer = bufferedSource.buffer();
 			String oldBody = buffer.clone().readString(charset);
-			String newBody = AESUtils.decryptString(AESUtils.KEY,AESUtils.IV,oldBody);
+			String newBody = null;
 			Logger.d(newBody);
 			return newBody;
 		}
