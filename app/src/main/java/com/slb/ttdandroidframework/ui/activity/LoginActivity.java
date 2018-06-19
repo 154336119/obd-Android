@@ -29,7 +29,6 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginCon
     Button btnLogin;
     @BindView(R.id.tvRegister)
     TextView tvRegister;
-
     @Override
     protected boolean hasToolbar() {
         return false;
