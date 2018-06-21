@@ -10,17 +10,20 @@
     <FrameLayout
         android:id="@+id/mainFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/color_2B3139"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
         <RadioGroup
             android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            >
+            android:background="@color/color_3C444F">
             <RadioButton
                 android:id="@+id/rb_home"
                 android:drawableTop="@drawable/slt_main_bottom_home"

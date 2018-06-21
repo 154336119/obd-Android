@@ -10,5 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+         android:text="历史"
         android:layout_marginRight="@dimen/distance_bg" />
 </LinearLayout>

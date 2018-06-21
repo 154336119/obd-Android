@@ -10,7 +10,6 @@
         <item name="actionMenuTextColor">@drawable/tool_bar_text_color</item>
         <item name="android:windowBackground">@color/colors_d1</item>
         <item name="toolbar_navigationIcon">@mipmap/ic_back</item>
-        <item name="toolbar_under_line">@color/colorPrimary</item>
         <item name="toolbar_title_textcolor">@android:color/white</item>
 
         <item name="android:textViewStyle">@style/BaseTextView</item>

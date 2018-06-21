@@ -1,5 +1,6 @@
 package com.slb.ttdandroidframework.ui.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.slb.frame.ui.activity.BaseMvpActivity;
+import com.slb.frame.utils.ActivityUtil;
+import com.slb.ttdandroidframework.MainActivity;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.ui.contract.LoginContract;
 import com.slb.ttdandroidframework.ui.presenter.LoginPresenter;
@@ -18,7 +21,8 @@ import butterknife.OnClick;
 import danfei.shulaibao.widget.common.ChooseEditText;
 import danfei.shulaibao.widget.common.autoedt.ClearAutoCompleteEditText;
 
-public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginContract.IPresenter> {
+public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginContract.IPresenter>
+        implements LoginContract.IView{
     @BindView(R.id.edtMobile)
     EditText edtMobile;
     @BindView(R.id.edtPwd)
@@ -66,8 +70,14 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginCon
             case R.id.tvwForgotPwd:
                 break;
             case R.id.btnLogin:
-                mPresenter.login(edtMobile.getText().toString(), edtPwd.getText().toString());
+             //   mPresenter.login(edtMobile.getText().toString(), edtPwd.getText().toString());
+                loginSuccess();
                 break;
         }
+    }
+
+    @Override
+    public void loginSuccess() {
+        ActivityUtil.next(this, MainActivity.class);
     }
 }

@@ -2,8 +2,10 @@ package com.slb.frame.ui.widget;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ public class LoadingDialog extends ProgressDialog {
 		content = (TextView) findViewById(R.id.tips_msg);
 		btnRight = (Button) findViewById(R.id.btn_right);
 		setText(message);
+		setOnKeyListener(keyListener);
 	}
 
 	public void setText(String message) {
@@ -46,7 +49,7 @@ public class LoadingDialog extends ProgressDialog {
 			this.message = message;
 			return;
 		}
-		
+
 		if (TextUtils.isEmpty(message)) {
 			content.setVisibility(View.GONE);
 		}else{
@@ -58,8 +61,22 @@ public class LoadingDialog extends ProgressDialog {
 	public void setText(int resId) {
 		setText(getContext().getResources().getString(resId));
 	}
-	
+
 	public void setOnRightBtnListener(View.OnClickListener onClickListener){
 		btnRight.setOnClickListener(onClickListener);
+	}
+	OnKeyListener keyListener=new OnKeyListener() {
+		@Override
+		public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+			iDialogInterface.dialogLifecycleCancel();
+			return false;
+		}
+	};
+	private IDialogInterface iDialogInterface;
+	public interface IDialogInterface{
+		void dialogLifecycleCancel();
+	}
+	public void setDialogInterface(IDialogInterface iDialogInterface){
+		this.iDialogInterface=iDialogInterface;
 	}
 }
