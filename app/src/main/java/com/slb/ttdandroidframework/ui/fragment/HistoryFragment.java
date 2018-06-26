@@ -12,6 +12,10 @@ public class HistoryFragment
 		extends BaseMvpFragment<HistoryContract.IView, HistoryContract.IPresenter>
 		implements HistoryContract.IView{
 
+	@Override
+	protected boolean hasToolbar() {
+		return false;
+	}
 
 	public static HistoryFragment newInstance(){
 		HistoryFragment instance=new HistoryFragment();

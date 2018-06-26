@@ -158,6 +158,11 @@ public abstract class BaseBrvahRefreshActivity<V,T extends IBasePresenter,K,A>  
      */
     protected void getListData(){
         autoRefresh();
+        if(mObservable == null){
+            mAdapter.loadMoreComplete();
+            autoRefreshComplete();
+            return;
+        }
         mObservable.compose(RxUtil.<HttpResult<K,A>>applySchedulersForRetrofit())
                 .map(new HttpResultFun<K, A>())
                 .subscribe(new Subscriber<HttpDataResutl<K, A>>() {

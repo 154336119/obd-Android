@@ -12,7 +12,7 @@
         android:padding="@dimen/distance_10"
         android:text="登录"
         android:gravity="center"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textColor="@color/white"
         android:background="#3C444F"/>
     <RelativeLayout

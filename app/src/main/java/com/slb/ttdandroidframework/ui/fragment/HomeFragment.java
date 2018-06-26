@@ -1,28 +1,163 @@
 package com.slb.ttdandroidframework.ui.fragment;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.fragment.BaseMvpFragment;
+import com.slb.frame.utils.ActivityUtil;
+import com.slb.frame.utils.ConvertUtils;
+import com.slb.frame.utils.ScreenUtils;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.ui.activity.EmissionTestActivity;
+import com.slb.ttdandroidframework.ui.activity.FreezeFrameActivity;
+import com.slb.ttdandroidframework.ui.activity.ModuleFiveActivity;
+import com.slb.ttdandroidframework.ui.activity.ReadErrorCodeActivity;
+import com.slb.ttdandroidframework.ui.activity.TroubleLightSActivity;
 import com.slb.ttdandroidframework.ui.contract.HomeContract;
 import com.slb.ttdandroidframework.ui.presenter.HomePresenter;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 
 public class HomeFragment
-		extends BaseMvpFragment<HomeContract.IView, HomeContract.IPresenter>
-		implements HomeContract.IView{
+        extends BaseMvpFragment<HomeContract.IView, HomeContract.IPresenter>
+        implements HomeContract.IView {
 
 
-	public static HomeFragment newInstance(){
-		HomeFragment instance=new HomeFragment();
-		return instance;
-	}
+    @BindView(R.id.mTvName)
+    TextView mTvName;
+    @BindView(R.id.mTvReadErrorCode)
+    TextView mTvReadErrorCode;
+    @BindView(R.id.Fl01)
+    FrameLayout mFl01;
+    @BindView(R.id.mTvFreezeFrame)
+    TextView mTvFreezeFrame;
+    @BindView(R.id.Fl02)
+    FrameLayout mFl02;
+    @BindView(R.id.mTvEmissionTest)
+    TextView mTvEmissionTest;
+    @BindView(R.id.Fl03)
+    FrameLayout mFl03;
+    @BindView(R.id.mTvOxygen)
+    TextView mTvOxygen;
+    @BindView(R.id.Fl04)
+    FrameLayout mFl04;
+    @BindView(R.id.mTvTroubleLightState)
+    TextView mTvTroubleLightState;
+    @BindView(R.id.Fl05)
+    FrameLayout mFl05;
+    @BindView(R.id.mTvVehicleMonitoring)
+    TextView mTvVehicleMonitoring;
+    @BindView(R.id.Fl06)
+    FrameLayout mFl06;
+    Unbinder unbinder;
+    @BindView(R.id.tv01)
+    TextView tv01;
+    @Override
+    protected boolean hasToolbar() {
+        return false;
+    }
 
-	@Override
-	public HomeContract.IPresenter initPresenter() {
-		return new HomePresenter();
-	}
+    public static HomeFragment newInstance() {
+        HomeFragment instance = new HomeFragment();
+        return instance;
+    }
 
-	@Override
-	public int getLayoutId() {
-		return R.layout.fragment_home;
-	}
+    @Override
+    public HomeContract.IPresenter initPresenter() {
+        return new HomePresenter();
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_home;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        int w = (ScreenUtils.getScreenWidth(_mActivity)) / 2 - ConvertUtils.dp2px(_mActivity, 20);
+        Logger.d(w);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mFl01.getLayoutParams();
+        params.height = w;//设置当前控件布局的高度
+        params.width = w;
+        mFl01.setLayoutParams(params);//将设置好的布局参数应用到控件中
+
+        RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) mFl02.getLayoutParams();
+        params2.height = w;//设置当前控件布局的高度
+        params2.width = w;
+        mFl02.setLayoutParams(params2);//将设置好的布局参数应用到控件中
+
+        RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams) mFl03.getLayoutParams();
+        params3.height = w;//设置当前控件布局的高度
+        params3.width = w;
+        mFl03.setLayoutParams(params3);//将设置好的布局参数应用到控件中
+
+        RelativeLayout.LayoutParams params4 = (RelativeLayout.LayoutParams) mFl04.getLayoutParams();
+        params4.height = w;//设置当前控件布局的高度
+        params4.width = w;
+        mFl04.setLayoutParams(params4);//将设置好的布局参数应用到控件中
+
+        RelativeLayout.LayoutParams params5 = (RelativeLayout.LayoutParams) mFl05.getLayoutParams();
+        params5.height = w;//设置当前控件布局的高度
+        params5.width = w;
+        mFl05.setLayoutParams(params5);//将设置好的布局参数应用到控件中
+
+        RelativeLayout.LayoutParams params6 = (RelativeLayout.LayoutParams) mFl06.getLayoutParams();
+        params6.height = w;//设置当前控件布局的高度
+        params6.width = w;
+        mFl06.setLayoutParams(params6);//将设置好的布局参数应用到控件中
+        return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void initView(View view) {
+        super.initView(view);
+    }
+
+    @OnClick({R.id.Fl01, R.id.Fl02, R.id.Fl03, R.id.Fl04, R.id.Fl05, R.id.Fl06})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.Fl01:
+                //读取故障码
+                ActivityUtil.next(_mActivity, ReadErrorCodeActivity.class);
+                break;
+            case R.id.Fl02:
+                //冻结帧
+                ActivityUtil.next(_mActivity, FreezeFrameActivity.class);
+                break;
+            case R.id.Fl03:
+                //尾气检测
+                ActivityUtil.next(_mActivity, EmissionTestActivity.class);
+                break;
+            case R.id.Fl04:
+                //氧气传感器
+                ActivityUtil.next(_mActivity, ModuleFiveActivity.class);
+                break;
+            case R.id.Fl05:
+                //故障灯状态
+                ActivityUtil.next(_mActivity, TroubleLightSActivity.class);
+                break;
+            case R.id.Fl06:
+                //车载监控
+                ActivityUtil.next(_mActivity, ReadErrorCodeActivity.class);
+                break;
+        }
+    }
 }

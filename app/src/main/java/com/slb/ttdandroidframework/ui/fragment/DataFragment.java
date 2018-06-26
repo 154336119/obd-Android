@@ -12,6 +12,10 @@ public class DataFragment
 		extends BaseMvpFragment<DataContract.IView, DataContract.IPresenter>
 		implements DataContract.IView{
 
+	@Override
+	protected boolean hasToolbar() {
+		return false;
+	}
 
 	public static DataFragment newInstance(){
 		DataFragment instance=new DataFragment();

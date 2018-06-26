@@ -28,7 +28,9 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     RadioGroup bottomBar;
     private int prePosition;
     private BaseFragment[] mFragments = new BaseFragment[4];
-
+    protected boolean hasToolbar() {
+        return false;
+    }
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;

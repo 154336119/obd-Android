@@ -4,7 +4,7 @@
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
         <!--<item name="toolbarNavigationButtonStyle">@style/myToolbarNavigationButtonStyle</item>-->
         <item name="colorPrimary">#3C444F</item>
-        <item name="colorPrimaryDark">#2B3139</item>
+        <item name="colorPrimaryDark">#FF3C444F</item>
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="actionMenuTextColor">@drawable/tool_bar_text_color</item>

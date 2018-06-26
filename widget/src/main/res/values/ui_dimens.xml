@@ -35,7 +35,7 @@
     <dimen name="tab_bottom_top">9dp</dimen>
     <dimen name="tab_height">44dp</dimen>
     <dimen name="line_height">0.5dp</dimen>
-
+    <dimen name="line_height_1">1dp</dimen>
     <dimen name="item_height">72dp</dimen>
     <dimen name="dot_height">8dp</dimen>
     <dimen name="layout_bottom_height">64dp</dimen>

@@ -8,16 +8,16 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="48dp"
         android:background="?attr/colorPrimary"
         app:navigationIcon="?attr/toolbar_navigationIcon"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
     </android.support.v7.widget.Toolbar>
-    <View
-        android:id="@+id/underLine"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?attr/toolbar_under_line"/>
+    <!--<View-->
+        <!--android:id="@+id/underLine"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="?attr/toolbar_under_line"/>-->
 </LinearLayout>
