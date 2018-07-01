@@ -14,10 +14,11 @@
             android:id="@+id/edtMobile"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
-            android:hint="请输入您的密码"
+            android:hint="请输入您的邮箱"
             android:lines="1"
             android:drawablePadding="5dp"
             android:layout_margin="10dp"
+            android:drawableLeft="@mipmap/ic_phone"
             />
         <RelativeLayout
             android:layout_width="match_parent"
@@ -25,10 +26,20 @@
             <EditText
                 android:id="@+id/edtPwd"
                 style="@style/edit_padding_10"
-                android:hint="再次输入新密码"
+                android:hint="请输入验证码"
                 android:layout_margin="10dp"
                 android:lines="1"
-                android:drawablePadding="5dp"/>
+                android:drawablePadding="5dp"
+                android:drawableLeft="@mipmap/ic_a"/>
+            <com.slb.ttdandroidframework.weight.CountTimerButton
+                android:id="@+id/BtnGetCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="发送验证码"
+                android:textColor="#00A4EF"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/distance_20"/>
         </RelativeLayout>
         <Button
             android:id="@+id/btnComfirm"
@@ -36,6 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/distance_30"
-            android:text="确定" />
+            android:text="下一步" />
     </LinearLayout>
 </LinearLayout>

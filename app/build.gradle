@@ -40,6 +40,5 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-
-
+    compile 'info.hoang8f:android-segmented:1.0.6'
 }

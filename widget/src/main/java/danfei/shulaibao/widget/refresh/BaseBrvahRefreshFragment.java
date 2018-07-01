@@ -154,6 +154,11 @@ public abstract class BaseBrvahRefreshFragment<V,T extends IBaseFragmentPresente
      * 获取数据
      */
     protected void getListData(){
+        if(mObservable == null){
+            mAdapter.loadMoreComplete();
+            autoRefreshComplete();
+            return;
+        }
         mObservable.compose(RxUtil.<HttpResult<K,A>>applySchedulersForRetrofit())
                 .map(new HttpResultFun<K, A>())
                 .subscribe(new Subscriber<HttpDataResutl<K, A>>() {

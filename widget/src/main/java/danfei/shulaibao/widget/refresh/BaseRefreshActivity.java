@@ -51,7 +51,6 @@ public abstract class BaseRefreshActivity<V,T extends IBasePresenter> extends Ba
     public void initView() {
         super.initView();
         hideHead= (ViewGroup)findViewById(R.id.hidehead);
-
         mRecyclerView= (RecyclerView)findViewById(R.id.can_content_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(initAdapter());

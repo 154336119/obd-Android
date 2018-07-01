@@ -1,15 +1,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:circle="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     android:background="@color/color_2B3139">
-     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-         android:text="历史"
-        android:layout_marginRight="@dimen/distance_bg" />
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="44dp"
+         android:background="@color/color_3C444F"
+         >
+          <info.hoang8f.android.segmented.SegmentedGroup
+              android:id="@+id/segmented"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_margin="10dp"
+              android:layout_centerInParent="true"
+              android:orientation="horizontal"
+              segmentedgroup:sc_border_width="1dp"
+              segmentedgroup:sc_corner_radius="5dp"
+              segmentedgroup:sc_tint_color="@color/color_00A4EF"
+              segmentedgroup:sc_unchecked_tint_color="@color/color_00A4EF"
+              segmentedgroup:sc_checked_text_color="@color/white">
+
+               <RadioButton
+                   android:id="@+id/RbHistoricalDriving"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="历史行车"
+                   style="@style/com_green_tab_rb"/>
+
+               <RadioButton
+                   android:id="@+id/RbHistoricalFailure"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="历史故障"
+                   style="@style/com_green_tab_rb"/>
+          </info.hoang8f.android.segmented.SegmentedGroup>
+          <TextView
+              android:id="@+id/mTvScreen"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textColor="@color/white"
+              android:text="筛选"
+              android:textSize="15sp"
+              android:layout_alignParentRight="true"
+              android:layout_centerVertical="true"
+              android:drawablePadding="10dp"
+              android:layout_marginRight="15dp"/>
+     </RelativeLayout>
+     <FrameLayout
+         android:id="@+id/mainFrame"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="@color/color_2B3139"/>
 </LinearLayout>
