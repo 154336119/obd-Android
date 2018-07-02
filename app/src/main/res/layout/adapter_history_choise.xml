@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <CheckBox
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/Rb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@drawable/checkbox_three"
+        android:button="@null"
+        android:text="测试"
+        android:paddingRight="@dimen/distance_30"
+        android:paddingLeft="@dimen/distance_30"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:checked="false"/>

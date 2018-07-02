@@ -1,14 +1,22 @@
 package com.slb.ttdandroidframework.ui.fragment;
 
-import com.slb.frame.ui.fragment.BaseMvpFragment;
+import android.graphics.Color;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.ui.contract.DataContract;
-import com.slb.ttdandroidframework.ui.presenter.DataPresenter;
+import com.slb.ttdandroidframework.http.bean.HistoryDriveDataEntity;
+import com.slb.ttdandroidframework.ui.adapter.HistoryDriveDataAdapter;
+import com.slb.ttdandroidframework.ui.contract.MyComFragmentListContract;
+import com.slb.ttdandroidframework.ui.presenter.MyComFragmentListPresenter;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+
+import danfei.shulaibao.widget.refresh.BaseBrvahRefreshFragment;
 
 
 public class HistoricalDrivingFragment
-		extends BaseMvpFragment<DataContract.IView, DataContract.IPresenter>
-		implements DataContract.IView{
+		extends BaseBrvahRefreshFragment<MyComFragmentListContract.IView,MyComFragmentListContract.IPresenter,Object,HistoryDriveDataEntity>
+		implements MyComFragmentListContract.IView{
 
 	@Override
 	protected boolean hasToolbar() {
@@ -21,12 +29,24 @@ public class HistoricalDrivingFragment
 	}
 
 	@Override
-	public DataContract.IPresenter initPresenter() {
-		return new DataPresenter();
+	protected RecyclerView.Adapter setAdapter() {
+		for (int i = 0; i < 5; i++) {
+			HistoryDriveDataEntity entity = new HistoryDriveDataEntity();
+			mList.add(entity);
+		}
+		mAdapter = new HistoryDriveDataAdapter(mList);
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+		mRecyclerView.setAdapter(mAdapter);
+		mRecyclerView.addItemDecoration(
+				new HorizontalDividerItemDecoration.Builder(_mActivity)
+						.color(Color.parseColor("#2B3139"))
+						.sizeResId(R.dimen.investor_dot_height)
+						.build());
+		return mAdapter;
 	}
 
 	@Override
-	public int getLayoutId() {
-		return R.layout.fragment_historical_driving;
+	public MyComFragmentListContract.IPresenter initPresenter() {
+		return new MyComFragmentListPresenter();
 	}
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#535B67"
+    android:layout_marginRight="@dimen/distance_20"
+    android:layout_marginLeft="20dp"
+    >
+
+    <TextView
+        android:id="@+id/TvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:text="历史数据"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#2B3648">
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/LineChartView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </lecho.lib.hellocharts.view.LineChartView>
+    </RelativeLayout>
+</LinearLayout>
