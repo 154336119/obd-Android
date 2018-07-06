@@ -17,32 +17,33 @@ public class ErrorCodeAdapter extends BaseQuickAdapter<ErrorCodeEntity,BaseViewH
 
 
     public ErrorCodeAdapter(List<ErrorCodeEntity> data) {
-        super(R.layout.adapter_error_code, data);
+        //有点问题 先注释
+        super(R.layout.adapter_module_five, data);
     }
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final ErrorCodeEntity entity) {
-        CheckBox cb = (CheckBox)baseViewHolder.getView(R.id.ck);
-        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
-                if(isChecked){
-                    baseViewHolder.setVisible(R.id.TvContent,true);
-                }else{
-                    baseViewHolder.setVisible(R.id.TvContent,false);
-                }
-            }
-        });
-//        if(entity.getBulletinTotalPeople()!=null){
-//            if(entity.getBulletinReadTotalPeople()!=null){
-//                int num = entity.getBulletinTotalPeople() - entity.getBulletinReadTotalPeople();
-//                baseViewHolder.setText(R.id.TvUnReadCount,"未查看("+num+")人");
-//            }else{
-//                baseViewHolder.setText(R.id.TvUnReadCount,"未查看("+entity.getBulletinTotalPeople()+")人");
-//
+//        CheckBox cb = (CheckBox)baseViewHolder.getView(R.id.ck);
+//        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView,
+//                                         boolean isChecked) {
+//                if(isChecked){
+//                    baseViewHolder.setVisible(R.id.TvContent,true);
+//                }else{
+//                    baseViewHolder.setVisible(R.id.TvContent,false);
+//                }
 //            }
-//        }
+//        });
+////        if(entity.getBulletinTotalPeople()!=null){
+////            if(entity.getBulletinReadTotalPeople()!=null){
+////                int num = entity.getBulletinTotalPeople() - entity.getBulletinReadTotalPeople();
+////                baseViewHolder.setText(R.id.TvUnReadCount,"未查看("+num+")人");
+////            }else{
+////                baseViewHolder.setText(R.id.TvUnReadCount,"未查看("+entity.getBulletinTotalPeople()+")人");
+////
+////            }
+////        }
     }
 
 }

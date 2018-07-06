@@ -59,18 +59,18 @@ public class DataFragment
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
         //测试
-        for (int i = 0; i < 5; i++) {
-            HistoryDriveDataEntity entity = new HistoryDriveDataEntity();
-            mList.add(entity);
-        }
-        mAdapter = new HistoryDriveDataAdapter(mList);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(
-                new HorizontalDividerItemDecoration.Builder(_mActivity)
-                        .color(Color.parseColor("#2B3139"))
-                        .sizeResId(R.dimen.investor_dot_height)
-                        .build());
+//        for (int i = 0; i < 5; i++) {
+//            HistoryDriveDataEntity entity = new HistoryDriveDataEntity();
+//            mList.add(entity);
+//        }
+//        mAdapter = new HistoryDriveDataAdapter(mList);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+//        mRecyclerView.setAdapter(mAdapter);
+//        mRecyclerView.addItemDecoration(
+//                new HorizontalDividerItemDecoration.Builder(_mActivity)
+//                        .color(Color.parseColor("#2B3139"))
+//                        .sizeResId(R.dimen.investor_dot_height)
+//                        .build());
         return rootView;
     }
 
