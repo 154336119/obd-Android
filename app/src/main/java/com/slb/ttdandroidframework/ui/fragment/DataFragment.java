@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 
 import com.slb.frame.ui.fragment.BaseMvpFragment;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.http.bean.DataEntity;
 import com.slb.ttdandroidframework.http.bean.HistoryDriveDataEntity;
+import com.slb.ttdandroidframework.ui.adapter.DataAdapter;
 import com.slb.ttdandroidframework.ui.adapter.HistoryDriveDataAdapter;
 import com.slb.ttdandroidframework.ui.contract.DataContract;
 import com.slb.ttdandroidframework.ui.presenter.DataPresenter;
@@ -31,8 +33,8 @@ public class DataFragment
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     Unbinder unbinder;
-    private List<HistoryDriveDataEntity> mList = new ArrayList<>();
-    private HistoryDriveDataAdapter mAdapter;
+    private List<DataEntity> mList = new ArrayList<>();
+    private DataAdapter mAdapter;
     @Override
     protected boolean hasToolbar() {
         return false;
@@ -59,18 +61,18 @@ public class DataFragment
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
         //测试
-//        for (int i = 0; i < 5; i++) {
-//            HistoryDriveDataEntity entity = new HistoryDriveDataEntity();
-//            mList.add(entity);
-//        }
-//        mAdapter = new HistoryDriveDataAdapter(mList);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-//        mRecyclerView.setAdapter(mAdapter);
-//        mRecyclerView.addItemDecoration(
-//                new HorizontalDividerItemDecoration.Builder(_mActivity)
-//                        .color(Color.parseColor("#2B3139"))
-//                        .sizeResId(R.dimen.investor_dot_height)
-//                        .build());
+        for (int i = 0; i < 5; i++) {
+            DataEntity entity = new DataEntity();
+            mList.add(entity);
+        }
+        mAdapter = new DataAdapter(mList);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(
+                new HorizontalDividerItemDecoration.Builder(_mActivity)
+                        .color(Color.parseColor("#2B3139"))
+                        .sizeResId(R.dimen.distance_1)
+                        .build());
         return rootView;
     }
 

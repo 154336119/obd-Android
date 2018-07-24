@@ -41,8 +41,28 @@
             android:completionThreshold="1"
             android:drawableLeft="@mipmap/ic_phone"
             android:hint="请输入您的邮箱"
-            android:inputType="number"
             android:lines="1" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edtVCode"
+                style="@style/edit_padding_10"
+                android:hint="请输入验证码"
+                android:layout_margin="10dp"
+                android:lines="1"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@mipmap/ic_a"/>
+            <com.slb.ttdandroidframework.weight.CountTimerButton
+                android:id="@+id/BtnGetCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="发送验证码"
+                android:textColor="#00A4EF"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/distance_20"/>
+        </RelativeLayout>
 
         <EditText
             android:id="@+id/edtPwd"

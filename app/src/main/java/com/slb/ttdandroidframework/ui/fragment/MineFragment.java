@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.slb.frame.ui.fragment.BaseMvpFragment;
 import com.slb.frame.utils.ActivityUtil;
+import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
 import com.slb.ttdandroidframework.ui.contract.MineContract;
@@ -41,6 +42,8 @@ public class MineFragment
     @BindView(R.id.line2)
     ImageView line2;
     Unbinder unbinder;
+    @BindView(R.id.TvName)
+    TextView TvName;
 
     @Override
     protected boolean hasToolbar() {
@@ -67,6 +70,8 @@ public class MineFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+
+        TvName.setText(Base.getUserEntity().getEmail());
         return rootView;
     }
 

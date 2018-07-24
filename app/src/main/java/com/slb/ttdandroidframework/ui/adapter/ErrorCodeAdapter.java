@@ -23,27 +23,27 @@ public class ErrorCodeAdapter extends BaseQuickAdapter<ErrorCodeEntity,BaseViewH
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final ErrorCodeEntity entity) {
-//        CheckBox cb = (CheckBox)baseViewHolder.getView(R.id.ck);
-//        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView,
-//                                         boolean isChecked) {
-//                if(isChecked){
-//                    baseViewHolder.setVisible(R.id.TvContent,true);
-//                }else{
-//                    baseViewHolder.setVisible(R.id.TvContent,false);
-//                }
+        CheckBox cb = (CheckBox)baseViewHolder.getView(R.id.ck);
+        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if(isChecked){
+                    baseViewHolder.setVisible(R.id.TvContent,true);
+                }else{
+                    baseViewHolder.setVisible(R.id.TvContent,false);
+                }
+            }
+        });
+//        if(entity.getBulletinTotalPeople()!=null){
+//            if(entity.getBulletinReadTotalPeople()!=null){
+//                int num = entity.getBulletinTotalPeople() - entity.getBulletinReadTotalPeople();
+//                baseViewHolder.setText(R.id.TvUnReadCount,"未查看("+num+")人");
+//            }else{
+//                baseViewHolder.setText(R.id.TvUnReadCount,"未查看("+entity.getBulletinTotalPeople()+")人");
+//
 //            }
-//        });
-////        if(entity.getBulletinTotalPeople()!=null){
-////            if(entity.getBulletinReadTotalPeople()!=null){
-////                int num = entity.getBulletinTotalPeople() - entity.getBulletinReadTotalPeople();
-////                baseViewHolder.setText(R.id.TvUnReadCount,"未查看("+num+")人");
-////            }else{
-////                baseViewHolder.setText(R.id.TvUnReadCount,"未查看("+entity.getBulletinTotalPeople()+")人");
-////
-////            }
-////        }
+//        }
     }
 
 }

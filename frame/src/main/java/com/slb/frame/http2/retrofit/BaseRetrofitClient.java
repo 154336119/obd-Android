@@ -21,7 +21,7 @@ public class BaseRetrofitClient implements Iretrofit {
                 .baseUrl(url)
                 .client(clientBuilder.build())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(MyJsonConvertFactory.create())
+                .addConverterFactory(FastJsonConverterFactory.create())
                 .build();
     }
 

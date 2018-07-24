@@ -60,18 +60,21 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginCon
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+        edtMobile.setText("154336119@qq.com");
+        edtPwd.setText("123456");
     }
 
     @OnClick({R.id.tvRegister, R.id.tvwForgotPwd, R.id.btnLogin})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tvRegister:
+                ActivityUtil.next(this, RegisterActivity.class);
                 break;
             case R.id.tvwForgotPwd:
+                ActivityUtil.next(this, MailboxVerificationActivity.class);
                 break;
             case R.id.btnLogin:
-             //   mPresenter.login(edtMobile.getText().toString(), edtPwd.getText().toString());
-                loginSuccess();
+                mPresenter.login(edtMobile.getText().toString(), edtPwd.getText().toString());
                 break;
         }
     }
@@ -79,5 +82,6 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginCon
     @Override
     public void loginSuccess() {
         ActivityUtil.next(this, MainActivity.class);
+        finish();
     }
 }

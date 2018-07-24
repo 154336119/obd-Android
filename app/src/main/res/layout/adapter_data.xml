@@ -6,26 +6,24 @@
     android:orientation="vertical"
     android:background="#535B67"
     android:paddingTop="13dp"
-    android:paddingBottom="13dp">
+    android:paddingBottom="13dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <TextView
-        android:id="@+id/TvCode"
+        android:id="@+id/TvData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:layout_marginLeft="18dp"
-        android:text="请假单"
+        android:text="-rpm"></TextView>
+    <TextView
+        android:id="@+id/TvDes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FF9B9B9B"
+        android:textSize="16sp"
+        android:text="Accelerator Pedal Position D"
+        android:layout_marginTop="5dp"
         />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#2B3139"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="13dp"/>
-    <com.slb.ttdandroidframework.weight.MyListView
-        android:id="@+id/MyListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.slb.ttdandroidframework.weight.MyListView>
 </LinearLayout>

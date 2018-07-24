@@ -9,10 +9,11 @@ import com.slb.frame.ui.view.IBaseLoadingDialogView;
 
 public class RegisterContract {
 	public interface IView extends IBaseLoadingDialogView {
+		void getVcodeSuccess();
 		void registerSuccess();
 	}
 	public interface IPresenter<T> extends IBasePresenter<T> {
-
-		void register(String mUserName, String mPassword);
+		void getVcode(String email);
+		void register(String mUserName, String mPassword,String code);
 	}
 }

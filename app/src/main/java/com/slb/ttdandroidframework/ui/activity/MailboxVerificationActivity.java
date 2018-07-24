@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.slb.frame.ui.activity.BaseMvpActivity;
+import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.ui.contract.MailboxVerificationContract;
 import com.slb.ttdandroidframework.ui.presenter.MailboxVerificationPresenter;
@@ -69,6 +70,7 @@ public class MailboxVerificationActivity extends BaseMvpActivity<MailboxVerifica
             case R.id.BtnGetCode:
                 break;
             case R.id.btnComfirm:
+                ActivityUtil.next(this, ResetPasswordActivity.class);
                 break;
         }
     }

@@ -13,6 +13,7 @@ import com.slb.frame.ui.fragment.BaseMvpFragment;
 import com.slb.frame.utils.ActivityUtil;
 import com.slb.frame.utils.ConvertUtils;
 import com.slb.frame.utils.ScreenUtils;
+import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.ui.activity.EmissionTestActivity;
 import com.slb.ttdandroidframework.ui.activity.FreezeFrameActivity;
@@ -117,6 +118,9 @@ public class HomeFragment
         params6.height = w;//设置当前控件布局的高度
         params6.width = w;
         mFl06.setLayoutParams(params6);//将设置好的布局参数应用到控件中
+
+        mTvName.setText(Base.getUserEntity().getEmail());
+
         return rootView;
     }
 

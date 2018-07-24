@@ -11,9 +11,9 @@ import rx.functions.Func1;
 public class HttpEntityFun<T,A> implements Func1<HttpResult<T,A> ,T> {
     @Override
     public T call(HttpResult<T, A> taHttpResult) {
-        if(taHttpResult.getCode() != 0){
-           throw new ResultException(taHttpResult.getCode(),taHttpResult.getMsg());
+        if(taHttpResult.getStatus() != 0){
+           throw new ResultException(taHttpResult.getStatus(),taHttpResult.getMessage());
         }
-        return taHttpResult.getData().getBean();
+        return taHttpResult.getResult().getBean();
     }
 }

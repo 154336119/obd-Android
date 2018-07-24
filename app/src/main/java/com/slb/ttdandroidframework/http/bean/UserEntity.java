@@ -12,132 +12,38 @@ import java.io.Serializable;
  */
 public class UserEntity implements Parcelable, Serializable {
 
+
     /**
-     * queryData : null
-     * created : 2017-11-06 02:36:55
-     * updated : 2017-11-06 03:02:34
-     * userId : 39
-     * loginName : 18483606213
-     * userName : youpan
-     * userType : “”lastLogin
-     * userState : USER_STATE_REGISTR
-     * orgName : org_test_3
-     * mobile : 18483606213
-     * password : “”
-     * avatar : “”
+     * password : 123456
+     * emailValidateCode : a271c4
+     * nickname :
      * remark : “”
-     * parentAccount : “”
-     * lastLogin : 2017-11-06 03:04:23
-     * lastLoginIp : 192.168.1.110
-     * lastLoginMac :
+     * avatar :
+     * id : 0000000064bc27e70164c10956110001
+     * emailValidated : true
+     * version : 0
+     * email : 154336119@qq.com
+     * emailValidateCodeTime : 2018-07-22 16:08:06
      */
-    public int id;
-    private String created;
-    private String updated;
-    private Integer userId;
-    private String loginName;
-    private String userName;
-    private String userType;
-    private String userState;
-    private String orgName;
-    private String mobile;
-    private String unencryptedMobile;
+
     private String password;
-    private String avatar;
+    private String emailValidateCode;
+    private String nickname;
     private String remark;
-    private String parentAccount;
-    private String lastLogin;
-    private String lastLoginIp;
-    private String lastLoginMac;
-    private Boolean login;
-    private String au;
+    private String avatar;
+    private String id;
+    private boolean emailValidated;
+    private int version;
+    private String email;
+    private String emailValidateCodeTime;
+    private String token;
 
-    public String getUnencryptedMobile() {
-        return unencryptedMobile;
+    public String getToken() {
+        return token;
     }
 
-    public void setUnencryptedMobile(String unencryptedMobile) {
-        this.unencryptedMobile = unencryptedMobile;
-    }
-
-    public Boolean getLogin() {
-        return login;
-    }
-
-    public void setLogin(Boolean login) {
-        this.login = login;
-    }
-
-    public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
-    public String getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(String updated) {
-        this.updated = updated;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public String getUserState() {
-        return userState;
-    }
-
-    public void setUserState(String userState) {
-        this.userState = userState;
-    }
-
-    public String getOrgName() {
-        return orgName;
-    }
-
-    public void setOrgName(String orgName) {
-        this.orgName = orgName;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getPassword() {
@@ -148,12 +54,20 @@ public class UserEntity implements Parcelable, Serializable {
         this.password = password;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getEmailValidateCode() {
+        return emailValidateCode;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setEmailValidateCode(String emailValidateCode) {
+        this.emailValidateCode = emailValidateCode;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getRemark() {
@@ -164,48 +78,52 @@ public class UserEntity implements Parcelable, Serializable {
         this.remark = remark;
     }
 
-    public String getParentAccount() {
-        return parentAccount;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setParentAccount(String parentAccount) {
-        this.parentAccount = parentAccount;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
-    public String getLastLogin() {
-        return lastLogin;
+    public String getId() {
+        return id;
     }
 
-    public void setLastLogin(String lastLogin) {
-        this.lastLogin = lastLogin;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getLastLoginIp() {
-        return lastLoginIp;
+    public boolean isEmailValidated() {
+        return emailValidated;
     }
 
-    public void setLastLoginIp(String lastLoginIp) {
-        this.lastLoginIp = lastLoginIp;
+    public void setEmailValidated(boolean emailValidated) {
+        this.emailValidated = emailValidated;
     }
 
-    public String getLastLoginMac() {
-        return lastLoginMac;
+    public int getVersion() {
+        return version;
     }
 
-    public void setLastLoginMac(String lastLoginMac) {
-        this.lastLoginMac = lastLoginMac;
+    public void setVersion(int version) {
+        this.version = version;
     }
 
-    public String getAu() {
-        return au;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAu(String au) {
-        this.au = au;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
+    public String getEmailValidateCodeTime() {
+        return emailValidateCodeTime;
+    }
 
-    public UserEntity() {
+    public void setEmailValidateCodeTime(String emailValidateCodeTime) {
+        this.emailValidateCodeTime = emailValidateCodeTime;
     }
 
     @Override
@@ -215,47 +133,34 @@ public class UserEntity implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.created);
-        dest.writeString(this.updated);
-        dest.writeValue(this.userId);
-        dest.writeString(this.loginName);
-        dest.writeString(this.userName);
-        dest.writeString(this.userType);
-        dest.writeString(this.userState);
-        dest.writeString(this.orgName);
-        dest.writeString(this.mobile);
-        dest.writeString(this.unencryptedMobile);
         dest.writeString(this.password);
-        dest.writeString(this.avatar);
+        dest.writeString(this.emailValidateCode);
+        dest.writeString(this.nickname);
         dest.writeString(this.remark);
-        dest.writeString(this.parentAccount);
-        dest.writeString(this.lastLogin);
-        dest.writeString(this.lastLoginIp);
-        dest.writeString(this.lastLoginMac);
-        dest.writeValue(this.login);
-        dest.writeString(this.au);
+        dest.writeString(this.avatar);
+        dest.writeString(this.id);
+        dest.writeByte(this.emailValidated ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.version);
+        dest.writeString(this.email);
+        dest.writeString(this.emailValidateCodeTime);
+        dest.writeString(this.token);
+    }
+
+    public UserEntity() {
     }
 
     protected UserEntity(Parcel in) {
-        this.created = in.readString();
-        this.updated = in.readString();
-        this.userId = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.loginName = in.readString();
-        this.userName = in.readString();
-        this.userType = in.readString();
-        this.userState = in.readString();
-        this.orgName = in.readString();
-        this.mobile = in.readString();
-        this.unencryptedMobile = in.readString();
         this.password = in.readString();
-        this.avatar = in.readString();
+        this.emailValidateCode = in.readString();
+        this.nickname = in.readString();
         this.remark = in.readString();
-        this.parentAccount = in.readString();
-        this.lastLogin = in.readString();
-        this.lastLoginIp = in.readString();
-        this.lastLoginMac = in.readString();
-        this.login = (Boolean) in.readValue(Boolean.class.getClassLoader());
-        this.au = in.readString();
+        this.avatar = in.readString();
+        this.id = in.readString();
+        this.emailValidated = in.readByte() != 0;
+        this.version = in.readInt();
+        this.email = in.readString();
+        this.emailValidateCodeTime = in.readString();
+        this.token = in.readString();
     }
 
     public static final Creator<UserEntity> CREATOR = new Creator<UserEntity>() {
