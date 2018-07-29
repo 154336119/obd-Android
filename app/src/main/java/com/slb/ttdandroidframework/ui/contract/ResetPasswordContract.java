@@ -12,7 +12,9 @@ import com.slb.frame.ui.view.IBaseLoadingDialogView;
 
 public class ResetPasswordContract {
     public interface IView extends IBaseLoadingDialogView {
+        void resetSuccess();
     }
     public interface IPresenter<T> extends IBasePresenter<T> {
+        void reset(String email ,String password,String verifyCode );
     }
 }

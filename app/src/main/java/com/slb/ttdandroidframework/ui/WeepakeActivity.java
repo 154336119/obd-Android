@@ -103,6 +103,7 @@ public class WeepakeActivity extends AppCompatActivity {
         public void onServiceDisconnected(ComponentName className) {
             Log.d(TAG, className.toString() + " service is unbound");
         }
+
     };
 
     private final Runnable mQueueCommands = new Runnable() {
@@ -228,7 +229,6 @@ public class WeepakeActivity extends AppCompatActivity {
         if ( !isBluetoothEnable ){
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(intent,0);
-
         }else{
             Log.d("","蓝牙已打开");
 

@@ -5,5 +5,14 @@ package com.slb.ttdandroidframework.http.bean;
  */
 
 public class DataEntity {
+    private String title;
+    private String value;
 
+    public DataEntity(String title, String value) {
+        this.title = title;
+        this.value = value;
+    }
+
+    public DataEntity() {
+    }
 }

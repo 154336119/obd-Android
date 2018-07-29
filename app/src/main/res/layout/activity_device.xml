@@ -45,10 +45,10 @@
             android:layout_width="90dp"
             android:layout_height="160dp"
             android:background="@mipmap/ic_device_bg"
-            android:layout_toLeftOf="@+id/IvState"
+            android:layout_toLeftOf="@+id/IvState1"
             android:layout_marginRight="60dp"/>
         <ImageView
-            android:id="@+id/IvState"
+            android:id="@+id/IvState1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@mipmap/ic_un_connect"
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:background="@mipmap/ic_device_01"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/IvState"
+            android:layout_toRightOf="@+id/IvState1"
             android:layout_marginLeft="60dp"/>
     </RelativeLayout>
     <RelativeLayout
@@ -70,6 +70,7 @@
         android:padding="20dp"
         android:background="#FF3C444F">
         <TextView
+            android:id="@+id/TvConnectState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFF9010A"
@@ -80,6 +81,7 @@
             android:drawablePadding="10dp"
             android:layout_marginRight="15dp"/>
         <ImageView
+            android:id="@+id/IvIvIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@mipmap/ic_blue_un_connect"

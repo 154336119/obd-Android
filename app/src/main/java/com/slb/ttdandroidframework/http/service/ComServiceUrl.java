@@ -29,6 +29,16 @@ public class ComServiceUrl {
      */
     public static String getUserInfo = "api/user";
 
+    /**
+     * 用户-获取重置密码邮箱验证码
+     */
+    public static String verifycodeReset= "regist/verifycode/reset";
+
+    /**
+     * 用户-用户重置密码
+     */
+    public static String registReset = "regist/reset";
+
 //    /**
 //     * 用户-获取邮箱注册验证码
 //     */

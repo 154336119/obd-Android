@@ -18,7 +18,7 @@ public class ErrorCodeAdapter extends BaseQuickAdapter<ErrorCodeEntity,BaseViewH
 
     public ErrorCodeAdapter(List<ErrorCodeEntity> data) {
         //有点问题 先注释
-        super(R.layout.adapter_module_five, data);
+        super(R.layout.adapter_error_code, data);
     }
 
     @Override

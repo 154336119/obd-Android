@@ -11,7 +11,6 @@
         <item name="android:windowBackground">@color/colors_d1</item>
         <item name="toolbar_navigationIcon">@mipmap/ic_back</item>
         <item name="toolbar_title_textcolor">@android:color/white</item>
-
         <item name="android:textViewStyle">@style/BaseTextView</item>
         <item name="android:buttonStyle">@style/btn_bottom_single</item>
         <item name="android:editTextStyle">@style/edit_base</item>

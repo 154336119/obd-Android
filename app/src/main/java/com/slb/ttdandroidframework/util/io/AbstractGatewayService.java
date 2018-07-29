@@ -87,7 +87,7 @@ public abstract class AbstractGatewayService extends Service {
             job.setState(ObdCommandJob.ObdCommandJobState.QUEUE_ERROR);
             Log.e(TAG, "Failed to queue job.");
         }
-    }
+          }
 
     /**
      * Show a notification while this service is running.

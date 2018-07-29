@@ -1,15 +1,19 @@
 package com.slb.ttdandroidframework.ui.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.hwangjr.rxbus.annotation.Subscribe;
 import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.ui.contract.MailboxVerificationContract;
 import com.slb.ttdandroidframework.ui.presenter.MailboxVerificationPresenter;
+import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.weight.CountTimerButton;
 
 import butterknife.BindView;
@@ -68,10 +72,36 @@ public class MailboxVerificationActivity extends BaseMvpActivity<MailboxVerifica
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.BtnGetCode:
+                mPresenter.getCode(edtMobile.getText().toString());
                 break;
             case R.id.btnComfirm:
-                ActivityUtil.next(this, ResetPasswordActivity.class);
+                String email = edtMobile.getText().toString();
+                String code = edtPwd.getText().toString();
+                if (TextUtils.isEmpty(email)) {
+                    showToastMsg("请输入邮箱");
+                    return;
+                }
+                if (TextUtils.isEmpty(code)) {
+                    showToastMsg("请输入验证码");
+                    return;
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString(BizcContant.PARA_EMAIL, email);
+                bundle.putString(BizcContant.PARA_CODE, code);
+                ActivityUtil.next(this, ResetPasswordActivity.class, bundle, false);
                 break;
         }
     }
+
+
+    @Subscribe
+    public void onResetEvent(ResetEvent event) {
+        finish();
+    }
+
+    @Override
+    protected boolean rxBusRegist() {
+        return true;
+    }
+
 }

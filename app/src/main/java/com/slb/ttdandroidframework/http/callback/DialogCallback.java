@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.view.Window;
 
+import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
 import com.slb.frame.ui.view.IBaseLoadingDialogView;
 
@@ -52,5 +53,11 @@ public abstract class DialogCallback<T> extends JsonCallback<T> {
     public void onFinish() {
         //网络请求结束后关闭对话框
         mView.loadingDialogDismiss();
+    }
+
+    @Override
+    public void onError(Response<T> response) {
+        super.onError(response);
+        mView.showMsg(response.getException().getMessage());
     }
 }

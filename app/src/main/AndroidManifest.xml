@@ -63,6 +63,10 @@
             android:name=".ui.activity.MailboxVerificationActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
+        <service
+            android:name=".util.io.ObdGatewayService"
+            android:exported="false"
+            android:launchMode="singleInstance" />
     </application>
 
 </manifest>

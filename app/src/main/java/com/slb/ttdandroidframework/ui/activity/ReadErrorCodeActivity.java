@@ -12,12 +12,27 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.pires.obd.commands.control.PendingTroubleCodesCommand;
+import com.github.pires.obd.commands.protocol.EchoOffCommand;
+import com.github.pires.obd.commands.protocol.LineFeedOffCommand;
+import com.github.pires.obd.commands.protocol.ResetTroubleCodesCommand;
+import com.github.pires.obd.commands.protocol.SelectProtocolCommand;
+import com.github.pires.obd.commands.protocol.TimeoutCommand;
+import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
+import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand;
+import com.github.pires.obd.enums.ObdProtocols;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseMvpActivity;
+import com.slb.ttdandroidframework.MyApplication;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
 import com.slb.ttdandroidframework.ui.adapter.ErrorCodeAdapter;
 import com.slb.ttdandroidframework.ui.contract.ReadErrorCodeContract;
 import com.slb.ttdandroidframework.ui.presenter.ReadErrorCodePresenter;
+import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
+import com.slb.ttdandroidframework.util.io.ObdCommandJob;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -26,6 +41,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.slb.ttdandroidframework.ui.WeepakeActivity.LookUpCommand;
 
 public class ReadErrorCodeActivity extends BaseMvpActivity<ReadErrorCodeContract.IView, ReadErrorCodeContract.IPresenter>
         implements ReadErrorCodeContract.IView {
@@ -144,9 +161,43 @@ public class ReadErrorCodeActivity extends BaseMvpActivity<ReadErrorCodeContract
             case R.id.mIvBack:
                 break;
             case R.id.mTvAgain:
+                MyApplication.getService().queueJob(new ObdCommandJob(new PendingTroubleCodesCommand()));
+                MyApplication.getService().queueJob(new ObdCommandJob(new EchoOffCommand()));
+                MyApplication.getService().queueJob(new ObdCommandJob(new LineFeedOffCommand()));
+                MyApplication.getService().queueJob(new ObdCommandJob(new TimeoutCommand(62)));
+
+                // Job for returning dummy data
+                MyApplication.getService().queueJob(new ObdCommandJob(new AmbientAirTemperatureCommand()));
+                MyApplication.getService().queueJob(new ObdCommandJob(new EngineCoolantTemperatureCommand()));
                 break;
             case R.id.BtnClearError:
                 break;
         }
     }
+    @Subscribe
+    public void onObdCommandJobEvent(ObdCommandJob job) {
+        final String cmdName = job.getCommand().getName();
+        String cmdResult = job.getCommand().getFormattedResult();
+
+        Logger.d(cmdResult);
+//        Logger.d(command.getName());
+//        Logger.d(command.getName());
+//        Logger.d(command.getResult());
+//        Logger.d(command.getFormattedResult());
+//        Logger.d(command.getCalculatedResult());
+//        final String cmdID = LookUpCommand(cmdName);
+//
+//        if (dataScroll.findViewWithTag(cmdID) != null) {
+//            TextView existingTV = (TextView) dataScroll.findViewWithTag(cmdID);
+//            existingTV.setText(cmdResult);
+//        } else addTableRow(cmdID, cmdName, cmdResult);
+//        commandResult.put(cmdID, cmdResult);
+
+    }
+
+    @Override
+    protected boolean rxBusRegist() {
+        return true;
+    }
+
 }

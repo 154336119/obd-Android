@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.alibaba.fastjson.JSONArray;
 import com.slb.frame.cache.ACache;
 import com.slb.ttdandroidframework.http.bean.UserEntity;
+import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
 
 
 /**
@@ -15,6 +16,7 @@ import com.slb.ttdandroidframework.http.bean.UserEntity;
  */
 
 public class Base {
+
     /** 测试环境*/
     public static final int DEBUG = 999;
     /** 预发布环境*/
@@ -26,6 +28,13 @@ public class Base {
     private static int mEnvironment;
 
     private static UserEntity mUserEntity;
+
+    private static AbstractGatewayService service;
+
+
+    public void setService(AbstractGatewayService service) {
+        this.service = service;
+    }
 
     public static void  initialize(@NonNull Context context) {
         mContext = context;

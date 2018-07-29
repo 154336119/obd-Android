@@ -19,6 +19,8 @@ import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
 import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand;
 import com.github.pires.obd.enums.ObdProtocols;
 import com.github.pires.obd.exceptions.UnsupportedCommandException;
+import com.hwangjr.rxbus.RxBus;
+import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.ui.WeepakeActivity;
 import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
 import com.slb.ttdandroidframework.util.config.BizcContant;
@@ -57,22 +59,6 @@ public class ObdGatewayService extends AbstractGatewayService {
 
             final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
             dev = btAdapter.getRemoteDevice(remoteDevice);
-
-
-    /*
-     * Establish Bluetooth connection
-     *
-     * Because discovery is a heavyweight procedure for the Bluetooth adapter,
-     * this method should always be called before attempting to connect to a
-     * remote device with connect(). Discovery is not managed by the Activity,
-     * but is run as a system service, so an application should always call
-     * cancel discovery even if it did not directly request a discovery, just to
-     * be sure. If Bluetooth state is not STATE_ON, this API will return false.
-     *
-     * see
-     * http://developer.android.com/reference/android/bluetooth/BluetoothAdapter
-     * .html#cancelDiscovery()
-     */
             Log.d(TAG, "Stopping Bluetooth discovery.");
             btAdapter.cancelDiscovery();
 
@@ -107,19 +93,28 @@ public class ObdGatewayService extends AbstractGatewayService {
         isRunning = true;
         try {
             sock = BluetoothManager.connect(dev);
+            RxBus.get().post(new ObdConnectStateEvent(true));
         } catch (Exception e2) {
              Log.e(TAG, "There was an error while establishing Bluetooth connection. Stopping app..", e2);
             stopService();
             throw new IOException();
         }
 
+    }
+
+
+    /**
+     * 开始传输数据了
+     */
+    public void startJob(){
+
         // Let's configure the connection.
         Log.d(TAG, "Queueing jobs for connection configuration..");
         queueJob(new ObdCommandJob(new ObdResetCommand()));
-        
+
         //Below is to give the adapter enough time to reset before sending the commands, otherwise the first startup commands could be ignored.
         try { Thread.sleep(500); } catch (InterruptedException e) { e.printStackTrace(); }
-        
+
         queueJob(new ObdCommandJob(new EchoOffCommand()));
 
     /*
@@ -143,10 +138,7 @@ public class ObdGatewayService extends AbstractGatewayService {
 
         queueCounter = 0L;
         Log.d(TAG, "Initialization jobs queued.");
-
-
     }
-
     /**
      * This method will add a job to the queue while setting its ID to the
      * internal queue counter.
@@ -169,9 +161,9 @@ public class ObdGatewayService extends AbstractGatewayService {
     protected void executeQueue() throws InterruptedException {
         Log.d(TAG, "Executing queue..");
         while (!Thread.currentThread().isInterrupted()) {
-            ObdCommandJob job = null;
+             ObdCommandJob job = null;
             try {
-                job = jobsQueue.take();
+                  job = jobsQueue.take();
 
                 // log job
                 Log.d(TAG, "Taking job[" + job.getId() + "] from queue..");
@@ -205,7 +197,7 @@ public class ObdGatewayService extends AbstractGatewayService {
                 }
                 Log.e(TAG, "IO error. -> " + io.getMessage());
             } catch (Exception e) {
-                if (job != null) {
+                 if (job != null) {
                     job.setState(ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR);
                 }
                 Log.e(TAG, "Failed to run command. -> " + e.getMessage());
@@ -213,12 +205,13 @@ public class ObdGatewayService extends AbstractGatewayService {
 
             if (job != null) {
                 final ObdCommandJob job2 = job;
-                ((WeepakeActivity) ctx).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((WeepakeActivity) ctx).stateUpdate(job2);
-                    }
-                });
+                RxBus.get().post(job2);
+//                ((WeepakeActivity) ctx).runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ((WeepakeActivity) ctx).stateUpdate(job2);
+//                    }
+//                });
 //                System.out.println("***************************************************");
 //                System.out.println(job2.getCommand().getName()+"  -- "+job2.getCommand().getResult());
 //                System.out.println("***************************************************");
@@ -231,7 +224,7 @@ public class ObdGatewayService extends AbstractGatewayService {
      */
     public void stopService() {
         Log.d(TAG, "Stopping service..");
-
+        RxBus.get().post(new ObdConnectStateEvent(false));
 //        notificationManager.cancel(NOTIFICATION_ID);
         jobsQueue.clear();
         isRunning = false;

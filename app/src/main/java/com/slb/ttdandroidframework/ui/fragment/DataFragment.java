@@ -1,21 +1,36 @@
 package com.slb.ttdandroidframework.ui.fragment;
 
+import android.app.Application;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.pires.obd.commands.ObdCommand;
+import com.github.pires.obd.commands.control.PendingTroubleCodesCommand;
+import com.github.pires.obd.commands.protocol.EchoOffCommand;
+import com.github.pires.obd.commands.protocol.LineFeedOffCommand;
+import com.github.pires.obd.commands.protocol.TimeoutCommand;
+import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
+import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.fragment.BaseMvpFragment;
+import com.slb.ttdandroidframework.MyApplication;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.http.bean.DataEntity;
 import com.slb.ttdandroidframework.http.bean.HistoryDriveDataEntity;
 import com.slb.ttdandroidframework.ui.adapter.DataAdapter;
 import com.slb.ttdandroidframework.ui.adapter.HistoryDriveDataAdapter;
 import com.slb.ttdandroidframework.ui.contract.DataContract;
 import com.slb.ttdandroidframework.ui.presenter.DataPresenter;
+import com.slb.ttdandroidframework.util.config.ObdConfig;
+import com.slb.ttdandroidframework.util.io.ObdCommandJob;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -35,6 +50,23 @@ public class DataFragment
     Unbinder unbinder;
     private List<DataEntity> mList = new ArrayList<>();
     private DataAdapter mAdapter;
+    private Handler handler = new Handler();
+    private final Runnable mQueueCommands = new Runnable() {
+        @Override
+        public void run() {
+            if (MyApplication.getService() != null && MyApplication.getService().isRunning() && MyApplication.getService().queueEmpty()) {
+                queueCommands();
+            }
+            handler.postDelayed(mQueueCommands,3000);
+        }
+    };
+
+    private void queueCommands() {
+        for (ObdCommand Command : ObdConfig.getCommands()) {
+            MyApplication.getService().queueJob(new ObdCommandJob(Command));
+        }
+    }
+
     @Override
     protected boolean hasToolbar() {
         return false;
@@ -80,5 +112,24 @@ public class DataFragment
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+    @Override
+    protected boolean rxBusRegist() {
+        return true;
+    }
+    @Subscribe
+    public void onObdConnectStateEvent(ObdConnectStateEvent event) {
+        if(event.isConnect()){
+            handler.post(mQueueCommands);
+        }else{
+            handler.removeCallbacks(mQueueCommands);
+        }
+    }
+    @Subscribe
+    public void onObdCommandJobEvent(ObdCommandJob job) {
+        String cmdName = job.getCommand().getName();
+        String cmdResult = job.getCommand().getFormattedResult();
+
+        Logger.d(cmdResult);
     }
 }
