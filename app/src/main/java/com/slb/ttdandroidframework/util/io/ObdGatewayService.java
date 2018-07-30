@@ -174,6 +174,7 @@ public class ObdGatewayService extends AbstractGatewayService {
                     if (sock.isConnected()) {
                         job.getCommand().run(sock.getInputStream(), sock.getOutputStream());
                     } else {
+
                         job.setState(ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR);
                         Log.e(TAG, "Can't run command on a closed socket.");
                     }
@@ -205,7 +206,9 @@ public class ObdGatewayService extends AbstractGatewayService {
 
             if (job != null) {
                 final ObdCommandJob job2 = job;
-                RxBus.get().post(job2);
+                if(job.getState() != ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR){
+                    RxBus.get().post(job2);
+                }
 //                ((WeepakeActivity) ctx).runOnUiThread(new Runnable() {
 //                    @Override
 //                    public void run() {

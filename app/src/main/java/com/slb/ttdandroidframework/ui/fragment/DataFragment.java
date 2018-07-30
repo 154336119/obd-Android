@@ -57,7 +57,7 @@ public class DataFragment
             if (MyApplication.getService() != null && MyApplication.getService().isRunning() && MyApplication.getService().queueEmpty()) {
                 queueCommands();
             }
-            handler.postDelayed(mQueueCommands,3000);
+            handler.postDelayed(mQueueCommands,2000);
         }
     };
 
@@ -92,11 +92,11 @@ public class DataFragment
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
-        //测试
-        for (int i = 0; i < 5; i++) {
-            DataEntity entity = new DataEntity();
-            mList.add(entity);
-        }
+//        //测试
+//        for (int i = 0; i < 5; i++) {
+//            DataEntity entity = new DataEntity();
+//            mList.add(entity);
+//        }
         mAdapter = new DataAdapter(mList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
         mRecyclerView.setAdapter(mAdapter);
@@ -127,9 +127,22 @@ public class DataFragment
     }
     @Subscribe
     public void onObdCommandJobEvent(ObdCommandJob job) {
-        String cmdName = job.getCommand().getName();
-        String cmdResult = job.getCommand().getFormattedResult();
-
-        Logger.d(cmdResult);
+        if(job == null ||job.getState() == ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR){
+            return;
+        }
+        for(DataEntity entity : mAdapter.getData()){
+            if(entity.getTitle().equals(job.getCommand().getName())){
+                entity.setValue(job.getCommand().getFormattedResult());
+                mAdapter.notifyDataSetChanged();
+            }else{
+                DataEntity dataEntity = new DataEntity(job.getCommand().getName(),job.getCommand().getFormattedResult());
+                mAdapter.addData(dataEntity);
+            }
+        }
+        if(mAdapter.getData().size()==0){
+            DataEntity dataEntity = new DataEntity(job.getCommand().getName(),job.getCommand().getFormattedResult());
+            mAdapter.addData(dataEntity);
+        }
     }
+
 }
