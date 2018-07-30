@@ -1,6 +1,5 @@
 package com.slb.ttdandroidframework.util.io;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
@@ -22,11 +21,8 @@ import com.github.pires.obd.exceptions.UnsupportedCommandException;
 import com.hwangjr.rxbus.RxBus;
 import com.slb.ttdandroidframework.MainActivity;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
-import com.slb.ttdandroidframework.ui.WeepakeActivity;
-import com.slb.ttdandroidframework.ui.fragment.DataFragment;
+import com.slb.ttdandroidframework.ui.activity.ChoiseDataActivity;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
-import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
-import com.slb.ttdandroidframework.util.config.BizcContant;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,8 +35,8 @@ import java.io.IOException;
  * Secondarily, it will serve as a repository of ObdCommandJobs and at the same
  * time the application state-machine.
  */
-public class ObdGatewayService extends AbstractGatewayService {
-    private static final String TAG = ObdGatewayService.class.getName();
+public class ChoiseObdGatewayService extends AbstractGatewayService {
+    private static final String TAG = ChoiseObdGatewayService.class.getName();
 
     private BluetoothDevice dev = null;
     private BluetoothSocket sock = null;
@@ -209,10 +205,10 @@ public class ObdGatewayService extends AbstractGatewayService {
 
             if (job != null) {
                 final ObdCommandJob job2 = job;
-                ((MainActivity) ctx).runOnUiThread(new Runnable() {
+                ((ChoiseDataActivity) ctx).runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((MainActivity) ctx).stateUpdate(job2);
+                        ((ChoiseDataActivity) ctx).stateUpdate(job2);
                     }
                 });
 //                System.out.println("***************************************************");

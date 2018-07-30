@@ -22,7 +22,7 @@ public class DataAdapter extends BaseQuickAdapter<DataEntity,BaseViewHolder> {
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final DataEntity entity) {
         baseViewHolder.setText(R.id.TvData,entity.getTitle());
-        baseViewHolder.setText(R.id.TvDes,entity.getTitle());
+        baseViewHolder.setText(R.id.TvDes,entity.getValue());
     }
 
 }

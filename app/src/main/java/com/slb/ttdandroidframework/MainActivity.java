@@ -13,6 +13,7 @@ import com.slb.ttdandroidframework.ui.fragment.DataFragment;
 import com.slb.ttdandroidframework.ui.fragment.HistoryFragment;
 import com.slb.ttdandroidframework.ui.fragment.HomeFragment;
 import com.slb.ttdandroidframework.ui.fragment.MineFragment;
+import com.slb.ttdandroidframework.util.io.ObdCommandJob;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,5 +88,9 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 prePosition = 3;
                 break;
         }
+    }
+    public void stateUpdate(final ObdCommandJob job){
+        DataFragment fragment = (DataFragment)mFragments[HOME_DATA];
+        fragment.onObdCommandJobEvent(job);
     }
 }

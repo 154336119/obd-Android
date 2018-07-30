@@ -1,4 +1,4 @@
-package com.slb.ttdandroidframework.ui.fragment;
+package com.slb.ttdandroidframework.ui.activity;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,29 +11,26 @@ import android.os.IBinder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.pires.obd.commands.ObdCommand;
-import com.github.pires.obd.commands.temperature.AirIntakeTemperatureCommand;
-import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
-import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand;
+import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.orhanobut.logger.Logger;
-import com.slb.frame.ui.fragment.BaseMvpFragment;
-import com.slb.frame.utils.ActivityUtil;
+import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.ChoiseComEvent;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.http.bean.DataEntity;
-import com.slb.ttdandroidframework.ui.activity.ChoiseDataActivity;
 import com.slb.ttdandroidframework.ui.adapter.DataAdapter;
-import com.slb.ttdandroidframework.ui.contract.DataContract;
-import com.slb.ttdandroidframework.ui.presenter.DataPresenter;
+import com.slb.ttdandroidframework.ui.fragment.DataFragment;
+import com.slb.ttdandroidframework.util.BluetoothUtil;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
+import com.slb.ttdandroidframework.util.io.ChoiseObdGatewayService;
 import com.slb.ttdandroidframework.util.io.ObdCommandJob;
 import com.slb.ttdandroidframework.util.io.ObdGatewayService;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -43,31 +40,30 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class DataFragment
-        extends BaseMvpFragment<DataContract.IView, DataContract.IPresenter>
-        implements DataContract.IView {
+public class ChoiseDataActivity
+        extends BaseActivity {
 
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     Unbinder unbinder;
     @BindView(R.id.mTvAgain)
     ImageView mTvAgain;
+    @BindView(R.id.mTvName)
+    TextView mTvName;
     private List<DataEntity> mList = new ArrayList<>();
     private DataAdapter mAdapter;
     private Handler handler = new Handler();
     private AbstractGatewayService service;
-    private ArrayList<ObdCommand> mCmds = new ArrayList<>();
     private ServiceConnection serviceConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder binder) {
             Log.d(TAG, className.toString() + " service is bound");
 //            isServiceBound = true;
             service = ((AbstractGatewayService.AbstractGatewayServiceBinder) binder).getService();
-            service.setContext(_mActivity);
+            service.setContext(ChoiseDataActivity.this);
             Log.d(TAG, "Starting live data");
             if (service != null) {
                 Logger.d("service1:");
@@ -107,8 +103,7 @@ public class DataFragment
     };
 
     private void queueCommands() {
-        Logger.d("queueCommands:"+ObdConfig.getCommands().size());
-        for (ObdCommand Command : mCmds) {
+        for (ObdCommand Command : ObdConfig.getChoiseCommands()) {
             service.queueJob(new ObdCommandJob(Command));
         }
     }
@@ -118,48 +113,18 @@ public class DataFragment
         return false;
     }
 
-    public static DataFragment newInstance() {
-        DataFragment instance = new DataFragment();
+    public static ChoiseDataActivity newInstance() {
+        ChoiseDataActivity instance = new ChoiseDataActivity();
         return instance;
     }
 
-    @Override
-    public DataContract.IPresenter initPresenter() {
-        return new DataPresenter();
-    }
 
     @Override
     public int getLayoutId() {
         return R.layout.fragment_data;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        unbinder = ButterKnife.bind(this, rootView);
-//        //测试
-//        for (int i = 0; i < 5; i++) {
-//            DataEntity entity = new DataEntity();
-//            mList.add(entity);
-//        }
-        mAdapter = new DataAdapter(mList);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(
-                new HorizontalDividerItemDecoration.Builder(_mActivity)
-                        .color(Color.parseColor("#2B3139"))
-                        .sizeResId(R.dimen.distance_1)
-                        .build());
-        initComs();
-        return rootView;
-    }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 
     @Override
     protected boolean rxBusRegist() {
@@ -169,13 +134,12 @@ public class DataFragment
     @Subscribe
     public void onObdConnectStateEvent(ObdConnectStateEvent event) {
         if (event.isConnect()) {
-            Intent serviceIntent = new Intent(_mActivity, ObdGatewayService.class);
-            _mActivity.bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
+            Intent serviceIntent = new Intent(this, ObdGatewayService.class);
+            this.bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
         } else {
             handler.removeCallbacks(mQueueCommands);
         }
     }
-//    @Subscribe
 
     public void onObdCommandJobEvent(ObdCommandJob job) {
         boolean isNew = false;
@@ -198,19 +162,43 @@ public class DataFragment
         }
     }
 
-    @OnClick(R.id.mTvAgain)
-    public void onViewClicked() {
-        ActivityUtil.next(_mActivity, ChoiseDataActivity.class,null,false);
-    }
-    private void initComs(){
-        mCmds.add(new AirIntakeTemperatureCommand());
-        mCmds.add(new AmbientAirTemperatureCommand());
-        mCmds.add(new EngineCoolantTemperatureCommand());
-    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
+        mTvAgain.setVisibility(View.GONE);
+        mTvName.setText("选择数据");
+        mAdapter = new DataAdapter(mList);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(
+                new HorizontalDividerItemDecoration.Builder(this)
+                        .color(Color.parseColor("#2B3139"))
+                        .sizeResId(R.dimen.distance_1)
+                        .build());
+        if (BluetoothUtil.getSockInstance()!=null) {
+            Intent serviceIntent = new Intent(this, ChoiseObdGatewayService.class);
+            bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
+        } else {
+            handler.removeCallbacks(mQueueCommands);
+        }
 
-
-    @Subscribe
-    public void onChociseComEvent(ChoiseComEvent event) {
-        mCmds.add(event.getCommand());
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ObdCommand newCommand = ObdConfig.getChoiseCommands().get(position);
+                for (ObdCommand command : ObdConfig.getCommands()){
+                    if(command.getName().equals(newCommand.getName())){
+                        showToastMsg("该数据已经添加，请重新选择");
+                        return;
+                    }
+                }
+                RxBus.get().post(new ChoiseComEvent(ObdConfig.getChoiseCommands().get(position)));
+                finish();
+            }
+        });
+    }
+    public void stateUpdate(final ObdCommandJob job){
+        onObdCommandJobEvent(job);
     }
 }

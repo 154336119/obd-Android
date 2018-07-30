@@ -24,6 +24,7 @@ import com.github.pires.obd.commands.protocol.LineFeedOffCommand;
 import com.github.pires.obd.commands.protocol.TimeoutCommand;
 import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
 import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand;
+import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseMvpActivity;
@@ -34,6 +35,7 @@ import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.ui.contract.DeviceContract;
 import com.slb.ttdandroidframework.ui.presenter.DevicePresenter;
+import com.slb.ttdandroidframework.util.BluetoothUtil;
 import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
 import com.slb.ttdandroidframework.util.io.ObdCommandJob;
@@ -127,7 +129,12 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                doBindService();
+                if( BluetoothUtil.getSockInstance()!=null){
+                    RxBus.get().post(new ObdConnectStateEvent(true));
+                }else{
+                    showToastMsg("连接失败");
+                }
+//                doBindService();
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -195,12 +202,12 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
              TvConnectState.setText("已连接");
              TvConnectState.setTextColor(Color.parseColor("#FF00FF00"));
              IvIvIcon.setBackgroundResource(R.mipmap.ic_blue_connect);
-            MyApplication.getService().queueJob(new ObdCommandJob(new PendingTroubleCodesCommand()));
-            MyApplication.getService().queueJob(new ObdCommandJob(new EchoOffCommand()));
-            MyApplication.getService().queueJob(new ObdCommandJob(new LineFeedOffCommand()));
-            MyApplication.getService().queueJob(new ObdCommandJob(new TimeoutCommand(62)));
-            MyApplication.getService().queueJob(new ObdCommandJob(new AmbientAirTemperatureCommand()));
-            MyApplication.getService().queueJob(new ObdCommandJob(new EngineCoolantTemperatureCommand()));
+//            MyApplication.getService().queueJob(new ObdCommandJob(new PendingTroubleCodesCommand()));
+//            MyApplication.getService().queueJob(new ObdCommandJob(new EchoOffCommand()));
+//            MyApplication.getService().queueJob(new ObdCommandJob(new LineFeedOffCommand()));
+//            MyApplication.getService().queueJob(new ObdCommandJob(new TimeoutCommand(62)));
+//            MyApplication.getService().queueJob(new ObdCommandJob(new AmbientAirTemperatureCommand()));
+//            MyApplication.getService().queueJob(new ObdCommandJob(new EngineCoolantTemperatureCommand()));
         }else{
             IvState1.setBackgroundResource(R.mipmap.ic_un_connect);
             TvConnectState.setText("未连接");

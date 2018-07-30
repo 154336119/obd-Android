@@ -63,8 +63,16 @@
             android:name=".ui.activity.MailboxVerificationActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.ChoiseDataActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
         <service
             android:name=".util.io.ObdGatewayService"
+            android:exported="false"
+            android:launchMode="singleInstance" />
+        <service
+            android:name=".util.io.ChoiseObdGatewayService"
             android:exported="false"
             android:launchMode="singleInstance" />
     </application>
