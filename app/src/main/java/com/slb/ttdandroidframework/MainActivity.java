@@ -14,6 +14,7 @@ import com.slb.ttdandroidframework.ui.fragment.HistoryFragment;
 import com.slb.ttdandroidframework.ui.fragment.HomeFragment;
 import com.slb.ttdandroidframework.ui.fragment.MineFragment;
 import com.slb.ttdandroidframework.util.io.ObdCommandJob;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

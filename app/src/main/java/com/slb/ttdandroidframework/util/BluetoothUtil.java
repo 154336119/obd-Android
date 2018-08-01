@@ -33,7 +33,7 @@ public class BluetoothUtil {
                    btAdapter.cancelDiscovery();
             }
         }
-        return devInstance;
+         return devInstance;
     }
 
     public static BluetoothSocket getSockInstance() {
@@ -43,9 +43,10 @@ public class BluetoothUtil {
                     return  null;
                 }
                 sockInstance = BluetoothManager.connect(getDeviceInstance());
-              } catch (IOException e) {
+              } catch (Exception e) {
                 e.printStackTrace();
                 Logger.d("sock连接失败失败");
+                return null;
             }
         }
         return sockInstance;

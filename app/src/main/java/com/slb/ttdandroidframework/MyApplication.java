@@ -24,6 +24,7 @@ import com.slb.ttdandroidframework.http.bean.UserEntity;
 import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
 import com.slb.ttdandroidframework.util.io.ObdGatewayService;
+import com.tencent.bugly.Bugly;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -44,6 +45,7 @@ public class MyApplication extends Application{
         Base.initialize(this);
         initLogUtils();
         initOkGo();
+        Bugly.init(getApplicationContext(), "60be1128c4", false);
     }
 
 

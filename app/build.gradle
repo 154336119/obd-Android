@@ -17,6 +17,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86"
+        }
     }
     buildTypes {
         release {
@@ -53,4 +56,6 @@ dependencies {
     compile 'com.lzy.net:okgo:3.0.4'
     compile 'com.lzy.net:okserver:2.0.5'
     compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.tencent.bugly:nativecrashreport:3.1.2'
+    compile 'com.tencent.bugly:crashreport_upgrade:1.2.3'
 }

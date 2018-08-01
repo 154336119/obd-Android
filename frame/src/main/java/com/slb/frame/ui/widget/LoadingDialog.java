@@ -41,7 +41,7 @@ public class LoadingDialog extends ProgressDialog {
 		content = (TextView) findViewById(R.id.tips_msg);
 		btnRight = (Button) findViewById(R.id.btn_right);
 		setText(message);
-		setOnKeyListener(keyListener);
+		//setOnKeyListener(keyListener);
 	}
 
 	public void setText(String message) {
@@ -65,18 +65,18 @@ public class LoadingDialog extends ProgressDialog {
 	public void setOnRightBtnListener(View.OnClickListener onClickListener){
 		btnRight.setOnClickListener(onClickListener);
 	}
-	OnKeyListener keyListener=new OnKeyListener() {
-		@Override
-		public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-			iDialogInterface.dialogLifecycleCancel();
-			return false;
-		}
-	};
-	private IDialogInterface iDialogInterface;
-	public interface IDialogInterface{
-		void dialogLifecycleCancel();
-	}
-	public void setDialogInterface(IDialogInterface iDialogInterface){
-		this.iDialogInterface=iDialogInterface;
-	}
+//	OnKeyListener keyListener=new OnKeyListener() {
+//		@Override
+//		public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+//			iDialogInterface.dialogLifecycleCancel();
+//			return false;
+//		}
+//	};
+//	private IDialogInterface iDialogInterface;
+//	public interface IDialogInterface{
+//		void dialogLifecycleCancel();
+//	}
+//	public void setDialogInterface(IDialogInterface iDialogInterface){
+//		this.iDialogInterface=iDialogInterface;
+//	}
 }

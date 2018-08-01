@@ -31,6 +31,7 @@ import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.MyApplication;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.event.ConnectEvent;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.ui.contract.DeviceContract;
@@ -117,7 +118,6 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
             bondedNames[i] = deviceList.get(i).getName();
             SharedPreferencesUtils.setParam(DeviceActivity.this,PARA_DEV_ADDR,deviceList.get(i).getAddress());
         }
-
         builder.setSingleChoiceItems(bondedNames,0,new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -129,12 +129,15 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                RxBus.get().post(new ConnectEvent());
+                showLoadingDialog("连接中");
+//                dialog.dismiss();
                 if( BluetoothUtil.getSockInstance()!=null){
                     RxBus.get().post(new ObdConnectStateEvent(true));
                 }else{
                     showToastMsg("连接失败");
                 }
-//                doBindService();
+                hideWaitDialog();
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -240,5 +243,17 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
 //        } else addTableRow(cmdID, cmdName, cmdResult);
 //        commandResult.put(cmdID, cmdResult);
 
+    }
+
+    @Subscribe
+    public void onConnectEvent(ConnectEvent event) {
+        showLoadingDialog("连接中");
+//                dialog.dismiss();
+        if( BluetoothUtil.getSockInstance()!=null){
+            RxBus.get().post(new ObdConnectStateEvent(true));
+        }else{
+            showToastMsg("连接失败");
+        }
+        hideWaitDialog();
     }
 }
