@@ -97,7 +97,6 @@ public class DataFragment
         @Override
         public void run() {
             if (service != null) {
-                Logger.d("service2:");
             }
             if (service != null) {
                 queueCommands();

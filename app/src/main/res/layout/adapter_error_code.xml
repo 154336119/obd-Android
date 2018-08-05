@@ -12,22 +12,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/TvCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/TvIntriduce"
+            android:layout_toEndOf="@+id/TvContent"
+            android:text="测试"
             android:textColor="#00A4EF"
-            android:textSize="15sp"
-            android:text="请假单"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"/>
+            android:textSize="15sp" />
         <TextView
             android:id="@+id/TvIntriduce"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
             android:textSize="13sp"
-            android:text="请假请假单请假单请假单请假单请假单请假单请假单请假单请假单请假单单"
+            android:text="测试"
             android:layout_toRightOf="@+id/TvCode"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"

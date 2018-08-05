@@ -59,7 +59,7 @@
                     android:layout_centerInParent="true"
                     android:textColor="@color/white"
                     android:textSize="15sp"
-                    android:text="4个故"/>
+                    android:text="0个确认故障码"/>
                 <CheckBox
                     android:id="@+id/CheckboxConfirmErrorCode"
                     android:layout_width="30dp"
@@ -93,7 +93,7 @@
                     android:layout_centerInParent="true"
                     android:textColor="@color/white"
                     android:textSize="15sp"
-                    android:text="4个故"/>
+                    android:text="0个等待故障码"/>
                 <CheckBox
                     android:id="@+id/CheckboxWaitErrorCode"
                     android:layout_width="30dp"
