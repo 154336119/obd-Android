@@ -35,6 +35,7 @@ import com.slb.ttdandroidframework.util.io.ObdCommandJob;
 import com.slb.ttdandroidframework.util.io.ObdGatewayService;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,21 +144,21 @@ public class ChoiseDataActivity
 
     public void onObdCommandJobEvent(ObdCommandJob job) {
         boolean isNew = false;
-        if (job == null || job.getState() == ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR) {
+        if (job == null) {
             return;
         }
         for (DataEntity entity : mAdapter.getData()) {
             if (entity.getTitle().equals(job.getCommand().getName())) {
-                entity.setValue(job.getCommand().getFormattedResult());
+                entity.setValue(getRealCinnabdResult(job));
                 mAdapter.notifyDataSetChanged();
                 return;
             }
         }
-        DataEntity dataEntity1 = new DataEntity(job.getCommand().getName(), job.getCommand().getFormattedResult());
+        DataEntity dataEntity1 = new DataEntity(job.getCommand().getName(),getRealCinnabdResult(job));
         mAdapter.addData(dataEntity1);
 
         if (mAdapter.getData().size() == 0) {
-            DataEntity dataEntity = new DataEntity(job.getCommand().getName(), job.getCommand().getFormattedResult());
+            DataEntity dataEntity = new DataEntity(job.getCommand().getName(), getRealCinnabdResult(job));
             mAdapter.addData(dataEntity);
         }
     }
@@ -176,10 +177,14 @@ public class ChoiseDataActivity
                         .color(Color.parseColor("#2B3139"))
                         .sizeResId(R.dimen.distance_1)
                         .build());
-        if (BluetoothUtil.getSockInstance()!=null) {
-            Intent serviceIntent = new Intent(this, ChoiseObdGatewayService.class);
-            bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
-        } else {
+        try {
+            if (BluetoothUtil.getSockInstance()!=null) {
+                Intent serviceIntent = new Intent(this, ChoiseObdGatewayService.class);
+                bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showToastMsg("暂无连接设备");
             handler.removeCallbacks(mQueueCommands);
         }
 
@@ -200,5 +205,19 @@ public class ChoiseDataActivity
     }
     public void stateUpdate(final ObdCommandJob job){
         onObdCommandJobEvent(job);
+    }
+
+    public String getRealCinnabdResult(ObdCommandJob job){
+        String cmdResult;
+        if (job.getState().equals(ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR)) {
+            cmdResult = job.getCommand().getResult();
+        }  else if (job.getState().equals(ObdCommandJob.ObdCommandJobState.NOT_SUPPORTED)) {
+            cmdResult = getString(R.string.status_obd_no_support);
+        } else {
+            cmdResult = job.getCommand().getFormattedResult();
+
+        }
+        return cmdResult;
+
     }
 }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#2B3139">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="65dp">
+        <EditText
+            android:id="@+id/edtLicenseNo"
+            style="@style/edit_padding_10"
+            android:completionThreshold="1"
+            android:hint="请输入您的车牌号"
+            android:lines="1"
+            android:background="#3C444F"/>
+        <EditText
+            android:id="@+id/edtVin"
+            style="@style/edit_padding_10"
+            android:completionThreshold="1"
+            android:hint="请输入您的车辆编号"
+            android:lines="1"
+            android:background="#3C444F"
+            android:layout_marginTop="15dp"/>
+        <EditText
+            android:id="@+id/edtMake"
+            style="@style/edit_padding_10"
+            android:completionThreshold="1"
+            android:hint="请输入您的品牌"
+            android:lines="1"
+            android:background="#3C444F"
+            android:layout_marginTop="15dp"/>
+        <EditText
+            android:id="@+id/edtModel"
+            style="@style/edit_padding_10"
+            android:completionThreshold="1"
+            android:hint="请输入您的型号"
+            android:lines="1"
+            android:background="#3C444F"
+            android:layout_marginTop="15dp"/>
+        <TextView
+            android:id="@+id/TvYear"
+            style="@style/edit_padding_10"
+            android:completionThreshold="1"
+            android:hint="请输入年代"
+            android:lines="1"
+            android:background="#3C444F"
+            android:layout_marginTop="15dp"/>
+        <Button
+            android:id="@+id/btnComfirm"
+            style="@style/btn_bottom_single"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/distance_30"
+            android:text="确认" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,17 +1,24 @@
 package com.slb.ttdandroidframework.ui.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.widget.Button;
@@ -76,6 +83,7 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
     private BluetoothDevice obdDevice = null ;
     private List<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>();
     private ServiceConnection serviceConn = MyApplication.getServiceConn();
+    BroadcastReceiver discoveryResult;
     @Override
     protected boolean hasToolbar() {
         return false;
@@ -103,11 +111,21 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+        if(BluetoothUtil.isRunning){
+            IvState1.setBackgroundResource(R.mipmap.ic_connect);
+            TvConnectState.setText("已连接");
+            TvConnectState.setTextColor(Color.parseColor("#FF00FF00"));
+            IvIvIcon.setBackgroundResource(R.mipmap.ic_blue_connect);
+        }
     }
 
 
     @OnClick(R.id.mTvAgain)
     public void onViewClicked() {
+//        if(deviceList.size() == 0){
+//            showToastMsg("暂时找到设备");
+//            return;
+//        }
         getBondedDevices();
         @SuppressLint("RestrictedApi") AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.dialog));
         builder.setIcon(android.R.drawable.ic_dialog_alert);
@@ -132,12 +150,16 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
                 RxBus.get().post(new ConnectEvent());
                 showLoadingDialog("连接中");
 //                dialog.dismiss();
-                if( BluetoothUtil.getSockInstance()!=null){
-                    RxBus.get().post(new ObdConnectStateEvent(true));
-                }else{
+                try {
+                    if( BluetoothUtil.getSockInstance()!=null){
+                        RxBus.get().post(new ObdConnectStateEvent(true));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                     showToastMsg("连接失败");
+                } finally {
+                    hideWaitDialog();
                 }
-                hideWaitDialog();
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -249,11 +271,36 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
     public void onConnectEvent(ConnectEvent event) {
         showLoadingDialog("连接中");
 //                dialog.dismiss();
-        if( BluetoothUtil.getSockInstance()!=null){
-            RxBus.get().post(new ObdConnectStateEvent(true));
-        }else{
+        try {
+            if( BluetoothUtil.getSockInstance()!=null){
+                RxBus.get().post(new ObdConnectStateEvent(true));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
             showToastMsg("连接失败");
         }
         hideWaitDialog();
+    }
+
+    public void startDiscovery(){
+       discoveryResult = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.d(TAG,"接收到广播！！！！！！！！！！！！！！");
+                String remoteDeviceName = intent.getStringExtra(BluetoothDevice.EXTRA_NAME);
+                BluetoothDevice remoteDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                deviceList.add(remoteDevice);
+                Log.d(TAG,"发现蓝牙设备 : "+remoteDeviceName);
+            }
+        };
+
+        registerReceiver(discoveryResult,new IntentFilter(BluetoothDevice.ACTION_FOUND));
+        bluetoothAdapter.startDiscovery();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        unregisterReceiver(discoveryResult);
     }
 }

@@ -61,11 +61,12 @@ public class DataFragment
     private Handler handler = new Handler();
     private AbstractGatewayService service;
     private ArrayList<ObdCommand> mCmds = new ArrayList<>();
+    private boolean isServiceBound;
     private ServiceConnection serviceConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder binder) {
             Log.d(TAG, className.toString() + " service is bound");
-//            isServiceBound = true;
+            isServiceBound = true;
             service = ((AbstractGatewayService.AbstractGatewayServiceBinder) binder).getService();
             service.setContext(_mActivity);
             Log.d(TAG, "Starting live data");
@@ -89,6 +90,7 @@ public class DataFragment
         // So the isServiceBound attribute should also be set to false when we unbind from the service.
         @Override
         public void onServiceDisconnected(ComponentName className) {
+            isServiceBound = false;
             Log.d(TAG, className.toString() + " service is unbound");
         }
 
@@ -177,22 +179,23 @@ public class DataFragment
 //    @Subscribe
 
     public void onObdCommandJobEvent(ObdCommandJob job) {
+
+
         boolean isNew = false;
-        if (job == null || job.getState() == ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR) {
+        if (job == null ) {
             return;
         }
         for (DataEntity entity : mAdapter.getData()) {
             if (entity.getTitle().equals(job.getCommand().getName())) {
-                entity.setValue(job.getCommand().getFormattedResult());
+                entity.setValue(getRealCinnabdResult(job));
                 mAdapter.notifyDataSetChanged();
                 return;
             }
         }
         DataEntity dataEntity1 = new DataEntity(job.getCommand().getName(), job.getCommand().getFormattedResult());
         mAdapter.addData(dataEntity1);
-
         if (mAdapter.getData().size() == 0) {
-            DataEntity dataEntity = new DataEntity(job.getCommand().getName(), job.getCommand().getFormattedResult());
+            DataEntity dataEntity = new DataEntity(job.getCommand().getName(), getRealCinnabdResult(job));
             mAdapter.addData(dataEntity);
         }
     }
@@ -211,5 +214,19 @@ public class DataFragment
     @Subscribe
     public void onChociseComEvent(ChoiseComEvent event) {
         mCmds.add(event.getCommand());
+    }
+
+    public String getRealCinnabdResult(ObdCommandJob job){
+        String cmdResult;
+        if (job.getState().equals(ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR)) {
+            cmdResult = job.getCommand().getResult();
+        }  else if (job.getState().equals(ObdCommandJob.ObdCommandJobState.NOT_SUPPORTED)) {
+            cmdResult = getString(R.string.status_obd_no_support);
+        } else {
+            cmdResult = job.getCommand().getFormattedResult();
+
+        }
+        return cmdResult;
+
     }
 }

@@ -139,13 +139,13 @@ public class WeepakeActivity extends AppCompatActivity {
                 enableBluetooth();
             }
         });
-
+        startDiscovery();
         ObdButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                getBondedDevices();
+//                getBondedDevices();
                 AlertDialog.Builder builder = new AlertDialog.Builder(WeepakeActivity.this);
                 builder.setIcon(android.R.drawable.ic_dialog_alert);
                 builder.setTitle("连接到OBD");
@@ -182,8 +182,7 @@ public class WeepakeActivity extends AppCompatActivity {
         });
         new Handler().post(mQueueCommands);
     }
-
-    public void startDiscovery(){
+     public void startDiscovery(){
         BroadcastReceiver discoveryResult = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

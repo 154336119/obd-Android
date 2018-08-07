@@ -78,7 +78,6 @@ public class RegisterPresenter extends AbstractBasePresenter<RegisterContract.IV
 				.params("email", mUserName)//
 				.params("password ", mPassword)//
 				.params("verifyCode ", code)//
-				.isMultipart(true)         //强制使用 multipart/form-data 表单上传（只是演示，不需要的话不要设置。默认就是false）
 				.execute(new StringCallback() {
 					@Override
 					public void onSuccess(Response<String> response) {

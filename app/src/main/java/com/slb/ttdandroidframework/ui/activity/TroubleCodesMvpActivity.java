@@ -65,7 +65,15 @@ public abstract class TroubleCodesMvpActivity<T extends ObdCommand> extends Base
 //    private BluetoothDevice dev = null;
 //    private BluetoothSocket sock = null;
 //    private BluetoothDevice dev = null;
-    private BluetoothSocket sock = BluetoothUtil.getSockInstance();
+    private BluetoothSocket sock;
+
+    {
+        try {
+            sock = BluetoothUtil.getSockInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private T tagObdCommand;
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -134,11 +142,15 @@ public abstract class TroubleCodesMvpActivity<T extends ObdCommand> extends Base
 //            gtct = new GetTroubleCodesTask();
 //            gtct.execute(remoteDevice);
 //        }
-        if(BluetoothUtil.getDeviceInstance() == null){
-            mHandler.obtainMessage(NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
-        }else{
-            gtct = new GetTroubleCodesTask();
-            gtct.execute();
+        try {
+            if(BluetoothUtil.getDeviceInstance() == null){
+                mHandler.obtainMessage(NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
+            }else{
+                gtct = new GetTroubleCodesTask();
+                gtct.execute();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

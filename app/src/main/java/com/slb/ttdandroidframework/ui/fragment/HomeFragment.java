@@ -15,6 +15,7 @@ import com.slb.frame.utils.ConvertUtils;
 import com.slb.frame.utils.ScreenUtils;
 import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
 import com.slb.ttdandroidframework.ui.activity.EmissionTestActivity;
 import com.slb.ttdandroidframework.ui.activity.FreezeFrameActivity;
 import com.slb.ttdandroidframework.ui.activity.ModuleFiveActivity;
@@ -63,6 +64,9 @@ public class HomeFragment
     Unbinder unbinder;
     @BindView(R.id.tv01)
     TextView tv01;
+    @BindView(R.id.tvConnect)
+    TextView tvConnect;
+
     @Override
     protected boolean hasToolbar() {
         return false;
@@ -135,7 +139,7 @@ public class HomeFragment
         super.initView(view);
     }
 
-    @OnClick({R.id.Fl01, R.id.Fl02, R.id.Fl03, R.id.Fl04, R.id.Fl05, R.id.Fl06})
+    @OnClick({R.id.Fl01, R.id.Fl02, R.id.Fl03, R.id.Fl04, R.id.Fl05, R.id.Fl06,R.id.tvConnect})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Fl01:
@@ -161,6 +165,9 @@ public class HomeFragment
             case R.id.Fl06:
                 //车载监控
                 ActivityUtil.next(_mActivity, ReadErrorCodeActivity.class);
+                break;
+            case R.id.tvConnect:
+                ActivityUtil.next(_mActivity,DeviceActivity.class);
                 break;
         }
     }

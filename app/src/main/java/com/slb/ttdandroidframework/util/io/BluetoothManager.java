@@ -13,7 +13,6 @@ public class BluetoothManager {
     private static final String TAG = BluetoothManager.class.getName();
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
     public static BluetoothSocket connect(BluetoothDevice dev) throws IOException {
     	BluetoothSocket sock = null;
         BluetoothSocket sockFallback = null;

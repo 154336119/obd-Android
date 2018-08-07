@@ -21,12 +21,13 @@ import java.io.IOException;
 public class BluetoothUtil {
     private static BluetoothDevice devInstance;
     private static BluetoothSocket sockInstance;
-    public static BluetoothDevice getDeviceInstance() {
+    public static boolean isRunning = false;
+    public static BluetoothDevice getDeviceInstance() throws IOException {
         if (devInstance == null) {
             final String remoteDevice  = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.PARA_DEV_ADDR,"");
             if (remoteDevice == null || "".equals(remoteDevice)) {
                 Logger.d("获取设备失败");
-                return null;
+                throw new IOException();
             } else {
                 final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
                 devInstance = btAdapter.getRemoteDevice(remoteDevice);
@@ -36,21 +37,23 @@ public class BluetoothUtil {
          return devInstance;
     }
 
-    public static BluetoothSocket getSockInstance() {
+    public static BluetoothSocket getSockInstance() throws IOException {
         if (sockInstance == null) {
             try {
                 if(getDeviceInstance() == null){
-                    return  null;
+                    isRunning = false;
+                    return null;
                 }
                 sockInstance = BluetoothManager.connect(getDeviceInstance());
               } catch (Exception e) {
                 e.printStackTrace();
+                isRunning = false;
                 Logger.d("sock连接失败失败");
-                return null;
+                throw new IOException();
             }
         }
+        isRunning = true;
         return sockInstance;
     }
-
 
 }

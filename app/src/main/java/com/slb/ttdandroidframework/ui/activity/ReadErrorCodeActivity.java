@@ -1,7 +1,10 @@
 package com.slb.ttdandroidframework.ui.activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,8 +20,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.github.pires.obd.commands.ObdCommand;
 import com.github.pires.obd.commands.control.PendingTroubleCodesCommand;
 import com.github.pires.obd.commands.control.TroubleCodesCommand;
 import com.github.pires.obd.commands.protocol.EchoOffCommand;
@@ -32,10 +33,12 @@ import com.github.pires.obd.enums.ObdProtocols;
 import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
+import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.frame.ui.activity.BaseMvpActivity;
+import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.MyApplication;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.ResetEvent;
@@ -44,9 +47,11 @@ import com.slb.ttdandroidframework.ui.adapter.ErrorCodeAdapter;
 import com.slb.ttdandroidframework.ui.contract.ReadErrorCodeContract;
 import com.slb.ttdandroidframework.ui.presenter.ReadErrorCodePresenter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
+import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
 import com.slb.ttdandroidframework.util.io.ObdCommandJob;
+import com.slb.ttdandroidframework.weight.CustomDialog;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.IOException;
@@ -89,7 +94,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
     NestedScrollView mNestedScrollView;
     @BindView(R.id.BtnClearError)
     Button BtnClearError;
-
+    private CustomDialog mCommonAlertDialog;
     private ErrorCodeAdapter mAdapter01;
     private ErrorCodeAdapter mAdapter02;
 
@@ -100,12 +105,13 @@ public class ReadErrorCodeActivity extends BaseActivity {
     private GetTroubleCodesTask mCodesTask;
     private GetWaitTroubleCodesTask mCodesTaskWait;
     private ClearTroubleCodesTask mCodesTaskClear;
-    private BluetoothSocket sock = BluetoothUtil.getSockInstance();
+
     public static final int DATA_OK_CODE= 100;
     public static final int DATA_OK_CODE_WAIT = 101;
     public static final int DATA_OK_CODE_Clear = 102;
     private int mCodeNum = 0;
     private int mWaitCodeNum = 0;
+    private BluetoothSocket sock;
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         public boolean handleMessage(Message msg) {
@@ -144,6 +150,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
                     break;
                 case DATA_OK_CODE_WAIT:
                     dataOkWaitCode((PendingTroubleCodesCommand) msg.obj);
+                    showDialog();
                     break;
                 case DATA_OK_CODE_Clear:
                     dataOkClearCode((ResetTroubleCodesCommand) msg.obj);
@@ -217,6 +224,49 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 }
             }
         });
+
+            if(!BluetoothUtil.isRunning){
+                showToastMsg("暂未连接OBD");
+            }
+//        {
+//            try {
+//                sock = BluetoothUtil.getSockInstance();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                showToastMsg("暂未连接OBD");
+//                finish();
+//            }
+//        }
+
+        //测试
+//        ErrorCodeEntity errorCodeEntity1= new ErrorCodeEntity();
+//        errorCodeEntity1.setTitle("P101");
+//        errorCodeEntity1.setValue("11111");
+//
+//        ErrorCodeEntity errorCodeEntity2= new ErrorCodeEntity();
+//        errorCodeEntity2.setTitle("P102");
+//        errorCodeEntity2.setValue("22222");
+//
+//        ErrorCodeEntity errorCodeEntity3= new ErrorCodeEntity();
+//        errorCodeEntity3.setTitle("P103");
+//        errorCodeEntity3.setValue("33333");
+//
+//        ErrorCodeEntity errorCodeEntity4= new ErrorCodeEntity();
+//        errorCodeEntity4.setTitle("P104");
+//        errorCodeEntity4.setValue("444");
+//
+//        ErrorCodeEntity errorCodeEntity5= new ErrorCodeEntity();
+//        errorCodeEntity5.setTitle("P105");
+//        errorCodeEntity5.setValue("5555");
+//        mAdapter01.getData().clear();
+//        mAdapter01.getData().add(errorCodeEntity1);
+//        mAdapter01.getData().add(errorCodeEntity2);
+//        mAdapter01.getData().add(errorCodeEntity3);
+//
+//        mAdapter02.getData().clear();
+//        mAdapter02.getData().add(errorCodeEntity4);
+//        mAdapter02.getData().add(errorCodeEntity5);
+//        showDialog();
     }
 
 
@@ -234,6 +284,10 @@ public class ReadErrorCodeActivity extends BaseActivity {
             case R.id.mIvBack:
                 break;
             case R.id.mTvAgain:
+                if(!BluetoothUtil.isRunning){
+                    showToastMsg("暂未连接OBD");
+                    return;
+                }
                 mCodeNum = 0;
                 mWaitCodeNum = 0;
                 mAdapter01.getData().clear();
@@ -246,6 +300,10 @@ public class ReadErrorCodeActivity extends BaseActivity {
 //                executeCommand(new ModifiedPendingTroubleCodesCommand());
                 break;
             case R.id.BtnClearError:
+                if(!BluetoothUtil.isRunning){
+                    showToastMsg("暂未连接OBD");
+                    return;
+                }
                 executeResetTroubleCodesCommand();
                 break;
         }
@@ -383,11 +441,16 @@ public class ReadErrorCodeActivity extends BaseActivity {
 //            gtct = new GetTroubleCodesTask();
 //            gtct.execute(remoteDevice);
 //        }
-        if(BluetoothUtil.getDeviceInstance() == null){
+        try {
+            if(BluetoothUtil.getDeviceInstance() == null){
+                mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
+            }else{
+                mCodesTask = new GetTroubleCodesTask();
+                mCodesTask.execute();
+            }
+        } catch (IOException e) {
             mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
-        }else{
-            mCodesTask = new GetTroubleCodesTask();
-            mCodesTask.execute();
+            e.printStackTrace();
         }
     }
 
@@ -494,11 +557,16 @@ public class ReadErrorCodeActivity extends BaseActivity {
 //            gtct = new GetTroubleCodesTask();
 //            gtct.execute(remoteDevice);
 //        }
-        if(BluetoothUtil.getDeviceInstance() == null){
+        try {
+            if(BluetoothUtil.getDeviceInstance() == null){
+                mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
+            }else{
+                mCodesTaskWait = new GetWaitTroubleCodesTask();
+                mCodesTaskWait.execute();
+            }
+        } catch (IOException e) {
             mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
-        }else{
-            mCodesTaskWait = new GetWaitTroubleCodesTask();
-            mCodesTaskWait.execute();
+            e.printStackTrace();
         }
     }
     public void dataOkWaitCode(PendingTroubleCodesCommand obdCommand) {
@@ -619,11 +687,16 @@ public class ReadErrorCodeActivity extends BaseActivity {
 //            gtct = new GetTroubleCodesTask();
 //            gtct.execute(remoteDevice);
 //        }
-        if(BluetoothUtil.getDeviceInstance() == null){
+        try {
+            if(BluetoothUtil.getDeviceInstance() == null){
+                mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
+            }else{
+                mCodesTaskClear = new ClearTroubleCodesTask();
+                mCodesTaskClear.execute();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
             mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
-        }else{
-            mCodesTaskClear = new ClearTroubleCodesTask();
-            mCodesTaskClear.execute();
         }
     }
     public void dataOkClearCode(ResetTroubleCodesCommand obdCommand) {
@@ -634,5 +707,47 @@ public class ReadErrorCodeActivity extends BaseActivity {
         mTvConfirmErrorCodeNum.setText(mCodeNum+"个确认故障码");
         mTvWaitErrorCodeNum.setText(mWaitCodeNum+"个等待故障码");
         progressDialog.cancel();
+    }
+
+    /**
+     * 显示dialog
+     */
+    private void showDialog() {
+        CustomDialog.Builder dialog = new CustomDialog.Builder(this);
+        dialog
+                .setTitle("提示")
+                .setMessage("是否上传错误码？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String confirmPids ="";
+                        String pendingPids ="";
+                        for(ErrorCodeEntity errorCodeEntity : mAdapter01.getData()){
+                            confirmPids  = confirmPids +  errorCodeEntity.getTitle()+",";
+                        }
+                        for(ErrorCodeEntity errorCodeEntity : mAdapter02.getData()){
+                            pendingPids  = pendingPids +  errorCodeEntity.getTitle()+",";
+                        }
+                        confirmPids = confirmPids.substring(0,confirmPids.length()-1);
+                        Logger.d("confirmPids:"+confirmPids);
+
+                        pendingPids = pendingPids.substring(0,pendingPids.length()-1);
+                        Logger.d("pendingPids:"+pendingPids);
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString(BizcContant.PARA_CONFIRM_PIS,confirmPids);
+                        bundle.putString(BizcContant.PARA_PENDING_PIS,pendingPids);
+                        ActivityUtil.next(ReadErrorCodeActivity.this,SubmitErrorCodeActivity.class,bundle,false);
+                        mCommonAlertDialog.dismiss();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                mCommonAlertDialog.dismiss();
+            }
+        });
+        mCommonAlertDialog = dialog.create();
+        mCommonAlertDialog.setCanceledOnTouchOutside(false);
+        mCommonAlertDialog.show();
     }
 }

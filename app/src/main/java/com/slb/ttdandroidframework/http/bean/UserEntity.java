@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 刁剑
@@ -37,6 +38,24 @@ public class UserEntity implements Parcelable, Serializable {
     private String email;
     private String emailValidateCodeTime;
     private String token;
+    private List<ObdEntity> obdEntityList;
+    private List<VehicleEntity> vehicleEntityList;
+
+    public List<ObdEntity> getObdEntityList() {
+        return obdEntityList;
+    }
+
+    public void setObdEntityList(List<ObdEntity> obdEntityList) {
+        this.obdEntityList = obdEntityList;
+    }
+
+    public List<VehicleEntity> getVehicleEntityList() {
+        return vehicleEntityList;
+    }
+
+    public void setVehicleEntityList(List<VehicleEntity> vehicleEntityList) {
+        this.vehicleEntityList = vehicleEntityList;
+    }
 
     public String getToken() {
         return token;

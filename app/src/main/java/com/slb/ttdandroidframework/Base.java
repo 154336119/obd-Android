@@ -5,8 +5,11 @@ import android.support.annotation.NonNull;
 
 import com.alibaba.fastjson.JSONArray;
 import com.slb.frame.cache.ACache;
+import com.slb.ttdandroidframework.http.bean.ObdEntity;
 import com.slb.ttdandroidframework.http.bean.UserEntity;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
+
+import java.util.List;
 
 
 /**
@@ -28,7 +31,6 @@ public class Base {
     private static int mEnvironment;
 
     private static UserEntity mUserEntity;
-
     private static AbstractGatewayService service;
 
 

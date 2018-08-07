@@ -1,6 +1,7 @@
 package com.slb.ttdandroidframework.http.service;
 
 import com.slb.frame.http2.retrofit.HttpResult;
+import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.http.bean.UserEntity;
 
 import retrofit2.http.Field;
@@ -38,6 +39,43 @@ public class ComServiceUrl {
      * 用户-用户重置密码
      */
     public static String registReset = "regist/reset";
+
+    /**
+     * 用户-添加OBD
+     */
+    public static String addObd = "api/user/add-obd";
+
+    /**
+     * 用户-添加汽车
+     */
+    public static String addCar= "api/user/add-vehicle";
+
+    /**
+     * OBD命令记录接口
+     */
+    public static String uploadaObd= "api/command-log/dtc";
+
+    /**
+     * 用户-修改OBD
+     */
+    public static String editObd = "api/user/edit-obd";
+
+    /**
+     * 用户-修改汽车
+     */
+    public static String editCar= "api/user/edit-vehicle";
+
+    /**
+     * 用户-删除OBD
+     */
+    public static String delectObd = "api/user/remove-obd";
+
+    /**
+     * 用户-删除汽车
+     */
+    public static String delectCar= "api/user/remove-vehicle";
+
+
 
 //    /**
 //     * 用户-获取邮箱注册验证码

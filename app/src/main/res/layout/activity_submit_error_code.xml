@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#2B3139">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/TvSelectCarNo"
+            style="@style/edit_padding_10"
+            android:background="#3C444F"
+            android:completionThreshold="1"
+            android:hint="选择车牌号"
+            android:lines="1" />
+
+        <TextView
+            android:id="@+id/TvSelectObd"
+            style="@style/edit_padding_10"
+            android:layout_marginTop="15dp"
+            android:background="#3C444F"
+            android:completionThreshold="1"
+            android:hint="选择OBD"
+            android:lines="1" />
+
+        <Button
+            android:id="@+id/btnComfirm"
+            style="@style/btn_bottom_single"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/distance_50"
+            android:layout_marginTop="@dimen/distance_30"
+            android:layout_marginRight="50dp"
+            android:text="提交故障码" />
+    </LinearLayout>
+</LinearLayout>
