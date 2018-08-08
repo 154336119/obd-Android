@@ -227,6 +227,10 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 }
             }
         });
+
+            if(!BluetoothUtil.isRunning){
+                showToastMsg("暂未连接OBD");
+            }
 //        {
 //            try {
 //                sock = BluetoothUtil.getSockInstance();
@@ -293,6 +297,11 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 mAdapter02.getData().clear();
                 mTvConfirmErrorCodeNum.setText(mCodeNum+"个确认故障码");
                 mTvWaitErrorCodeNum.setText(mWaitCodeNum+"个等待故障码");
+                try {
+                    sock = BluetoothUtil.getSockInstance();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 executeCodeCommand();
                 executeWaitCodeCommand();
 //                executeCommand(new ModifiedTroubleCodesObdCommand());
@@ -423,8 +432,8 @@ public class ReadErrorCodeActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(TroubleCodesCommand result) {
-                mHandler.obtainMessage(DATA_OK_CODE, result).sendToTarget();
-            }
+            mHandler.obtainMessage(DATA_OK_CODE, result).sendToTarget();
+        }
     }
 
     /**
@@ -708,6 +717,37 @@ public class ReadErrorCodeActivity extends BaseActivity {
         progressDialog.cancel();
     }
 
+    private Boolean checkPid(){
+        Boolean needUpload = false;
+        String confirmPids ="";
+        String pendingPids ="";
+        for(ErrorCodeEntity errorCodeEntity : mAdapter01.getData()){
+            confirmPids  = confirmPids +  errorCodeEntity.getTitle()+",";
+        }
+        for(ErrorCodeEntity errorCodeEntity : mAdapter02.getData()){
+            pendingPids  = pendingPids +  errorCodeEntity.getTitle()+",";
+        }
+        if(mAdapter01.getData().size()>0){
+            confirmPids = confirmPids.substring(0,confirmPids.length()-1);
+            Logger.d("confirmPids:"+confirmPids);
+        }else{
+            return needUpload;
+        }
+
+        if(mAdapter02.getData().size()>0){
+            pendingPids = pendingPids.substring(0,pendingPids.length()-1);
+            Logger.d("pendingPids:"+pendingPids);
+
+        }else{
+            return needUpload;
+        }
+
+        if(!TextUtils.isEmpty(confirmPids) || !TextUtils.isEmpty(pendingPids)){
+            needUpload = true;
+        }
+        return needUpload;
+    }
+
     /**
      * 显示dialog
      */
@@ -732,7 +772,6 @@ public class ReadErrorCodeActivity extends BaseActivity {
 
                         pendingPids = pendingPids.substring(0,pendingPids.length()-1);
                         Logger.d("pendingPids:"+pendingPids);
-
                         Bundle bundle = new Bundle();
                         bundle.putString(BizcContant.PARA_CONFIRM_PIS,confirmPids);
                         bundle.putString(BizcContant.PARA_PENDING_PIS,pendingPids);
