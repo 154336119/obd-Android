@@ -13,6 +13,7 @@ import android.os.Message;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,7 @@ import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.MyApplication;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
 import com.slb.ttdandroidframework.ui.adapter.ErrorCodeAdapter;
@@ -112,7 +114,6 @@ public class ReadErrorCodeActivity extends BaseActivity {
     private int mCodeNum = 0;
     private int mWaitCodeNum = 0;
     private BluetoothSocket sock;
-
     private Handler mHandler = new Handler(new Handler.Callback() {
         public boolean handleMessage(Message msg) {
             Log.d(TAG, "Message received on handler");
@@ -150,7 +151,9 @@ public class ReadErrorCodeActivity extends BaseActivity {
                     break;
                 case DATA_OK_CODE_WAIT:
                     dataOkWaitCode((PendingTroubleCodesCommand) msg.obj);
-                    showDialog();
+                    if(!(mCodeNum == 0 && mWaitCodeNum ==0)){
+                        showDialog();
+                    }
                     break;
                 case DATA_OK_CODE_Clear:
                     dataOkClearCode((ResetTroubleCodesCommand) msg.obj);
@@ -224,10 +227,6 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 }
             }
         });
-
-            if(!BluetoothUtil.isRunning){
-                showToastMsg("暂未连接OBD");
-            }
 //        {
 //            try {
 //                sock = BluetoothUtil.getSockInstance();
@@ -424,8 +423,8 @@ public class ReadErrorCodeActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(TroubleCodesCommand result) {
-            mHandler.obtainMessage(DATA_OK_CODE, result).sendToTarget();
-        }
+                mHandler.obtainMessage(DATA_OK_CODE, result).sendToTarget();
+            }
     }
 
     /**
@@ -670,7 +669,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(ResetTroubleCodesCommand result) {
-            mHandler.obtainMessage(DATA_OK_CODE_Clear, result).sendToTarget();
+                mHandler.obtainMessage(DATA_OK_CODE_Clear, result).sendToTarget();
         }
     }
 

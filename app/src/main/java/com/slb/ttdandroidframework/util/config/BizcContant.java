@@ -20,4 +20,6 @@ public class BizcContant {
     public static final String PARA_CAR= "car";
     public static final String PARA_ODB= "obd";
 
+    public static final String PARA_CHOISE_DATA= "choise_data";
+
 }

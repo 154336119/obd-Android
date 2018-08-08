@@ -14,6 +14,15 @@ import java.util.List;
 
 public class DataAdapter extends BaseQuickAdapter<DataEntity,BaseViewHolder> {
 
+    public boolean isChoiseData() {
+        return isChoiseData;
+    }
+
+    public void setChoiseData(boolean choiseData) {
+        isChoiseData = choiseData;
+    }
+
+    public boolean isChoiseData;
 
     public DataAdapter(List<DataEntity> data) {
         super(R.layout.adapter_data, data);
@@ -21,8 +30,12 @@ public class DataAdapter extends BaseQuickAdapter<DataEntity,BaseViewHolder> {
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final DataEntity entity) {
-        baseViewHolder.setText(R.id.TvData,entity.getTitle());
-        baseViewHolder.setText(R.id.TvDes,entity.getValue());
+        if(isChoiseData){
+            baseViewHolder.setText(R.id.TvDes,entity.getTitle());
+        }else{
+            baseViewHolder.setText(R.id.TvDes,entity.getTitle());
+            baseViewHolder.setText(R.id.TvData,entity.getValue());
+        }
     }
 
 }

@@ -21,6 +21,15 @@ import java.io.IOException;
 public class BluetoothUtil {
     private static BluetoothDevice devInstance;
     private static BluetoothSocket sockInstance;
+
+    public static boolean isIsRunning() {
+        return isRunning;
+    }
+
+    public static void setIsRunning(boolean isRunning) {
+        BluetoothUtil.isRunning = isRunning;
+    }
+
     public static boolean isRunning = false;
     public static BluetoothDevice getDeviceInstance() throws IOException {
         if (devInstance == null) {
@@ -49,11 +58,19 @@ public class BluetoothUtil {
                 e.printStackTrace();
                 isRunning = false;
                 Logger.d("sock连接失败失败");
+                closeSocket(sockInstance);
                 throw new IOException();
             }
         }
-        isRunning = true;
         return sockInstance;
+    }
+
+    private static void closeSocket(BluetoothSocket sock) {
+        if (sock != null)
+            try {
+                sock.close();
+            } catch (IOException e) {
+            }
     }
 
 }

@@ -25,9 +25,11 @@ import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.ChoiseComEvent;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.http.bean.DataEntity;
+import com.slb.ttdandroidframework.ui.adapter.ChoiseDataAdapter;
 import com.slb.ttdandroidframework.ui.adapter.DataAdapter;
 import com.slb.ttdandroidframework.ui.fragment.DataFragment;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
+import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
 import com.slb.ttdandroidframework.util.io.ChoiseObdGatewayService;
@@ -55,9 +57,15 @@ public class ChoiseDataActivity
     @BindView(R.id.mTvName)
     TextView mTvName;
     private List<DataEntity> mList = new ArrayList<>();
-    private DataAdapter mAdapter;
+    private ChoiseDataAdapter mAdapter;
     private Handler handler = new Handler();
     private AbstractGatewayService service;
+    private ArrayList<String> mChoiseCmdsName = new ArrayList<>();
+    @Override
+    public void getIntentExtras() {
+        mChoiseCmdsName = getIntent().getStringArrayListExtra(BizcContant.PARA_CHOISE_DATA);
+    }
+
     private ServiceConnection serviceConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder binder) {
@@ -132,15 +140,15 @@ public class ChoiseDataActivity
         return true;
     }
 
-    @Subscribe
-    public void onObdConnectStateEvent(ObdConnectStateEvent event) {
-        if (event.isConnect()) {
-            Intent serviceIntent = new Intent(this, ObdGatewayService.class);
-            this.bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
-        } else {
-            handler.removeCallbacks(mQueueCommands);
-        }
-    }
+//    @Subscribe
+//    public void onObdConnectStateEvent(ObdConnectStateEvent event) {
+//        if (event.isConnect()) {
+//            Intent serviceIntent = new Intent(this, ObdGatewayService.class);
+//            this.bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
+//        } else {
+//            handler.removeCallbacks(mQueueCommands);
+//        }
+//    }
 
     public void onObdCommandJobEvent(ObdCommandJob job) {
         boolean isNew = false;
@@ -169,7 +177,7 @@ public class ChoiseDataActivity
         ButterKnife.bind(this);
         mTvAgain.setVisibility(View.GONE);
         mTvName.setText("选择数据");
-        mAdapter = new DataAdapter(mList);
+        mAdapter = new ChoiseDataAdapter(mList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(
@@ -188,6 +196,10 @@ public class ChoiseDataActivity
             handler.removeCallbacks(mQueueCommands);
         }
 
+        //初始化数据
+        for (ObdCommand Command : ObdConfig.getChoiseCommands()) {
+        }
+
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -202,6 +214,8 @@ public class ChoiseDataActivity
                 finish();
             }
         });
+
+
     }
     public void stateUpdate(final ObdCommandJob job){
         onObdCommandJobEvent(job);
@@ -215,9 +229,7 @@ public class ChoiseDataActivity
             cmdResult = getString(R.string.status_obd_no_support);
         } else {
             cmdResult = job.getCommand().getFormattedResult();
-
         }
         return cmdResult;
-
     }
 }

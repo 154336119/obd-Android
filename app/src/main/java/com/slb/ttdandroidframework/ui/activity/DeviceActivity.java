@@ -16,7 +16,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.view.ContextThemeWrapper;
@@ -44,6 +46,7 @@ import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.ui.contract.DeviceContract;
 import com.slb.ttdandroidframework.ui.presenter.DevicePresenter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
+import com.slb.ttdandroidframework.util.ObdHelper;
 import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
 import com.slb.ttdandroidframework.util.io.ObdCommandJob;
@@ -62,6 +65,15 @@ import static com.slb.ttdandroidframework.util.config.BizcContant.PARA_DEV_ADDR;
 
 public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, DeviceContract.IPresenter>
         implements DeviceContract.IView {
+    private static final int NO_BLUETOOTH_DEVICE_SELECTED = 0;
+    private static final int CANNOT_CONNECT_TO_DEVICE = 1;
+    private static final int NO_DATA = 3;
+    private static final int OBD_COMMAND_FAILURE = 10;
+    private static final int OBD_COMMAND_FAILURE_IO = 11;
+    private static final int OBD_COMMAND_FAILURE_UTC = 12;
+    private static final int OBD_COMMAND_FAILURE_IE = 13;
+    private static final int OBD_COMMAND_FAILURE_MIS = 14;
+    private static final int OBD_COMMAND_FAILURE_NODATA = 15;
 
     @BindView(R.id.mTvName)
     TextView mTvName;
@@ -84,6 +96,52 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
     private List<BluetoothDevice> deviceList = new ArrayList<BluetoothDevice>();
     private ServiceConnection serviceConn = MyApplication.getServiceConn();
     BroadcastReceiver discoveryResult;
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        private ObdHelper obdHelper;
+        public boolean handleMessage(Message msg) {
+            Log.d(TAG, "Message received on handler");
+            switch (msg.what) {
+                case NO_BLUETOOTH_DEVICE_SELECTED:
+                    showToastMsg("连接失败");
+                   // showToastMsg(getString(R.string.text_bluetooth_nodevice));
+                    break;
+                case CANNOT_CONNECT_TO_DEVICE:
+                    showToastMsg("连接失败");
+                //    showToastMsg(getString(R.string.text_bluetooth_error_connecting));
+                    break;
+                case OBD_COMMAND_FAILURE:
+                    showToastMsg("连接失败");
+                 //   showToastMsg(getString(R.string.text_obd_command_failure));
+                    break;
+                case OBD_COMMAND_FAILURE_IO:
+                    showToastMsg("连接失败");
+                 //   showToastMsg(getString(R.string.text_obd_command_failure) + " IO");
+                    break;
+                case OBD_COMMAND_FAILURE_IE:
+                    showToastMsg("连接失败");
+                 //   showToastMsg(getString(R.string.text_obd_command_failure) + " IE");
+                    break;
+                case OBD_COMMAND_FAILURE_MIS:
+                    showToastMsg("连接失败");
+                 //   showToastMsg(getString(R.string.text_obd_command_failure) + " MIS");
+                    break;
+                case OBD_COMMAND_FAILURE_UTC:
+                    showToastMsg("连接失败");
+                  //  showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
+                    break;
+                case OBD_COMMAND_FAILURE_NODATA:
+                    RxBus.get().post(new ObdConnectStateEvent(true));
+                   // showToastMsg(getString(R.string.text_noerrors));
+                    break;
+                case NO_DATA:
+                    showToastMsg(getString(R.string.text_dtc_no_data));
+                    break;
+            }
+            hideWaitDialog();
+            return false;
+        }
+    });
     @Override
     protected boolean hasToolbar() {
         return false;
@@ -147,19 +205,8 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                RxBus.get().post(new ConnectEvent());
-                showLoadingDialog("连接中");
-//                dialog.dismiss();
-                try {
-                    if( BluetoothUtil.getSockInstance()!=null){
-                        RxBus.get().post(new ObdConnectStateEvent(true));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    showToastMsg("连接失败");
-                } finally {
-                    hideWaitDialog();
-                }
+                ObdHelper  obdHelper = new ObdHelper(mHandler, DeviceActivity.this);
+                obdHelper.connectToDevice();
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
