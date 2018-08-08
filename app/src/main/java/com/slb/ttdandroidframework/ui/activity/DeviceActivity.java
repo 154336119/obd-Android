@@ -48,6 +48,7 @@ import com.slb.ttdandroidframework.ui.presenter.DevicePresenter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
 import com.slb.ttdandroidframework.util.ObdHelper;
 import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
+import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
 import com.slb.ttdandroidframework.util.io.ObdCommandJob;
 import com.slb.ttdandroidframework.util.io.ObdGatewayService;
@@ -111,7 +112,7 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
                 //    showToastMsg(getString(R.string.text_bluetooth_error_connecting));
                     break;
                 case OBD_COMMAND_FAILURE:
-                    showToastMsg("连接失败");
+                              showToastMsg("连接失败");
                  //   showToastMsg(getString(R.string.text_obd_command_failure));
                     break;
                 case OBD_COMMAND_FAILURE_IO:
@@ -199,12 +200,15 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
             public void onClick(DialogInterface dialog, int which) {
                 SharedPreferencesUtils.setParam(DeviceActivity.this,PARA_DEV_ADDR,deviceList.get(which).getAddress());
                 obdDevice = deviceList.get(which);
+                BluetoothUtil.setRemoteDevice(deviceList.get(which).getAddress());
             }
         });
 
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                 String remoteDevice  = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.PARA_DEV_ADDR,"");
+                 BluetoothUtil.setRemoteDevice(remoteDevice);
                 ObdHelper  obdHelper = new ObdHelper(mHandler, DeviceActivity.this);
                 obdHelper.connectToDevice();
             }
@@ -274,13 +278,16 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
              TvConnectState.setText("已连接");
              TvConnectState.setTextColor(Color.parseColor("#FF00FF00"));
              IvIvIcon.setBackgroundResource(R.mipmap.ic_blue_connect);
+            BluetoothUtil.setIsRunning(true);
 //            MyApplication.getService().queueJob(new ObdCommandJob(new PendingTroubleCodesCommand()));
 //            MyApplication.getService().queueJob(new ObdCommandJob(new EchoOffCommand()));
 //            MyApplication.getService().queueJob(new ObdCommandJob(new LineFeedOffCommand()));
 //            MyApplication.getService().queueJob(new ObdCommandJob(new TimeoutCommand(62)));
 //            MyApplication.getService().queueJob(new ObdCommandJob(new AmbientAirTemperatureCommand()));
 //            MyApplication.getService().queueJob(new ObdCommandJob(new EngineCoolantTemperatureCommand()));
+            hideWaitDialog();
         }else{
+            BluetoothUtil.setIsRunning(false);
             IvState1.setBackgroundResource(R.mipmap.ic_un_connect);
             TvConnectState.setText("未连接");
             TvConnectState.setTextColor(Color.parseColor("#FFF9010A"));

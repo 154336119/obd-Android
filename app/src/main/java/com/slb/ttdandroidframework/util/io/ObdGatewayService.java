@@ -162,13 +162,13 @@ public class ObdGatewayService extends AbstractGatewayService {
      */
     protected void executeQueue() throws InterruptedException {
         Log.d(TAG, "Executing queue..");
-        try {
-            sock = BluetoothUtil.getSockInstance();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         while (!Thread.currentThread().isInterrupted()) {
              ObdCommandJob job = null;
+            try {
+                sock = BluetoothUtil.getSockInstance();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             try {
                   job = jobsQueue.take();
 

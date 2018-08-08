@@ -8,7 +8,6 @@ import android.util.Log;
 import com.hwangjr.rxbus.RxBus;
 import com.orhanobut.logger.Logger;
 import com.slb.ttdandroidframework.Base;
-import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.io.BluetoothManager;
 
@@ -22,6 +21,15 @@ public class BluetoothUtil {
     private static BluetoothDevice devInstance;
     private static BluetoothSocket sockInstance;
 
+    public static String getRemoteDevice() {
+        return remoteDevice;
+    }
+
+    public static void setRemoteDevice(String remoteDevice) {
+        BluetoothUtil.remoteDevice = remoteDevice;
+    }
+
+    private static String remoteDevice =null;
     public static boolean isIsRunning() {
         return isRunning;
     }
@@ -33,7 +41,8 @@ public class BluetoothUtil {
     public static boolean isRunning = false;
     public static BluetoothDevice getDeviceInstance() throws IOException {
         if (devInstance == null) {
-            final String remoteDevice  = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.PARA_DEV_ADDR,"");
+//            final String remoteDevice  = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.PARA_DEV_ADDR,"");\
+            final String remoteDevice = getRemoteDevice();
             if (remoteDevice == null || "".equals(remoteDevice)) {
                 Logger.d("获取设备失败");
                 throw new IOException();

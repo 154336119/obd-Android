@@ -32,6 +32,7 @@ import com.slb.ttdandroidframework.ui.activity.ChoiseDataActivity;
 import com.slb.ttdandroidframework.ui.adapter.DataAdapter;
 import com.slb.ttdandroidframework.ui.contract.DataContract;
 import com.slb.ttdandroidframework.ui.presenter.DataPresenter;
+import com.slb.ttdandroidframework.util.BluetoothUtil;
 import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
@@ -99,11 +100,11 @@ public class DataFragment
     private final Runnable mQueueCommands = new Runnable() {
         @Override
         public void run() {
-            if (service != null) {
-            }
-            if (service != null) {
+            if (service != null ) {
                 queueCommands();
-                handler.postDelayed(mQueueCommands, 2000);
+                if(BluetoothUtil.isRunning){
+                    handler.postDelayed(mQueueCommands, 2000);
+                }
             }
         }
     };
@@ -154,7 +155,6 @@ public class DataFragment
                         .sizeResId(R.dimen.distance_1)
                         .build());
         initComs();
-
         Intent serviceIntent = new Intent(_mActivity, ObdGatewayService.class);
         _mActivity.bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
 
@@ -175,8 +175,7 @@ public class DataFragment
     @Subscribe
     public void onObdConnectStateEvent(ObdConnectStateEvent event) {
         if (event.isConnect()) {
-            Intent serviceIntent = new Intent(_mActivity, ObdGatewayService.class);
-            _mActivity.bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
+            handler.post(mQueueCommands);
         } else {
             handler.removeCallbacks(mQueueCommands);
         }
@@ -212,7 +211,7 @@ public class DataFragment
             commandName.add(command.getName());
         }
         bundle.putStringArrayList(BizcContant.PARA_CHOISE_DATA,commandName);
-        ActivityUtil.next(_mActivity, ChoiseDataActivity.class,null,false);
+        ActivityUtil.next(_mActivity, ChoiseDataActivity.class,bundle,false);
     }
     private void initComs(){
         mCmds.add(new AirIntakeTemperatureCommand());
@@ -223,7 +222,12 @@ public class DataFragment
 
     @Subscribe
     public void onChociseComEvent(ChoiseComEvent event) {
-        mCmds.add(event.getCommand());
+        if(event.isAdd()){
+            mCmds.add(ObdConfig.getCommandForNameIndex(event.getCommandName()));
+        }else{
+            mCmds.remove(ObdConfig.getCommandForNameIndex(event.getCommandName()));
+        }
+        handler.post(mQueueCommands);
     }
 
     public String getRealCinnabdResult(ObdCommandJob job){

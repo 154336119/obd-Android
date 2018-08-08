@@ -29,9 +29,11 @@ import com.github.pires.obd.commands.protocol.AdaptiveTimingCommand;
 import com.github.pires.obd.commands.temperature.AirIntakeTemperatureCommand;
 import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
 import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand;
+import com.github.pires.obd.enums.AvailableCommandNames;
 import com.github.pires.obd.enums.FuelTrim;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TODO put description
@@ -49,6 +51,38 @@ public final class ObdConfig {
     public static final int OBD_COMMAND_FAILURE_MIS = 14;
     public static final int OBD_COMMAND_FAILURE_NODATA = 15;
 
+    public static List<String> getAllCommandsName(){
+//        for(AvailableCommandNames name : AvailableCommandNames.values()){
+//            name.getValue()
+//        }
+        List<String> names = new ArrayList<>();
+        names.add(AvailableCommandNames.AIR_INTAKE_TEMP.getValue());
+        names.add(AvailableCommandNames.AMBIENT_AIR_TEMP.getValue());
+        names.add(AvailableCommandNames.ENGINE_COOLANT_TEMP.getValue());
+        names.add(AvailableCommandNames.BAROMETRIC_PRESSURE.getValue());
+        names.add(AvailableCommandNames.FUEL_PRESSURE.getValue());
+        names.add(AvailableCommandNames.INTAKE_MANIFOLD_PRESSURE.getValue());
+        names.add(AvailableCommandNames.ENGINE_LOAD.getValue());
+        names.add(AvailableCommandNames.ENGINE_RUNTIME.getValue());
+        names.add(AvailableCommandNames.ENGINE_RPM.getValue());
+        names.add(AvailableCommandNames.SPEED.getValue());
+        return names;
+    }
+
+    public static List<ObdCommand> getAllCommands(){
+        ArrayList<ObdCommand> cmds = new ArrayList<>();
+        cmds.add(new AirIntakeTemperatureCommand());
+        cmds.add(new AmbientAirTemperatureCommand());
+        cmds.add(new EngineCoolantTemperatureCommand());
+        cmds.add(new BarometricPressureCommand());
+        cmds.add(new FuelPressureCommand());
+        cmds.add(new IntakeManifoldPressureCommand());
+        cmds.add(new LoadCommand());
+        cmds.add(new RuntimeCommand());
+        cmds.add(new RPMCommand());
+        cmds.add(new SpeedCommand());
+        return cmds;
+    }
 
     public static ArrayList<ObdCommand> getCommands() {
         ArrayList<ObdCommand> cmds = new ArrayList<>();
@@ -162,5 +196,9 @@ public final class ObdConfig {
         return cmds;
     }
 
-
+    public static ObdCommand getCommandForNameIndex(String name){
+        int index = getAllCommandsName().indexOf(name);
+        getAllCommands().get(index);
+        return getAllCommands().get(index);
+    }
 }

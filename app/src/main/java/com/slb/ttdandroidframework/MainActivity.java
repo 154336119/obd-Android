@@ -16,7 +16,6 @@ import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.frame.ui.fragment.BaseFragment;
-import com.slb.ttdandroidframework.event.ChoiseComEvent;
 import com.slb.ttdandroidframework.event.RefreshMineObdListtEvent;
 import com.slb.ttdandroidframework.event.RefreshMineVehicleListtEvent;
 import com.slb.ttdandroidframework.event.RefreshObdListtEvent;

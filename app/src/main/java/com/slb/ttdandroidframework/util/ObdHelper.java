@@ -187,11 +187,11 @@ public class ObdHelper {
         @Override
         protected void onPostExecute(String result) {
             if (!TextUtils.isEmpty(result)) {
-                BluetoothUtil.setIsRunning(true);
+                RxBus.get().post(new ObdConnectStateEvent(true));
                 Log.d(TAG, result);
             } else {
                 Log.e(TAG, "No result (Nullpointer).");
-                BluetoothUtil.setIsRunning(false);
+//                BluetoothUtil.setIsRunning(false);
             }
         }
     }

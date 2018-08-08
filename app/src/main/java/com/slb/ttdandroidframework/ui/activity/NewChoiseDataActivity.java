@@ -22,7 +22,6 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.event.ChoiseComEvent;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.http.bean.DataEntity;
 import com.slb.ttdandroidframework.ui.adapter.DataAdapter;
@@ -188,20 +187,20 @@ public class NewChoiseDataActivity
             handler.removeCallbacks(mQueueCommands);
         }
 
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ObdCommand newCommand = ObdConfig.getChoiseCommands().get(position);
-                for (ObdCommand command : ObdConfig.getCommands()){
-                    if(command.getName().equals(newCommand.getName())){
-                        showToastMsg("该数据已经添加，请重新选择");
-                        return;
-                    }
-                }
-                RxBus.get().post(new ChoiseComEvent(ObdConfig.getChoiseCommands().get(position)));
-                finish();
-            }
-        });
+//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                ObdCommand newCommand = ObdConfig.getChoiseCommands().get(position);
+//                for (ObdCommand command : ObdConfig.getCommands()){
+//                    if(command.getName().equals(newCommand.getName())){
+//                        showToastMsg("该数据已经添加，请重新选择");
+//                        return;
+//                    }
+//                }
+//                RxBus.get().post(new ChoiseComEvent(ObdConfig.getChoiseCommands().get(position)));
+//                finish();
+//            }
+//        });
 
 
     }

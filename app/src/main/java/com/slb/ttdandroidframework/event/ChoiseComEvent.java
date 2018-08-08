@@ -8,17 +8,29 @@ import com.github.pires.obd.commands.ObdCommand;
  */
 
 public class ChoiseComEvent {
-    private ObdCommand command;
+    private String commandName;
 
-    public ChoiseComEvent(ObdCommand command) {
-        this.command = command;
+    public ChoiseComEvent(String commandName, boolean isAdd) {
+        this.commandName = commandName;
+        this.isAdd = isAdd;
     }
 
-    public ObdCommand getCommand() {
-        return command;
+    //true 添加，false 删除
+    public boolean isAdd() {
+        return isAdd;
     }
 
-    public void setCommand(ObdCommand command) {
-        this.command = command;
+    public void setAdd(boolean add) {
+        isAdd = add;
+    }
+
+    private boolean isAdd;
+
+    public String getCommandName() {
+        return commandName;
+    }
+
+    public void setCommandName(String commandName) {
+        this.commandName = commandName;
     }
 }
