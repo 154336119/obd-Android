@@ -286,5 +286,8 @@ public class ObdGatewayService extends AbstractGatewayService {
             }
         }
     }
+    /**
+     * Stop OBD connection and queue processing.
+     */
 
 }

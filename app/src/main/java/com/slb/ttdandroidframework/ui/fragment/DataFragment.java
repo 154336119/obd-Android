@@ -249,6 +249,6 @@ public class DataFragment
             cmdResult = job.getCommand().getFormattedResult();
 
         }
-        return cmdResult;
+             return cmdResult;
     }
 }

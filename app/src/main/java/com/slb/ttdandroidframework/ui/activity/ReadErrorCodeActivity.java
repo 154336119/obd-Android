@@ -246,34 +246,34 @@ public class ReadErrorCodeActivity extends BaseActivity {
 //        }
 
         //测试
-        ErrorCodeEntity errorCodeEntity1= new ErrorCodeEntity();
-        errorCodeEntity1.setTitle("P101");
-        errorCodeEntity1.setValue("11111");
-
-        ErrorCodeEntity errorCodeEntity2= new ErrorCodeEntity();
-        errorCodeEntity2.setTitle("P102");
-        errorCodeEntity2.setValue("22222");
-
-        ErrorCodeEntity errorCodeEntity3= new ErrorCodeEntity();
-        errorCodeEntity3.setTitle("P103");
-        errorCodeEntity3.setValue("33333");
-
-        ErrorCodeEntity errorCodeEntity4= new ErrorCodeEntity();
-        errorCodeEntity4.setTitle("P104");
-        errorCodeEntity4.setValue("444");
-
-        ErrorCodeEntity errorCodeEntity5= new ErrorCodeEntity();
-        errorCodeEntity5.setTitle("P105");
-        errorCodeEntity5.setValue("5555");
-        mAdapter01.getData().clear();
-        mAdapter01.getData().add(errorCodeEntity1);
-        mAdapter01.getData().add(errorCodeEntity2);
-        mAdapter01.getData().add(errorCodeEntity3);
-
-        mAdapter02.getData().clear();
-        mAdapter02.getData().add(errorCodeEntity4);
-        mAdapter02.getData().add(errorCodeEntity5);
-        showDialog();
+//        ErrorCodeEntity errorCodeEntity1= new ErrorCodeEntity();
+//        errorCodeEntity1.setTitle("P101");
+//        errorCodeEntity1.setValue("11111");
+//
+//        ErrorCodeEntity errorCodeEntity2= new ErrorCodeEntity();
+//        errorCodeEntity2.setTitle("P102");
+//        errorCodeEntity2.setValue("22222");
+//
+//        ErrorCodeEntity errorCodeEntity3= new ErrorCodeEntity();
+//        errorCodeEntity3.setTitle("P103");
+//        errorCodeEntity3.setValue("33333");
+//
+//        ErrorCodeEntity errorCodeEntity4= new ErrorCodeEntity();
+//        errorCodeEntity4.setTitle("P104");
+//        errorCodeEntity4.setValue("444");
+//
+//        ErrorCodeEntity errorCodeEntity5= new ErrorCodeEntity();
+//        errorCodeEntity5.setTitle("P105");
+//        errorCodeEntity5.setValue("5555");
+//        mAdapter01.getData().clear();
+//        mAdapter01.getData().add(errorCodeEntity1);
+//        mAdapter01.getData().add(errorCodeEntity2);
+//        mAdapter01.getData().add(errorCodeEntity3);
+//
+//        mAdapter02.getData().clear();
+//        mAdapter02.getData().add(errorCodeEntity4);
+//        mAdapter02.getData().add(errorCodeEntity5);
+//        showDialog();
 
         mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
         mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
@@ -285,8 +285,14 @@ public class ReadErrorCodeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+        RxBus.get().post(new ObdConnectStateEvent(false));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.get().post(new ObdConnectStateEvent(true));
+    }
 
     @OnClick({R.id.mIvBack, R.id.mTvAgain,R.id.BtnClearError})
     public void onViewClicked(View view) {
@@ -327,7 +333,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
     public void dataOkCode(TroubleCodesCommand obdCommand) {
         Map<String, String> dtcVals = getDict(R.array.dtc_keys, R.array.dtc_values);
         String value = null;
-        if(obdCommand!=null){
+        if(obdCommand!=null && !TextUtils.isEmpty(obdCommand.getName())){
             for (String dtcCode : obdCommand.getFormattedResult().split("\n")) {
                 value = dtcVals.get(dtcCode);
             }
@@ -565,7 +571,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
     public void dataOkWaitCode(PendingTroubleCodesCommand obdCommand) {
         Map<String, String> dtcVals = getDict(R.array.dtc_keys, R.array.dtc_values);
         String value = null;
-        if(obdCommand!=null){
+        if(obdCommand!=null && !TextUtils.isEmpty(obdCommand.getName())){
             for (String dtcCode : obdCommand.getFormattedResult().split("\n")) {
                 value = dtcVals.get(dtcCode);
             }
@@ -757,12 +763,12 @@ public class ReadErrorCodeActivity extends BaseActivity {
                         bundle.putString(BizcContant.PARA_CONFIRM_PIS,confirmPids);
                         bundle.putString(BizcContant.PARA_PENDING_PIS,pendingPids);
                         ActivityUtil.next(ReadErrorCodeActivity.this,SubmitErrorCodeActivity.class,bundle,false);
-                        mCommonAlertDialog.dismiss();
+                        dialogInterface.dismiss();
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mCommonAlertDialog.dismiss();
+                dialogInterface.dismiss();
             }
         });
         mCommonAlertDialog = dialog.create();
