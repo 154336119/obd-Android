@@ -27,7 +27,7 @@ public class ModuleFiveActivity extends BaseBrvahRefreshActivity<MyComListContra
 
     @Override
     protected String setToolbarTitle() {
-        return "MODE 5";
+        return getString(R.string.mode_5);
     }
     @Override
     protected RecyclerView.Adapter setAdapter() {

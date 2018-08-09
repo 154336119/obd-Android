@@ -13,7 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="尾气检测"
+            android:text="@string/smog_check"
             android:textSize="18sp"
             android:layout_centerInParent="true"/>
         <ImageView
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="扫描"
+            android:text="@string/rescan"
             android:textSize="15sp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"

@@ -17,10 +17,11 @@
             android:id="@+id/TvCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/TvIntriduce"
-            android:layout_toEndOf="@+id/TvContent"
             android:text="测试"
             android:textColor="#00A4EF"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:textSize="15sp" />
         <TextView
             android:id="@+id/TvIntriduce"
@@ -30,17 +31,18 @@
             android:textSize="13sp"
             android:text="测试"
             android:layout_toRightOf="@+id/TvCode"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:layout_toLeftOf="@+id/ck"
-            android:layout_marginTop="6dp"/>
+            android:layout_toLeftOf="@+id/ck"/>
         <CheckBox
             android:id="@+id/ck"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:button="@drawable/checkbox_two"
+            android:layout_marginTop="2dp"
             android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"/>
         <TextView
@@ -50,7 +52,7 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:layout_below="@+id/TvCode"
-            android:text="请假请假单请假单请假单请假单请假单请假单请假单请假单请假单请假单单"
+            android:text="unknow"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"

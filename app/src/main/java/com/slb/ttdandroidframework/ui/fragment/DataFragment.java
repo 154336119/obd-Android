@@ -225,7 +225,16 @@ public class DataFragment
         if(event.isAdd()){
             mCmds.add(ObdConfig.getCommandForNameIndex(event.getCommandName()));
         }else{
-            mCmds.remove(ObdConfig.getCommandForNameIndex(event.getCommandName()));
+            ObdCommand obdCommand = ObdConfig.getCommandForNameIndex(event.getCommandName());
+            int index = 0;
+            for(ObdCommand command: mCmds){
+                if(command.getName().equals(obdCommand.getName())){
+                    index = mCmds.indexOf(command);
+                }
+            }
+            mCmds.remove(index);
+            mAdapter.getData().remove(index);
+            Logger.d(mCmds.size());
         }
         handler.post(mQueueCommands);
     }

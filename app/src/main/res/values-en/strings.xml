@@ -106,34 +106,33 @@
     <string name="pref_dev_email_summary">Logs will be emailed to this address</string>
     <string name="text_noerrors">There were no errors found.!</string>
     <!--登录-->
-    <string name="sign_in">登录</string>
-    <string name="email_address">请输入您的邮箱</string>
-    <string name="password">请输入您的密码</string>
-    <string name="register">免费注册</string>
-    <string name="forget_your_passoword">找回密码</string>
-
+    <string name="sign_in">Sign in</string>
+    <string name="email_address">Email address</string>
+    <string name="password">Password</string>
+    <string name="forget_your_passoword">Register  Forget your passoword?</string>
+    <string name="register">register</string>
     <!--主页面-->
-    <string name="read_dtcs">读取故障码</string>
-    <string name="freeze_frame">冻结帧</string>
-    <string name="smog_check">尾气检测</string>
-    <string name="mode_5">氧气传感器</string>
-    <string name="mode_6">车载监控</string>
-    <string name="mil_status">故障灯状态</string>
-    <string name="diagnostics">诊断</string>
-    <string name="live_data">数据</string>
-    <string name="history">历史</string>
-    <string name="my_device">我的</string>
+    <string name="read_dtcs">Read DTCs</string>
+    <string name="freeze_frame">Freeze Frame</string>
+    <string name="smog_check">SMOG Check</string>
+    <string name="mode_5">Mode 5</string>
+    <string name="mode_6">Mode 6</string>
+    <string name="mil_status">MIL Status</string>
+    <string name="diagnostics">Diagnostics</string>
+    <string name="live_data">Live Data</string>
+    <string name="history">History</string>
+    <string name="my_device">My Device</string>
 
     <!--扫描故障码-->
-    <string name="read_dtcs_rescan">读取故障码</string>
-    <string name="pending_dtcs"> 个等待故障码</string>
-    <string name="confirmed_dtcs"> 个确认故障码</string>
-    <string name="clear_dtcs">清除故障码</string>
-    <string name="rescan">重新扫描</string>
-    <!--冻结帧-->
+    <string name="pending_dtcs"> Pending DTCs</string>
+    <string name="confirmed_dtcs"> Confirmed DTCs</string>
+    <string name="clear_dtcs">Clear DTCs</string>
+    <string name="rescan">Rescan</string>
+    Rescan
+    <!--尾气检测-->
     <string name="pid">PID</string>
-    <string name="description">描述</string>
-    <string name="value">值</string>
+    <string name="description">Description</string>
+    <string name="value">Value</string>
 
     <!--故障灯-->
     <string name="run_time_with_check_engine_light_on">Run Time with Check Engine Light On</string>

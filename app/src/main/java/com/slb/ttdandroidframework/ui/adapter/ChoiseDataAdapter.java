@@ -33,6 +33,10 @@ public class ChoiseDataAdapter extends BaseQuickAdapter<String,BaseViewHolder> {
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final String entity) {
         baseViewHolder.setText(R.id.TvDes,entity);
+        //测试
+        int index = mData.indexOf(entity);
+        String name =  mSparseArray.get(index);
+
         baseViewHolder.setChecked(R.id.CheckBox,(mSparseArray.get( mData.indexOf(entity))==null? false : true));
         baseViewHolder.setOnCheckedChangeListener(R.id.CheckBox, new CompoundButton.OnCheckedChangeListener() {
             @Override

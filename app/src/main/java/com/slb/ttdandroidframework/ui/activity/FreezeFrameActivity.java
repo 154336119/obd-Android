@@ -32,7 +32,7 @@ public class FreezeFrameActivity extends BaseBrvahRefreshActivity<MyComListContr
 
     @Override
     protected String setToolbarTitle() {
-        return "冻结帧";
+        return getString(R.string.freeze_frame);
     }
     @Override
     protected RecyclerView.Adapter setAdapter() {

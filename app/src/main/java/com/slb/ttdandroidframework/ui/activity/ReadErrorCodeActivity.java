@@ -40,6 +40,7 @@ import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.frame.utils.ActivityUtil;
+import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.MyApplication;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
@@ -103,7 +104,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
     private List<ErrorCodeEntity> mConfirmErrorCodeList = new ArrayList<>();
     private List<ErrorCodeEntity> mWaitErrorCodeList = new ArrayList<>();
 
-    public ProgressDialog progressDialog;
+//    public ProgressDialog progressDialog;
     private GetTroubleCodesTask mCodesTask;
     private GetWaitTroubleCodesTask mCodesTaskWait;
     private ClearTroubleCodesTask mCodesTaskClear;
@@ -151,7 +152,9 @@ public class ReadErrorCodeActivity extends BaseActivity {
                     break;
                 case DATA_OK_CODE_WAIT:
                     dataOkWaitCode((PendingTroubleCodesCommand) msg.obj);
-                    if(!(mCodeNum == 0 && mWaitCodeNum ==0)){
+                    if(mCodeNum == 0 && mWaitCodeNum ==0){
+
+                    }else{
                         showDialog();
                     }
                     break;
@@ -178,6 +181,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
     public void initView() {
         super.initView();
         ButterKnife.bind(this);
+
         mNestedScrollView.setNestedScrollingEnabled(false);
 //        //测试
 //        for (int i = 0; i < 10; i++) {
@@ -242,34 +246,37 @@ public class ReadErrorCodeActivity extends BaseActivity {
 //        }
 
         //测试
-//        ErrorCodeEntity errorCodeEntity1= new ErrorCodeEntity();
-//        errorCodeEntity1.setTitle("P101");
-//        errorCodeEntity1.setValue("11111");
-//
-//        ErrorCodeEntity errorCodeEntity2= new ErrorCodeEntity();
-//        errorCodeEntity2.setTitle("P102");
-//        errorCodeEntity2.setValue("22222");
-//
-//        ErrorCodeEntity errorCodeEntity3= new ErrorCodeEntity();
-//        errorCodeEntity3.setTitle("P103");
-//        errorCodeEntity3.setValue("33333");
-//
-//        ErrorCodeEntity errorCodeEntity4= new ErrorCodeEntity();
-//        errorCodeEntity4.setTitle("P104");
-//        errorCodeEntity4.setValue("444");
-//
-//        ErrorCodeEntity errorCodeEntity5= new ErrorCodeEntity();
-//        errorCodeEntity5.setTitle("P105");
-//        errorCodeEntity5.setValue("5555");
-//        mAdapter01.getData().clear();
-//        mAdapter01.getData().add(errorCodeEntity1);
-//        mAdapter01.getData().add(errorCodeEntity2);
-//        mAdapter01.getData().add(errorCodeEntity3);
-//
-//        mAdapter02.getData().clear();
-//        mAdapter02.getData().add(errorCodeEntity4);
-//        mAdapter02.getData().add(errorCodeEntity5);
-//        showDialog();
+        ErrorCodeEntity errorCodeEntity1= new ErrorCodeEntity();
+        errorCodeEntity1.setTitle("P101");
+        errorCodeEntity1.setValue("11111");
+
+        ErrorCodeEntity errorCodeEntity2= new ErrorCodeEntity();
+        errorCodeEntity2.setTitle("P102");
+        errorCodeEntity2.setValue("22222");
+
+        ErrorCodeEntity errorCodeEntity3= new ErrorCodeEntity();
+        errorCodeEntity3.setTitle("P103");
+        errorCodeEntity3.setValue("33333");
+
+        ErrorCodeEntity errorCodeEntity4= new ErrorCodeEntity();
+        errorCodeEntity4.setTitle("P104");
+        errorCodeEntity4.setValue("444");
+
+        ErrorCodeEntity errorCodeEntity5= new ErrorCodeEntity();
+        errorCodeEntity5.setTitle("P105");
+        errorCodeEntity5.setValue("5555");
+        mAdapter01.getData().clear();
+        mAdapter01.getData().add(errorCodeEntity1);
+        mAdapter01.getData().add(errorCodeEntity2);
+        mAdapter01.getData().add(errorCodeEntity3);
+
+        mAdapter02.getData().clear();
+        mAdapter02.getData().add(errorCodeEntity4);
+        mAdapter02.getData().add(errorCodeEntity5);
+        showDialog();
+
+        mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
+        mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
     }
 
 
@@ -295,8 +302,8 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 mWaitCodeNum = 0;
                 mAdapter01.getData().clear();
                 mAdapter02.getData().clear();
-                mTvConfirmErrorCodeNum.setText(mCodeNum+"个确认故障码");
-                mTvWaitErrorCodeNum.setText(mWaitCodeNum+"个等待故障码");
+                mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
+                mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
                 try {
                     sock = BluetoothUtil.getSockInstance();
                 } catch (IOException e) {
@@ -329,9 +336,9 @@ public class ReadErrorCodeActivity extends BaseActivity {
             errorCodeEntity.setValue(value);
             mAdapter01.getData().add(errorCodeEntity);
             mCodeNum = mCodeNum+1;
-            mTvConfirmErrorCodeNum.setText(mCodeNum+"个确认故障码");
+            mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
         }
-        progressDialog.cancel();
+        hideWaitDialog();
     }
 
 
@@ -353,24 +360,13 @@ public class ReadErrorCodeActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
-            progressDialog = new ProgressDialog(ReadErrorCodeActivity.this);
-            //Set the progress dialog to display a horizontal progress bar
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            //Set the dialog title to 'Loading...'
-            progressDialog.setTitle(getString(R.string.dialog_loading_title));
-            //Set the dialog message to 'Loading application View, please wait...'
-            progressDialog.setMessage(getString(R.string.dialog_loading_body));
-            //This dialog can't be canceled by pressting the back key
-            progressDialog.setCancelable(true);
-            //This dialog isn't indeterminate
-            progressDialog.setIndeterminate(false);
-            progressDialog.show();
+            showWaitDialog("刷新中");
         }
 
         @Override
         protected TroubleCodesCommand doInBackground(String... params) {
             TroubleCodesCommand result = null;
-            progressDialog.dismiss();
+            hideWaitDialog();
             //Get the current thread's token
             synchronized (this) {
                 try {
@@ -406,7 +402,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
                     Log.e("DTCERR", e.getMessage());
                     mHandler.obtainMessage(ObdConfig.OBD_COMMAND_FAILURE).sendToTarget();
                 } finally {
-                    progressDialog.cancel();
+                    hideWaitDialog();
                 }
 
             }
@@ -469,24 +465,13 @@ public class ReadErrorCodeActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
-            progressDialog = new ProgressDialog(ReadErrorCodeActivity.this);
-            //Set the progress dialog to display a horizontal progress bar
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            //Set the dialog title to 'Loading...'
-            progressDialog.setTitle(getString(R.string.dialog_loading_title));
-            //Set the dialog message to 'Loading application View, please wait...'
-            progressDialog.setMessage(getString(R.string.dialog_loading_body));
-            //This dialog can't be canceled by pressting the back key
-            progressDialog.setCancelable(true);
-            //This dialog isn't indeterminate
-            progressDialog.setIndeterminate(false);
-            progressDialog.show();
+            showWaitDialog("刷新中");
         }
 
         @Override
         protected PendingTroubleCodesCommand doInBackground(String... params) {
             PendingTroubleCodesCommand result = null;
-            progressDialog.dismiss();
+            hideWaitDialog();
             //Get the current thread's token
             synchronized (this) {
                 try {
@@ -522,7 +507,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
                     Log.e("DTCERR", e.getMessage());
                     mHandler.obtainMessage(ObdConfig.OBD_COMMAND_FAILURE).sendToTarget();
                 } finally {
-                    progressDialog.cancel();
+                    hideWaitDialog();
                 }
 
             }
@@ -589,9 +574,9 @@ public class ReadErrorCodeActivity extends BaseActivity {
             errorCodeEntity.setValue(value);
             mAdapter02.getData().add(errorCodeEntity);
             mWaitCodeNum = mWaitCodeNum +1;
-            mTvWaitErrorCodeNum.setText(mWaitCodeNum+"个等待故障码");
+            mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
         }
-        progressDialog.cancel();
+        hideWaitDialog();
     }
     //////////////////////////////////////清除故障码//////////////////////////////////
 
@@ -599,24 +584,13 @@ public class ReadErrorCodeActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
-            progressDialog = new ProgressDialog(ReadErrorCodeActivity.this);
-            //Set the progress dialog to display a horizontal progress bar
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            //Set the dialog title to 'Loading...'
-            progressDialog.setTitle(getString(R.string.dialog_loading_title));
-            //Set the dialog message to 'Loading application View, please wait...'
-            progressDialog.setMessage(getString(R.string.dialog_loading_body));
-            //This dialog can't be canceled by pressting the back key
-            progressDialog.setCancelable(true);
-            //This dialog isn't indeterminate
-            progressDialog.setIndeterminate(false);
-            progressDialog.show();
+            showWaitDialog("清除中");
         }
 
         @Override
         protected ResetTroubleCodesCommand doInBackground(String... params) {
             ResetTroubleCodesCommand result = null;
-            progressDialog.dismiss();
+            hideWaitDialog();
             //Get the current thread's token
             synchronized (this) {
                 try {
@@ -652,7 +626,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
                     Log.e("DTCERR", e.getMessage());
                     mHandler.obtainMessage(ObdConfig.OBD_COMMAND_FAILURE).sendToTarget();
                 } finally {
-                    progressDialog.cancel();
+                    hideWaitDialog();
                 }
 
             }
@@ -712,9 +686,11 @@ public class ReadErrorCodeActivity extends BaseActivity {
         mWaitCodeNum = 0;
         mAdapter01.getData().clear();
         mAdapter02.getData().clear();
-        mTvConfirmErrorCodeNum.setText(mCodeNum+"个确认故障码");
-        mTvWaitErrorCodeNum.setText(mWaitCodeNum+"个等待故障码");
-        progressDialog.cancel();
+        mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
+        mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
+        mCheckboxConfirmErrorCode.setChecked(false);
+        mCheckboxWaitErrorCode.setChecked(false);
+        hideWaitDialog();
     }
 
     private Boolean checkPid(){
@@ -759,6 +735,11 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        if(Base.getUserEntity().getVehicleEntityList() == null ||Base.getUserEntity().getObdEntityList() == null){
+                            showToastMsg("暂未绑定设备或汽车");
+                            mCommonAlertDialog.dismiss();
+                            return;
+                        }
                         String confirmPids ="";
                         String pendingPids ="";
                         for(ErrorCodeEntity errorCodeEntity : mAdapter01.getData()){

@@ -25,6 +25,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -108,6 +110,7 @@ public abstract class BaseActivity extends ShakeActivity implements LifecyclePro
     @CallSuper
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        keepScreenLongLight(this);
         //注册rxbus
         if (rxBusRegist()){
             RxBus.get().register(this);
@@ -476,5 +479,10 @@ public abstract class BaseActivity extends ShakeActivity implements LifecyclePro
     @Override
     public boolean shouldShowRequestPermissionRationale(@NonNull String permission) {
         return false;
+    }
+
+    private void keepScreenLongLight(Activity activity) {
+        Window window = activity.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 }

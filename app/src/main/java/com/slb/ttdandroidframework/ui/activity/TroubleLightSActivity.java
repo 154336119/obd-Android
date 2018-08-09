@@ -27,7 +27,7 @@ public class TroubleLightSActivity extends BaseBrvahRefreshActivity<MyComListCon
 
     @Override
     protected String setToolbarTitle() {
-        return "故障灯状态";
+        return getString(R.string.mil_status);
     }
     @Override
     protected RecyclerView.Adapter setAdapter() {

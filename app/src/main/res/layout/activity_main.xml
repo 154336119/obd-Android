@@ -27,22 +27,22 @@
             <RadioButton
                 android:id="@+id/rb_home"
                 android:drawableTop="@drawable/slt_main_bottom_home"
-                android:text="诊断"
+                android:text="@string/diagnostics"
                 style="@style/tab_bottom"/>
             <RadioButton
                 android:id="@+id/rb_data"
                 android:drawableTop="@drawable/slt_main_bottom_data"
-                android:text="数据"
+                android:text="@string/live_data"
                 style="@style/tab_bottom"/>
             <RadioButton
                 android:id="@+id/rb_history"
                 android:drawableTop="@drawable/slt_main_bottom_history"
-                android:text="历史"
+                android:text="@string/history"
                 style="@style/tab_bottom"/>
             <RadioButton
                 android:id="@+id/rb_mine"
                 android:drawableTop="@drawable/slt_main_bottom_mine"
-                android:text="我的"
+                android:text="@string/my_device"
                 style="@style/tab_bottom"/>
 
         </RadioGroup>

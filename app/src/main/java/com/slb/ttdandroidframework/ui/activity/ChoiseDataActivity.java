@@ -142,7 +142,11 @@ public class ChoiseDataActivity
         SparseArray<String> sparseArrayNames = new SparseArray<String>();
         if(mChoiseCmdsName!=null &&mChoiseCmdsName.size()>0){
             for(int i = 0;i<mChoiseCmdsName.size();i++){
-                sparseArrayNames.put(i,mChoiseCmdsName.get(0));
+                for(int j =0;j<ObdConfig.getAllCommandsName().size();j++){
+                    if(ObdConfig.getAllCommandsName().get(j).equals(mChoiseCmdsName.get(i))){
+                        sparseArrayNames.put(j,mChoiseCmdsName.get(i));
+                    }
+                }
             }
         }
         return sparseArrayNames;
