@@ -40,32 +40,37 @@ public class BluetoothUtil {
 
     public static boolean isRunning = false;
     public static BluetoothDevice getDeviceInstance() throws IOException {
-        if (devInstance == null) {
 //            final String remoteDevice  = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.PARA_DEV_ADDR,"");\
-            final String remoteDevice = getRemoteDevice();
-            if (remoteDevice == null || "".equals(remoteDevice)) {
-                Logger.d("获取设备失败");
-                throw new IOException();
-            } else {
-                final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-                devInstance = btAdapter.getRemoteDevice(remoteDevice);
-                   btAdapter.cancelDiscovery();
-            }
+        final String remoteDevice = getRemoteDevice();
+        if (remoteDevice == null || "".equals(remoteDevice)) {
+            Logger.d("获取设备失败");
+            throw new IOException();
+        } else {
+            final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+            devInstance = btAdapter.getRemoteDevice(remoteDevice);
+            btAdapter.cancelDiscovery();
         }
-         return devInstance;
+        return devInstance;
     }
 
     public static BluetoothSocket getSockInstance() throws IOException {
         if (sockInstance == null) {
             try {
-                if(getDeviceInstance() == null){
-                    isRunning = false;
-                    return null;
+                final String remoteDevice = getRemoteDevice();
+                if (remoteDevice == null || "".equals(remoteDevice)) {
+                    Logger.d("获取设备失败");
+                    throw new IOException();
+                } else {
+                    final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+                    devInstance = btAdapter.getRemoteDevice(remoteDevice);
+                    btAdapter.cancelDiscovery();
                 }
-                sockInstance = BluetoothManager.connect(getDeviceInstance());
-              } catch (Exception e) {
+
+                sockInstance = BluetoothManager.connect(devInstance);
+            } catch (Exception e) {
                 e.printStackTrace();
                 isRunning = false;
+
                 Logger.d("sock连接失败失败");
                 closeSocket(sockInstance);
                 throw new IOException();

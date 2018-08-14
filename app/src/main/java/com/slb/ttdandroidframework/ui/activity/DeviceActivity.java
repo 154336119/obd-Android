@@ -193,14 +193,16 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
 
         for (int i=0; i<deviceList.size(); i++ ){
             bondedNames[i] = deviceList.get(i).getName();
-            SharedPreferencesUtils.setParam(DeviceActivity.this,PARA_DEV_ADDR,deviceList.get(i).getAddress());
+        }
+        if(deviceList.size()>0){
+            SharedPreferencesUtils.setParam(DeviceActivity.this,PARA_DEV_ADDR,deviceList.get(0).getAddress());
         }
         builder.setSingleChoiceItems(bondedNames,0,new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 SharedPreferencesUtils.setParam(DeviceActivity.this,PARA_DEV_ADDR,deviceList.get(which).getAddress());
                 obdDevice = deviceList.get(which);
-                BluetoothUtil.setRemoteDevice(deviceList.get(which).getAddress());
+                BluetoothUtil.setRemoteDevice(obdDevice.getAddress());
             }
         });
 
