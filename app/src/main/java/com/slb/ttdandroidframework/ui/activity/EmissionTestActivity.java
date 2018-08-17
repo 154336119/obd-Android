@@ -89,6 +89,7 @@ public class EmissionTestActivity extends BaseMvpActivity<EmissionTestContract.I
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mIvBack:
+                finish();
                 break;
             case R.id.mTvAgain:
                 break;

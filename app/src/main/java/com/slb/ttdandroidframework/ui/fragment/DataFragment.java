@@ -57,6 +57,8 @@ public class DataFragment
     Unbinder unbinder;
     @BindView(R.id.mTvAgain)
     ImageView mTvAgain;
+    @BindView(R.id.mIvBack)
+    ImageView mIvBack;
     private List<DataEntity> mList = new ArrayList<>();
     private DataAdapter mAdapter;
     private Handler handler = new Handler();
@@ -100,9 +102,9 @@ public class DataFragment
     private final Runnable mQueueCommands = new Runnable() {
         @Override
         public void run() {
-            if (service != null ) {
+            if (service != null) {
                 queueCommands();
-                if(BluetoothUtil.isRunning){
+                if (BluetoothUtil.isRunning) {
                     handler.postDelayed(mQueueCommands, 2000);
                 }
             }
@@ -110,7 +112,7 @@ public class DataFragment
     };
 
     private void queueCommands() {
-        Logger.d("queueCommands:"+ObdConfig.getCommands().size());
+        Logger.d("queueCommands:" + ObdConfig.getCommands().size());
         for (ObdCommand Command : mCmds) {
             service.queueJob(new ObdCommandJob(Command));
         }
@@ -157,7 +159,7 @@ public class DataFragment
         initComs();
         Intent serviceIntent = new Intent(_mActivity, ObdGatewayService.class);
         _mActivity.bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
-
+        mIvBack.setVisibility(View.GONE);
         return rootView;
     }
 
@@ -166,7 +168,6 @@ public class DataFragment
         super.onDestroyView();
         unbinder.unbind();
     }
-
     @Override
     protected boolean rxBusRegist() {
         return true;
@@ -184,7 +185,7 @@ public class DataFragment
 
     public void onObdCommandJobEvent(ObdCommandJob job) {
         boolean isNew = false;
-        if (job == null ) {
+        if (job == null) {
             return;
         }
         for (DataEntity entity : mAdapter.getData()) {
@@ -207,13 +208,14 @@ public class DataFragment
     public void onViewClicked() {
         Bundle bundle = new Bundle();
         ArrayList<String> commandName = new ArrayList<>();
-        for(ObdCommand command:  mCmds){
+        for (ObdCommand command : mCmds) {
             commandName.add(command.getName());
         }
-        bundle.putStringArrayList(BizcContant.PARA_CHOISE_DATA,commandName);
-        ActivityUtil.next(_mActivity, ChoiseDataActivity.class,bundle,false);
+        bundle.putStringArrayList(BizcContant.PARA_CHOISE_DATA, commandName);
+        ActivityUtil.next(_mActivity, ChoiseDataActivity.class, bundle, false);
     }
-    private void initComs(){
+
+    private void initComs() {
         mCmds.add(new AirIntakeTemperatureCommand());
         mCmds.add(new AmbientAirTemperatureCommand());
         mCmds.add(new EngineCoolantTemperatureCommand());
@@ -222,13 +224,13 @@ public class DataFragment
 
     @Subscribe
     public void onChociseComEvent(ChoiseComEvent event) {
-        if(event.isAdd()){
+        if (event.isAdd()) {
             mCmds.add(ObdConfig.getCommandForNameIndex(event.getCommandName()));
-        }else{
+        } else {
             ObdCommand obdCommand = ObdConfig.getCommandForNameIndex(event.getCommandName());
             int index = 0;
-            for(ObdCommand command: mCmds){
-                if(command.getName().equals(obdCommand.getName())){
+            for (ObdCommand command : mCmds) {
+                if (command.getName().equals(obdCommand.getName())) {
                     index = mCmds.indexOf(command);
                 }
             }
@@ -239,16 +241,16 @@ public class DataFragment
         handler.post(mQueueCommands);
     }
 
-    public String getRealCinnabdResult(ObdCommandJob job){
+    public String getRealCinnabdResult(ObdCommandJob job) {
         String cmdResult;
         if (job.getState().equals(ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR)) {
             cmdResult = job.getCommand().getResult();
-        }  else if (job.getState().equals(ObdCommandJob.ObdCommandJobState.NOT_SUPPORTED)) {
+        } else if (job.getState().equals(ObdCommandJob.ObdCommandJobState.NOT_SUPPORTED)) {
             cmdResult = getString(R.string.status_obd_no_support);
         } else {
             cmdResult = job.getCommand().getFormattedResult();
 
         }
-             return cmdResult;
+        return cmdResult;
     }
 }
