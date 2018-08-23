@@ -15,9 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.pires.obd.commands.ObdCommand;
-import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
@@ -39,6 +37,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
@@ -52,6 +51,8 @@ public class NewChoiseDataActivity
     ImageView mTvAgain;
     @BindView(R.id.mTvName)
     TextView mTvName;
+    @BindView(R.id.mIvBack)
+    ImageView mIvBack;
     private List<DataEntity> mList = new ArrayList<>();
     private DataAdapter mAdapter;
     private Handler handler = new Handler();
@@ -124,7 +125,6 @@ public class NewChoiseDataActivity
     }
 
 
-
     @Override
     protected boolean rxBusRegist() {
         return true;
@@ -152,7 +152,7 @@ public class NewChoiseDataActivity
                 return;
             }
         }
-        DataEntity dataEntity1 = new DataEntity(job.getCommand().getName(),getRealCinnabdResult(job));
+        DataEntity dataEntity1 = new DataEntity(job.getCommand().getName(), getRealCinnabdResult(job));
         mAdapter.addData(dataEntity1);
 
         if (mAdapter.getData().size() == 0) {
@@ -177,7 +177,7 @@ public class NewChoiseDataActivity
                         .sizeResId(R.dimen.distance_1)
                         .build());
         try {
-            if (BluetoothUtil.getSockInstance()!=null) {
+            if (BluetoothUtil.getSockInstance() != null) {
                 Intent serviceIntent = new Intent(this, ChoiseObdGatewayService.class);
                 bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
             }
@@ -204,15 +204,16 @@ public class NewChoiseDataActivity
 
 
     }
-    public void stateUpdate(final ObdCommandJob job){
+
+    public void stateUpdate(final ObdCommandJob job) {
         onObdCommandJobEvent(job);
     }
 
-    public String getRealCinnabdResult(ObdCommandJob job){
+    public String getRealCinnabdResult(ObdCommandJob job) {
         String cmdResult;
         if (job.getState().equals(ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR)) {
             cmdResult = job.getCommand().getResult();
-        }  else if (job.getState().equals(ObdCommandJob.ObdCommandJobState.NOT_SUPPORTED)) {
+        } else if (job.getState().equals(ObdCommandJob.ObdCommandJobState.NOT_SUPPORTED)) {
             cmdResult = getString(R.string.status_obd_no_support);
         } else {
             cmdResult = job.getCommand().getFormattedResult();
@@ -220,5 +221,10 @@ public class NewChoiseDataActivity
         }
         return cmdResult;
 
+    }
+
+    @OnClick(R.id.mIvBack)
+    public void onViewClicked() {
+        finish();
     }
 }

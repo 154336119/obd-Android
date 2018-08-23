@@ -65,7 +65,7 @@ dependencies {
     //    compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.trello:rxlifecycle-android:0.8.0'
     //RxBus
-    compile 'com.hwangjr.rxbus:rxbus:1.0.5'
+    compile 'com.hwangjr.rxbus:rxbus:1.0.6'
     //Json解析库
     compile 'com.alibaba:fastjson:1.2.9'
     //图片加载、缓存库

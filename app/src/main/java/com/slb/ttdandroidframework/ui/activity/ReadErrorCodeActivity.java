@@ -299,6 +299,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mIvBack:
+                finish();
                 break;
             case R.id.mTvAgain:
                 if(!BluetoothUtil.isRunning){

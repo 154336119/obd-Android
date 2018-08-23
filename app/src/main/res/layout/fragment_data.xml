@@ -8,6 +8,11 @@
          android:layout_width="match_parent"
          android:layout_height="44dp"
          android:background="@color/color_3C444F">
+          <ImageView
+              android:id="@+id/mIvBack"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:src="@drawable/back"/>
           <TextView
               android:id="@+id/mTvName"
               android:layout_width="wrap_content"
