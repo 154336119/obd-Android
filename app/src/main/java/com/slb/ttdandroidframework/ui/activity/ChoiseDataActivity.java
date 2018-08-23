@@ -114,9 +114,6 @@ public class ChoiseDataActivity
                         .sizeResId(R.dimen.distance_1)
                         .build());
 
-        //初始化数据
-        for (ObdCommand Command : ObdConfig.getChoiseCommands()) {
-        }
 
 //        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
 //            @Override

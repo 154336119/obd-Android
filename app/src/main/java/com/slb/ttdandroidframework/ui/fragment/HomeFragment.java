@@ -1,5 +1,7 @@
 package com.slb.ttdandroidframework.ui.fragment;
 
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hwangjr.rxbus.RxBus;
+import com.hwangjr.rxbus.annotation.Subscribe;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.fragment.BaseMvpFragment;
 import com.slb.frame.utils.ActivityUtil;
@@ -15,14 +19,21 @@ import com.slb.frame.utils.ConvertUtils;
 import com.slb.frame.utils.ScreenUtils;
 import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
+import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
+import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
 import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
 import com.slb.ttdandroidframework.ui.activity.EmissionTestActivity;
 import com.slb.ttdandroidframework.ui.activity.FreezeFrameActivity;
 import com.slb.ttdandroidframework.ui.activity.ModuleFiveActivity;
 import com.slb.ttdandroidframework.ui.activity.ReadErrorCodeActivity;
+import com.slb.ttdandroidframework.ui.activity.SubmitErrorCodeActivity;
 import com.slb.ttdandroidframework.ui.activity.TroubleLightSActivity;
 import com.slb.ttdandroidframework.ui.contract.HomeContract;
 import com.slb.ttdandroidframework.ui.presenter.HomePresenter;
+import com.slb.ttdandroidframework.util.BluetoothUtil;
+import com.slb.ttdandroidframework.util.config.BizcContant;
+import com.slb.ttdandroidframework.weight.CustomDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,7 +77,7 @@ public class HomeFragment
     TextView tv01;
     @BindView(R.id.tvConnect)
     TextView tvConnect;
-
+    private CustomDialog mCommonAlertDialog;
     @Override
     protected boolean hasToolbar() {
         return false;
@@ -167,8 +178,54 @@ public class HomeFragment
                 ActivityUtil.next(_mActivity, ReadErrorCodeActivity.class);
                 break;
             case R.id.tvConnect:
-                ActivityUtil.next(_mActivity,DeviceActivity.class);
+//                if(tvConnect.getText().toString().equals("已连接")){
+//                    showDialog();
+//                }else{
+                    ActivityUtil.next(_mActivity,DeviceActivity.class);
+//                }
                 break;
         }
+    }
+
+    @Subscribe
+    public void onObdConnectStateEvent(ObdConnectStateEvent event) {
+        if(event.isConnect()){
+            tvConnect.setText("已连接");
+        }else{
+            tvConnect.setText("连接obd");
+        }
+    }
+
+    /**
+     * 显示dialog
+     */
+    private void showDialog() {
+        CustomDialog.Builder dialog = new CustomDialog.Builder(_mActivity);
+        dialog
+                .setTitle("提示")
+                .setMessage("是否断开OBD连接？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        BluetoothUtil.setIsRunning(false);
+                        BluetoothUtil.setSockInstance(null);
+                        BluetoothUtil.setRemoteDevice(null);
+                        RxBus.get().post(new ObdServiceStateEvent(false));
+                        RxBus.get().post(new ObdConnectStateEvent(false));
+                        dialogInterface.dismiss();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        mCommonAlertDialog = dialog.create();
+        mCommonAlertDialog.setCanceledOnTouchOutside(false);
+        mCommonAlertDialog.show();
+    }
+    @Override
+    protected boolean rxBusRegist() {
+        return true;
     }
 }

@@ -36,18 +36,19 @@ public class ChoiseDataAdapter extends BaseQuickAdapter<String,BaseViewHolder> {
         //测试
         int index = mData.indexOf(entity);
         String name =  mSparseArray.get(index);
-
         baseViewHolder.setChecked(R.id.CheckBox,(mSparseArray.get( mData.indexOf(entity))==null? false : true));
         baseViewHolder.setOnCheckedChangeListener(R.id.CheckBox, new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked)
-                {
-                    mSparseArray.put(mData.indexOf(entity),entity);
-                    RxBus.get().post(new ChoiseComEvent(entity,true));
-                }else{
-                    mSparseArray.remove(mData.indexOf(entity));
-                    RxBus.get().post(new ChoiseComEvent(entity,false));
+                if(compoundButton.isPressed()){
+                    if(isChecked)
+                    {
+                        mSparseArray.put(mData.indexOf(entity),entity);
+                        RxBus.get().post(new ChoiseComEvent(entity,true));
+                    }else{
+                        mSparseArray.remove(mData.indexOf(entity));
+                        RxBus.get().post(new ChoiseComEvent(entity,false));
+                    }
                 }
 
             }

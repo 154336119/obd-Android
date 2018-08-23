@@ -8,6 +8,7 @@ public class BizcContant {
     public static final String PARA_DEV_ADDR = "para_dev_addr";
     public static final String PARA_EMAIL= "para_email";
     public static final String PARA_CODE = "para_cpde";
+    public static final String SP_OBD = "sp_obd";
 
     public static final String PARA_OPERATION = "para_operation";
     public static final int EDIT = 1;

@@ -53,6 +53,10 @@ public class BluetoothUtil {
         return devInstance;
     }
 
+    public static void setSockInstance(BluetoothSocket sockInstance) {
+        BluetoothUtil.sockInstance = sockInstance;
+    }
+
     public static BluetoothSocket getSockInstance() throws IOException {
         if (sockInstance == null) {
             try {
@@ -72,7 +76,7 @@ public class BluetoothUtil {
                 isRunning = false;
 
                 Logger.d("sock连接失败失败");
-                closeSocket(sockInstance);
+                //closeSocket(sockInstance);
                 throw new IOException();
             }
         }

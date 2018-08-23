@@ -44,6 +44,7 @@ import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.MyApplication;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
+import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
 import com.slb.ttdandroidframework.ui.adapter.ErrorCodeAdapter;
@@ -285,13 +286,13 @@ public class ReadErrorCodeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-        RxBus.get().post(new ObdConnectStateEvent(false));
+        RxBus.get().post(new ObdServiceStateEvent(false));
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.get().post(new ObdConnectStateEvent(true));
+        RxBus.get().post(new ObdServiceStateEvent(true));
     }
 
     @OnClick({R.id.mIvBack, R.id.mTvAgain,R.id.BtnClearError})

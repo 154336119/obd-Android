@@ -14,6 +14,7 @@ import com.slb.ttdandroidframework.MainActivity;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.ui.contract.LoginContract;
 import com.slb.ttdandroidframework.ui.presenter.LoginPresenter;
+import com.slb.ttdandroidframework.util.config.ObdConfig;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

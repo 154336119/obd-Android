@@ -27,7 +27,9 @@ import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.ChoiseComEvent;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
+import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.http.bean.DataEntity;
+import com.slb.ttdandroidframework.ui.SharedPreferencesUtil;
 import com.slb.ttdandroidframework.ui.activity.ChoiseDataActivity;
 import com.slb.ttdandroidframework.ui.adapter.DataAdapter;
 import com.slb.ttdandroidframework.ui.contract.DataContract;
@@ -40,6 +42,7 @@ import com.slb.ttdandroidframework.util.io.ObdCommandJob;
 import com.slb.ttdandroidframework.util.io.ObdGatewayService;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +65,7 @@ public class DataFragment
     private Handler handler = new Handler();
     private
     AbstractGatewayService service;
-    private ArrayList<ObdCommand> mCmds = new ArrayList<>();
+    private List<ObdCommand> mCmds = new ArrayList<>();
     private boolean isServiceBound;
     private ServiceConnection serviceConn = new ServiceConnection() {
         @Override
@@ -71,6 +74,7 @@ public class DataFragment
             isServiceBound = true;
             service = ((AbstractGatewayService.AbstractGatewayServiceBinder) binder).getService();
             service.setContext(_mActivity);
+            service.startJob();
             Log.d(TAG, "Starting live data");
             if (service != null) {
                 Logger.d("service1:");
@@ -103,14 +107,14 @@ public class DataFragment
             if (service != null ) {
                 queueCommands();
                 if(BluetoothUtil.isRunning){
-                    handler.postDelayed(mQueueCommands, 2000);
+                    handler.postDelayed(mQueueCommands, 1000);
                 }
             }
         }
     };
 
     private void queueCommands() {
-        Logger.d("queueCommands:"+ObdConfig.getCommands().size());
+        Logger.d("queueCommands:"+ObdConfig.getAllCommands().size());
         for (ObdCommand Command : mCmds) {
             service.queueJob(new ObdCommandJob(Command));
         }
@@ -154,10 +158,16 @@ public class DataFragment
                         .color(Color.parseColor("#2B3139"))
                         .sizeResId(R.dimen.distance_1)
                         .build());
-        initComs();
-        Intent serviceIntent = new Intent(_mActivity, ObdGatewayService.class);
-        _mActivity.bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
 
+        mCmds =  ObdConfig.getSpCommandList();
+        if(mCmds==null || mCmds.size()==0){
+            initComs();
+        }
+
+        for(ObdCommand command : mCmds){
+            DataEntity dataEntity1 = new DataEntity(command.getName()," ");
+            mAdapter.addData(dataEntity1);
+        }
         return rootView;
     }
 
@@ -173,8 +183,27 @@ public class DataFragment
     }
 
     @Subscribe
+    public void onObdServiceStateEvent(ObdServiceStateEvent event) {
+        if (event.isConnect()) {
+            if(service!=null){
+                service.clearQueue();
+            }
+            Intent serviceIntent = new Intent(_mActivity, ObdGatewayService.class);
+            _mActivity.bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
+            handler.post(mQueueCommands);
+        } else {
+            handler.removeCallbacks(mQueueCommands);
+        }
+    }
+
+    @Subscribe
     public void onObdConnectStateEvent(ObdConnectStateEvent event) {
         if (event.isConnect()) {
+            if(service!=null){
+                service.clearQueue();
+            }
+            Intent serviceIntent = new Intent(_mActivity, ObdGatewayService.class);
+            _mActivity.bindService(serviceIntent, serviceConn, Context.BIND_AUTO_CREATE);
             handler.post(mQueueCommands);
         } else {
             handler.removeCallbacks(mQueueCommands);
@@ -183,6 +212,12 @@ public class DataFragment
 //    @Subscribe
 
     public void onObdCommandJobEvent(ObdCommandJob job) {
+        if (job.getState().equals(ObdCommandJob.ObdCommandJobState.BROKEN_PIPE)) {
+            if (isServiceBound){
+                doUnbindService();
+                return;
+            }
+        }
         boolean isNew = false;
         if (job == null ) {
             return;
@@ -195,12 +230,23 @@ public class DataFragment
                 return;
             }
         }
-        DataEntity dataEntity1 = new DataEntity(job.getCommand().getName(), job.getCommand().getFormattedResult());
-        mAdapter.addData(dataEntity1);
-        if (mAdapter.getData().size() == 0) {
-            DataEntity dataEntity = new DataEntity(job.getCommand().getName(), getRealCinnabdResult(job));
-            mAdapter.addData(dataEntity);
-        }
+//        //包含在命令里的
+//        boolean isComdsContain = false;
+//        for(ObdCommand command : mCmds){
+//            if(command.getName().equals(job.getCommand().getName())){
+//                isComdsContain = true;
+//            }
+//        }
+//        if(isComdsContain){
+//            DataEntity dataEntity1 = new DataEntity(job.getCommand().getName(), job.getCommand().getFormattedResult());
+//            mAdapter.addData(dataEntity1);
+//        }
+
+
+//        if (mAdapter.getData().size() == 0) {
+//            DataEntity dataEntity = new DataEntity(job.getCommand().getName(), getRealCinnabdResult(job));
+//            mAdapter.addData(dataEntity);
+//        }
     }
 
     @OnClick(R.id.mTvAgain)
@@ -224,6 +270,11 @@ public class DataFragment
     public void onChociseComEvent(ChoiseComEvent event) {
         if(event.isAdd()){
             mCmds.add(ObdConfig.getCommandForNameIndex(event.getCommandName()));
+            DataEntity dataEntity1 = new DataEntity(event.getCommandName()," ");
+            mAdapter.addData(dataEntity1);
+            if(service != null){
+                service.clearQueue();
+            }
         }else{
             ObdCommand obdCommand = ObdConfig.getCommandForNameIndex(event.getCommandName());
             int index = 0;
@@ -233,10 +284,14 @@ public class DataFragment
                 }
             }
             mCmds.remove(index);
-            mAdapter.getData().remove(index);
+            mAdapter.remove(index);
             Logger.d(mCmds.size());
+            mAdapter.notifyDataSetChanged();
         }
-        handler.post(mQueueCommands);
+        if(BluetoothUtil.isRunning){
+            handler.post(mQueueCommands);
+        }
+        ObdConfig.saveSpObdCommandName(mCmds);
     }
 
     public String getRealCinnabdResult(ObdCommandJob job){
@@ -249,6 +304,31 @@ public class DataFragment
             cmdResult = job.getCommand().getFormattedResult();
 
         }
+        Logger.d(job.getCommand().getName()+"------"+cmdResult);
              return cmdResult;
+    }
+
+//    private void doUnbindService() {
+//        if (isServiceBound) {
+//            showToastMsg("Obd产品断开连接");
+//            obdStatusTextView.setText(getString(R.string.status_obd_disconnected));
+//        }
+//    }
+private void doUnbindService() {
+    if (isServiceBound) {
+        if (service.isRunning()) {
+            service.stopService();
+            showToastMsg("Obd产品断开连接");
+            Log.d(TAG, "Unbinding OBD service..");
+            isServiceBound = false;
+            _mActivity.unbindService(serviceConn);
+        }
+    }
+}
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        doUnbindService();
     }
 }

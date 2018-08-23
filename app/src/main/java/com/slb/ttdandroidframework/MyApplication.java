@@ -21,7 +21,9 @@ import com.orhanobut.logger.Logger;
 import com.slb.frame.http2.retrofit.HttpLoggingInterceptor;
 import com.slb.frame.utils.AppConfig;
 import com.slb.ttdandroidframework.http.bean.UserEntity;
+import com.slb.ttdandroidframework.ui.SharedPreferencesUtil;
 import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
+import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
 import com.slb.ttdandroidframework.util.io.ObdGatewayService;
 import com.tencent.bugly.Bugly;
@@ -46,6 +48,7 @@ public class MyApplication extends Application{
         initLogUtils();
         initOkGo();
         Bugly.init(getApplicationContext(), "60be1128c4", false);
+        SharedPreferencesUtil.getInstance(this, BizcContant.SP_OBD);
     }
 
 

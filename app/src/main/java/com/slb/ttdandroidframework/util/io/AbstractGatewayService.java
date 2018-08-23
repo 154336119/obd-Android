@@ -11,6 +11,10 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.github.pires.obd.commands.protocol.EchoOffCommand;
+import com.github.pires.obd.commands.protocol.ObdResetCommand;
+import com.github.pires.obd.commands.protocol.SelectProtocolCommand;
+import com.github.pires.obd.enums.ObdProtocols;
 import com.slb.ttdandroidframework.ui.BluetoothActivity;
 
 import java.io.IOException;
@@ -89,6 +93,10 @@ public abstract class AbstractGatewayService extends Service {
         }
           }
 
+    public void clearQueue(){
+        jobsQueue.clear();
+    }
+
     /**
      * Show a notification while this service is running.
      */
@@ -127,5 +135,38 @@ public abstract class AbstractGatewayService extends Service {
         public AbstractGatewayService getService() {
             return AbstractGatewayService.this;
         }
+    }
+    public void startJob(){
+
+        // Let's configure the connection.
+        Log.d(TAG, "Queueing jobs for connection configuration..");
+        queueJob(new ObdCommandJob(new ObdResetCommand()));
+
+        //Below is to give the adapter enough time to reset before sending the commands, otherwise the first startup commands could be ignored.
+        try { Thread.sleep(500); } catch (InterruptedException e) { e.printStackTrace(); }
+
+        queueJob(new ObdCommandJob(new EchoOffCommand()));
+
+//    /*
+//     * Will send second-time based on tests.
+//     *
+//     * TODO this can be done w/o having to queue jobs by just issuing
+//     * command.run(), command.getResult() and validate the result.
+//     */
+//        queueJob(new ObdCommandJob(new EchoOffCommand()));
+//        queueJob(new ObdCommandJob(new LineFeedOffCommand()));
+//        queueJob(new ObdCommandJob(new TimeoutCommand(62)));
+
+        // Get protocol from preferences
+//        final String protocol = prefs.getString(ConfigActivity.PROTOCOLS_LIST_KEY, "AUTO");
+        final String protocol = "AUTO";
+        queueJob(new ObdCommandJob(new SelectProtocolCommand(ObdProtocols.valueOf(protocol))));
+
+//        // Job for returning dummy data
+//        queueJob(new ObdCommandJob(new AmbientAirTemperatureCommand()));
+//        queueJob(new ObdCommandJob(new EngineCoolantTemperatureCommand()));
+
+        queueCounter = 0L;
+        Log.d(TAG, "Initialization jobs queued.");
     }
 }

@@ -42,6 +42,7 @@ import com.slb.ttdandroidframework.MyApplication;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.ConnectEvent;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
+import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.ui.contract.DeviceContract;
 import com.slb.ttdandroidframework.ui.presenter.DevicePresenter;
@@ -132,7 +133,7 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
                   //  showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
                     break;
                 case OBD_COMMAND_FAILURE_NODATA:
-                    RxBus.get().post(new ObdConnectStateEvent(true));
+                    RxBus.get().post(new ObdServiceStateEvent(true));
                    // showToastMsg(getString(R.string.text_noerrors));
                     break;
                 case NO_DATA:
@@ -211,6 +212,8 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
             public void onClick(DialogInterface dialog, int which) {
                  String remoteDevice  = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.PARA_DEV_ADDR,"");
                  BluetoothUtil.setRemoteDevice(remoteDevice);
+
+
                 ObdHelper  obdHelper = new ObdHelper(mHandler, DeviceActivity.this);
                 obdHelper.connectToDevice();
             }
@@ -329,7 +332,7 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
 //                dialog.dismiss();
         try {
             if( BluetoothUtil.getSockInstance()!=null){
-                RxBus.get().post(new ObdConnectStateEvent(true));
+                RxBus.get().post(new ObdServiceStateEvent(true));
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -101,7 +101,6 @@ public class ObdHelper {
         protected void onPreExecute() {
             DeviceActivity.showLoadingDialog("连接中...");
         }
-
         @Override
         protected String doInBackground(String... params) {
             String result = "";
@@ -126,11 +125,10 @@ public class ObdHelper {
                     mHandler.obtainMessage(CANNOT_CONNECT_TO_DEVICE).sendToTarget();
                     return null;
                 }
-
                 try {
                     // Let's configure the connection.
                     Log.d(TAG, "Queueing jobs for connection configuration..");
-                    MyTroubleCodesCommand tcoc = new MyTroubleCodesCommand();
+                    ObdResetCommand tcoc = new ObdResetCommand();
                     tcoc.run(sock.getInputStream(), sock.getOutputStream());
                     onProgressUpdate(8);
                     result = tcoc.getFormattedResult();

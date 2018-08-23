@@ -31,6 +31,8 @@ import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
 import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand;
 import com.github.pires.obd.enums.AvailableCommandNames;
 import com.github.pires.obd.enums.FuelTrim;
+import com.orhanobut.logger.Logger;
+import com.slb.ttdandroidframework.ui.SharedPreferencesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,130 +53,39 @@ public final class ObdConfig {
     public static final int OBD_COMMAND_FAILURE_MIS = 14;
     public static final int OBD_COMMAND_FAILURE_NODATA = 15;
 
-    public static List<String> getAllCommandsName(){
-//        for(AvailableCommandNames name : AvailableCommandNames.values()){
-//            name.getValue()
-//        }
-        List<String> names = new ArrayList<>();
-        names.add(AvailableCommandNames.AIR_INTAKE_TEMP.getValue());
-        names.add(AvailableCommandNames.AMBIENT_AIR_TEMP.getValue());
-        names.add(AvailableCommandNames.ENGINE_COOLANT_TEMP.getValue());
-        names.add(AvailableCommandNames.BAROMETRIC_PRESSURE.getValue());
-        names.add(AvailableCommandNames.FUEL_PRESSURE.getValue());
-        names.add(AvailableCommandNames.INTAKE_MANIFOLD_PRESSURE.getValue());
-        names.add(AvailableCommandNames.ENGINE_LOAD.getValue());
-        names.add(AvailableCommandNames.ENGINE_RUNTIME.getValue());
-        names.add(AvailableCommandNames.ENGINE_RPM.getValue());
-        names.add(AvailableCommandNames.SPEED.getValue());
-        return names;
-    }
 
     public static List<ObdCommand> getAllCommands(){
         ArrayList<ObdCommand> cmds = new ArrayList<>();
-        cmds.add(new AirIntakeTemperatureCommand());
-        cmds.add(new AmbientAirTemperatureCommand());
-        cmds.add(new EngineCoolantTemperatureCommand());
-        cmds.add(new BarometricPressureCommand());
-        cmds.add(new FuelPressureCommand());
-        cmds.add(new IntakeManifoldPressureCommand());
+        // Control
+        cmds.add(new ModuleVoltageCommand());
+        cmds.add(new EquivalentRatioCommand());
+        cmds.add(new DistanceMILOnCommand());
+        cmds.add(new TimingAdvanceCommand());
+        cmds.add(new VinCommand());
+
+        // Engine
         cmds.add(new LoadCommand());
-        cmds.add(new RuntimeCommand());
         cmds.add(new RPMCommand());
-        cmds.add(new SpeedCommand());
-        return cmds;
-    }
+        cmds.add(new RuntimeCommand());
+        cmds.add(new MassAirFlowCommand());
+        cmds.add(new ThrottlePositionCommand());
 
-    public static ArrayList<ObdCommand> getCommands() {
-        ArrayList<ObdCommand> cmds = new ArrayList<>();
-//        // Control
-////        cmds.add(new ModuleVoltageCommand());
-////        cmds.add(new EquivalentRatioCommand());
-////        cmds.add(new DistanceMILOnCommand());
-//        cmds.add(new DtcNumberCommand());
-////        cmds.add(new TimingAdvanceCommand());
-//        cmds.add(new TroubleCodesCommand());
-////        cmds.add(new VinCommand());
-//
-//        // Engine
-//        cmds.add(new LoadCommand());
-//        cmds.add(new MassAirFlowCommand());
-//        cmds.add(new RPMCommand());
-//        cmds.add(new RuntimeCommand());
-//        cmds.add(new ThrottlePositionCommand());
-//        cmds.add(new OilTempCommand());
-//
-//        // Fuel
-//        cmds.add(new FindFuelTypeCommand());
-//        cmds.add(new ConsumptionRateCommand());
-////         cmds.add(new AverageFuelEconomyObdCommand());
-//        //cmds.add(new FuelEconomyCommand());
-//        cmds.add(new FuelLevelCommand());
-//        // cmds.add(new FuelEconomyMAPObdCommand());
-//        // cmds.add(new FuelEconomyCommandedMAPObdCommand());
-//        cmds.add(new FuelTrimCommand(FuelTrim.LONG_TERM_BANK_1));
-//        cmds.add(new FuelTrimCommand(FuelTrim.LONG_TERM_BANK_2));
-//        cmds.add(new FuelTrimCommand(FuelTrim.SHORT_TERM_BANK_1));
-//        cmds.add(new FuelTrimCommand(FuelTrim.SHORT_TERM_BANK_2));
-//        cmds.add(new AirFuelRatioCommand());
-//        cmds.add(new WidebandAirFuelRatioCommand());
-//        cmds.add(new OilTempCommand());
-//
-//        // Pressure
-//        cmds.add(new BarometricPressureCommand());
-//        cmds.add(new FuelPressureCommand());
-//        cmds.add(new FuelRailPressureCommand());
-//        cmds.add(new IntakeManifoldPressureCommand());
+        // Fuel
+        cmds.add(new FindFuelTypeCommand());
+        cmds.add(new ConsumptionRateCommand());
+        // cmds.add(new AverageFuelEconomyObdCommand());
+        //cmds.add(new FuelEconomyCommand());
+        cmds.add(new FuelLevelCommand());
+        // cmds.add(new FuelEconomyMAPObdCommand());
+        // cmds.add(new FuelEconomyCommandedMAPObdCommand());
+        cmds.add(new FuelTrimCommand(FuelTrim.LONG_TERM_BANK_1));
+        cmds.add(new FuelTrimCommand(FuelTrim.LONG_TERM_BANK_2));
+        cmds.add(new FuelTrimCommand(FuelTrim.SHORT_TERM_BANK_1));
+        cmds.add(new FuelTrimCommand(FuelTrim.SHORT_TERM_BANK_2));
+        cmds.add(new AirFuelRatioCommand());
+        cmds.add(new WidebandAirFuelRatioCommand());
+        cmds.add(new OilTempCommand());
 
-        // Temperature
-        cmds.add(new AirIntakeTemperatureCommand());
-        cmds.add(new AmbientAirTemperatureCommand());
-        cmds.add(new EngineCoolantTemperatureCommand());
-//
-//        // Misc
-//        cmds.add(new SpeedCommand());
-//
-//        //troubleCode
-//        cmds.add(new TroubleCodesCommand());
-
-
-        return cmds;
-    }
-    public static ArrayList<ObdCommand> getChoiseCommands() {
-        ArrayList<ObdCommand> cmds = new ArrayList<>();
-
-//        // Control
-////        cmds.add(new ModuleVoltageCommand());
-////        cmds.add(new EquivalentRatioCommand());
-////        cmds.add(new DistanceMILOnCommand());
-//        cmds.add(new DtcNumberCommand());
-////        cmds.add(new TimingAdvanceCommand());
-//        cmds.add(new TroubleCodesCommand());
-////        cmds.add(new VinCommand());
-//
-//        // Engine
-//        cmds.add(new LoadCommand());
-//        cmds.add(new MassAirFlowCommand());
-//        cmds.add(new RPMCommand());
-//        cmds.add(new RuntimeCommand());
-//        cmds.add(new ThrottlePositionCommand());
-//        cmds.add(new OilTempCommand());
-//
-//        // Fuel
-//        cmds.add(new FindFuelTypeCommand());
-//        cmds.add(new ConsumptionRateCommand());
-////         cmds.add(new AverageFuelEconomyObdCommand());
-//        //cmds.add(new FuelEconomyCommand());
-//        cmds.add(new FuelLevelCommand());
-//        // cmds.add(new FuelEconomyMAPObdCommand());
-//        // cmds.add(new FuelEconomyCommandedMAPObdCommand());
-//        cmds.add(new FuelTrimCommand(FuelTrim.LONG_TERM_BANK_1));
-//        cmds.add(new FuelTrimCommand(FuelTrim.LONG_TERM_BANK_2));
-//        cmds.add(new FuelTrimCommand(FuelTrim.SHORT_TERM_BANK_1));
-//        cmds.add(new FuelTrimCommand(FuelTrim.SHORT_TERM_BANK_2));
-//        cmds.add(new AirFuelRatioCommand());
-//        cmds.add(new WidebandAirFuelRatioCommand());
-//        cmds.add(new OilTempCommand());
-//
         // Pressure
         cmds.add(new BarometricPressureCommand());
         cmds.add(new FuelPressureCommand());
@@ -185,13 +96,67 @@ public final class ObdConfig {
         cmds.add(new AirIntakeTemperatureCommand());
         cmds.add(new AmbientAirTemperatureCommand());
         cmds.add(new EngineCoolantTemperatureCommand());
-//
-//        // Misc
-//        cmds.add(new SpeedCommand());
-//
-//        //troubleCode
-//        cmds.add(new TroubleCodesCommand());
 
+        // Misc
+        cmds.add(new SpeedCommand());
+        return cmds;
+    }
+
+    public static List<String> getAllCommandsName(){
+//        for(AvailableCommandNames name : AvailableCommandNames.values()){
+//            name.getValue()
+//        }
+        List<String> names = new ArrayList<>();
+        names.add("Control Module Power Supply ");
+        names.add("Command Equivalence Ratio");
+        names.add("Distance traveled with MIL on");
+        names.add("Timing Advance");
+        names.add("Vehicle Identification Number (VIN)");
+
+        names.add("Engine Load");
+        names.add("Engine RPM");
+        names.add("Engine Runtime");
+        names.add("Mass Air Flow");
+        names.add("Throttle Position");
+
+        names.add("Fuel Type");
+        names.add("Fuel Consumption Rate");
+        names.add("Long Term Fuel Trim Bank 1");
+        names.add("Long Term Fuel Trim Bank 2");
+        names.add("Short Term Fuel Trim Bank 1");
+        names.add("Short Term Fuel Trim Bank 2");
+        names.add("Air/Fuel Ratio");
+        names.add("Wideband Air/Fuel Ratio");
+        names.add("Engine oil temperature");
+
+        names.add("Barometric Pressure");
+        names.add("Fuel Pressure");
+        names.add("Fuel Rail Pressure");
+        names.add("Intake Manifold Pressure");
+
+        names.add("Air Intake Temperature");
+        names.add("Ambient Air Temperature");
+        names.add("Engine Coolant Temperature");
+        names.add("Vehicle Speed");
+
+        return names;
+    }
+
+    public static ArrayList<ObdCommand> getCommands() {
+        ArrayList<ObdCommand> cmds = new ArrayList<>();
+        // Control
+        cmds.add(new ModuleVoltageCommand());
+        cmds.add(new EquivalentRatioCommand());
+        cmds.add(new DistanceMILOnCommand());
+        cmds.add(new TimingAdvanceCommand());
+        cmds.add(new VinCommand());
+
+        // Engine
+        cmds.add(new LoadCommand());
+        cmds.add(new RPMCommand());
+        cmds.add(new RuntimeCommand());
+        cmds.add(new MassAirFlowCommand());
+        cmds.add(new ThrottlePositionCommand());
 
         return cmds;
     }
@@ -200,5 +165,26 @@ public final class ObdConfig {
         int index = getAllCommandsName().indexOf(name);
         getAllCommands().get(index);
         return getAllCommands().get(index);
+    }
+
+    public static void saveSpObdCommandName(List<ObdCommand> commandList){
+        List<String> nameList = new ArrayList<>();
+        for(ObdCommand obdCommand : commandList){
+            nameList.add(obdCommand.getName());
+        }
+        SharedPreferencesUtil.putListData(BizcContant.SP_OBD, nameList);
+    }
+
+    public static List<ObdCommand> getSpCommandList(){
+        List<ObdCommand> obdCommandList = new ArrayList<>();
+        List<String> nameList  = SharedPreferencesUtil.getListData(BizcContant.SP_OBD, String.class);
+        for(int i =0;i<nameList.size();i++){
+            for(int j = 0;j<getAllCommands().size();j++){
+                if(getAllCommands().get(j).getName().equals(nameList.get(i))){
+                    obdCommandList.add(getAllCommands().get(j));
+                }
+            }
+        }
+        return obdCommandList;
     }
 }

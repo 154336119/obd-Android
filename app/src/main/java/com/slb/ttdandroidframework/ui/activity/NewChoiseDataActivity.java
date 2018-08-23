@@ -102,9 +102,9 @@ public class NewChoiseDataActivity
     };
 
     private void queueCommands() {
-        for (ObdCommand Command : ObdConfig.getChoiseCommands()) {
-            service.queueJob(new ObdCommandJob(Command));
-        }
+//        for (ObdCommand Command : ObdConfig.getChoiseCommands()) {
+//            service.queueJob(new ObdCommandJob(Command));
+//        }
     }
 
     @Override

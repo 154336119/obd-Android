@@ -20,6 +20,7 @@ import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand
 import com.github.pires.obd.enums.ObdProtocols;
 import com.github.pires.obd.exceptions.UnsupportedCommandException;
 import com.hwangjr.rxbus.RxBus;
+import com.orhanobut.logger.Logger;
 import com.slb.ttdandroidframework.MainActivity;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.ui.WeepakeActivity;
@@ -119,24 +120,24 @@ public class ObdGatewayService extends AbstractGatewayService {
 
         queueJob(new ObdCommandJob(new EchoOffCommand()));
 
-    /*
-     * Will send second-time based on tests.
-     *
-     * TODO this can be done w/o having to queue jobs by just issuing
-     * command.run(), command.getResult() and validate the result.
-     */
-        queueJob(new ObdCommandJob(new EchoOffCommand()));
-        queueJob(new ObdCommandJob(new LineFeedOffCommand()));
-        queueJob(new ObdCommandJob(new TimeoutCommand(62)));
+//    /*
+//     * Will send second-time based on tests.
+//     *
+//     * TODO this can be done w/o having to queue jobs by just issuing
+//     * command.run(), command.getResult() and validate the result.
+//     */
+//        queueJob(new ObdCommandJob(new EchoOffCommand()));
+//        queueJob(new ObdCommandJob(new LineFeedOffCommand()));
+//        queueJob(new ObdCommandJob(new TimeoutCommand(62)));
 
         // Get protocol from preferences
 //        final String protocol = prefs.getString(ConfigActivity.PROTOCOLS_LIST_KEY, "AUTO");
         final String protocol = "AUTO";
         queueJob(new ObdCommandJob(new SelectProtocolCommand(ObdProtocols.valueOf(protocol))));
 
-        // Job for returning dummy data
-        queueJob(new ObdCommandJob(new AmbientAirTemperatureCommand()));
-        queueJob(new ObdCommandJob(new EngineCoolantTemperatureCommand()));
+//        // Job for returning dummy data
+//        queueJob(new ObdCommandJob(new AmbientAirTemperatureCommand()));
+//        queueJob(new ObdCommandJob(new EngineCoolantTemperatureCommand()));
 
         queueCounter = 0L;
         Log.d(TAG, "Initialization jobs queued.");
@@ -162,23 +163,25 @@ public class ObdGatewayService extends AbstractGatewayService {
      */
     protected void executeQueue() throws InterruptedException {
         Log.d(TAG, "Executing queue..");
+        isRunning = true;
         while (!Thread.currentThread().isInterrupted()) {
              ObdCommandJob job = null;
             try {
                 sock = BluetoothUtil.getSockInstance();
             } catch (IOException e) {
                 e.printStackTrace();
+                Logger.d("断开连接拉 =====================================================断开连接拉");
             }
             try {
                   job = jobsQueue.take();
 
                 // log job
-                Log.d(TAG, "Taking job[" + job.getId() + "] from queue..");
+//                Log.d(TAG, "Taking job[" + job.getId() + "] from queue..");
 
                 if (job.getState().equals(ObdCommandJob.ObdCommandJobState.NEW)) {
-                    Log.d(TAG, "Job state is NEW. Run it..");
+//                    Log.d(TAG, "Job state is NEW. Run it..");
                     job.setState(ObdCommandJob.ObdCommandJobState.RUNNING);
-                    if (sock.isConnected()) {
+                        if (sock.isConnected()) {
                         job.getCommand().run(sock.getInputStream(), sock.getOutputStream());
                     } else {
 
@@ -235,17 +238,18 @@ public class ObdGatewayService extends AbstractGatewayService {
 //        notificationManager.cancel(NOTIFICATION_ID);
         jobsQueue.clear();
         isRunning = false;
-
+        BluetoothUtil.setIsRunning(false);
         if (sock != null)
             // close socket
             try {
+                BluetoothUtil.getSockInstance().close();
                 sock.close();
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
             }
-
+        BluetoothUtil.setSockInstance(null);
         // kill service
-      //  stopSelf();
+        stopSelf();
     }
 
     public boolean isRunning() {
