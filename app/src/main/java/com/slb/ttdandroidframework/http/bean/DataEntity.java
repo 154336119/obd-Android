@@ -10,6 +10,15 @@ import android.os.Parcelable;
 public class DataEntity implements Parcelable {
     private String title;
     private String value;
+    private String des;
+
+    public String getDes() {
+        return des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
+    }
 
     public boolean isCheck() {
         return isCheck;
@@ -44,6 +53,7 @@ public class DataEntity implements Parcelable {
         this.value = value;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -53,12 +63,14 @@ public class DataEntity implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.title);
         dest.writeString(this.value);
+        dest.writeString(this.des);
         dest.writeByte(this.isCheck ? (byte) 1 : (byte) 0);
     }
 
     protected DataEntity(Parcel in) {
         this.title = in.readString();
         this.value = in.readString();
+        this.des = in.readString();
         this.isCheck = in.readByte() != 0;
     }
 

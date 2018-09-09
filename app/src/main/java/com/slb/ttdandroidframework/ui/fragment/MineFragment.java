@@ -17,14 +17,12 @@ import com.slb.frame.ui.fragment.BaseMvpFragment;
 import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.event.ModNickNameEvent;
 import com.slb.ttdandroidframework.event.RefreshMineObdListtEvent;
 import com.slb.ttdandroidframework.event.RefreshMineVehicleListtEvent;
-import com.slb.ttdandroidframework.event.RefreshObdListtEvent;
-import com.slb.ttdandroidframework.event.RefreshVehicleListtEvent;
 import com.slb.ttdandroidframework.ui.activity.CarInfoActivity;
-import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
 import com.slb.ttdandroidframework.ui.activity.ObdInfoActivity;
-import com.slb.ttdandroidframework.ui.adapter.ErrorCodeAdapter;
+import com.slb.ttdandroidframework.ui.activity.SettingActivity;
 import com.slb.ttdandroidframework.ui.adapter.MineCarAdapter;
 import com.slb.ttdandroidframework.ui.adapter.MineObdAdapter;
 import com.slb.ttdandroidframework.ui.contract.MineContract;
@@ -58,15 +56,18 @@ public class MineFragment
     @BindView(R.id.line2)
     ImageView line2;
     Unbinder unbinder;
-    @BindView(R.id.TvName)
-    TextView TvName;
     @BindView(R.id.Rv01)
     RecyclerView Rv01;
     @BindView(R.id.Rv02)
     RecyclerView Rv02;
+    @BindView(R.id.TvName)
+    TextView TvName;
+    @BindView(R.id.TvSetting)
+    TextView TvSetting;
 
     private MineCarAdapter mAdapterCar;
     private MineObdAdapter mAdapterObd;
+
     @Override
     protected boolean hasToolbar() {
         return false;
@@ -114,23 +115,26 @@ public class MineFragment
         mAdapterObd.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Bundle bundle =new Bundle();
-                bundle.putParcelable(BizcContant.PARA_ODB,mAdapterObd.getData().get(position));
-                bundle.putInt(BizcContant.PARA_OPERATION,BizcContant.EDIT);
-                ActivityUtil.next(_mActivity, ObdInfoActivity.class,bundle,false);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(BizcContant.PARA_ODB, mAdapterObd.getData().get(position));
+                bundle.putInt(BizcContant.PARA_OPERATION, BizcContant.EDIT);
+                ActivityUtil.next(_mActivity, ObdInfoActivity.class, bundle, false);
             }
         });
         mAdapterCar.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Bundle bundle =new Bundle();
-                bundle.putParcelable(BizcContant.PARA_CAR,mAdapterCar.getData().get(position));
-                bundle.putInt(BizcContant.PARA_OPERATION,BizcContant.EDIT);
-                ActivityUtil.next(_mActivity, CarInfoActivity.class,bundle,false);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(BizcContant.PARA_CAR, mAdapterCar.getData().get(position));
+                bundle.putInt(BizcContant.PARA_OPERATION, BizcContant.EDIT);
+                ActivityUtil.next(_mActivity, CarInfoActivity.class, bundle, false);
             }
         });
         refreshCars();
         refreshOdbs();
+        if (Base.getUserEntity().getNickname() != null) {
+            TvName.setText(Base.getUserEntity().getNickname());
+        }
         return rootView;
     }
 
@@ -140,7 +144,7 @@ public class MineFragment
         unbinder.unbind();
     }
 
-    @OnClick({R.id.Rl01, R.id.Rl02})
+    @OnClick({R.id.Rl01, R.id.Rl02,R.id.TvSetting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Rl01:
@@ -148,6 +152,9 @@ public class MineFragment
                 break;
             case R.id.Rl02:
                 ActivityUtil.next(_mActivity, ObdInfoActivity.class);
+                break;
+            case R.id.TvSetting:
+                ActivityUtil.next(_mActivity, SettingActivity.class);
                 break;
 //            case R.id.TvCar01:
 //                ActivityUtil.next(_mActivity, CarInfoActivity.class);
@@ -160,7 +167,7 @@ public class MineFragment
     /**
      * 更新车辆列表
      */
-    public void refreshCars(){
+    public void refreshCars() {
         mAdapterCar.getData().clear();
         mAdapterCar.setNewData(Base.getUserEntity().getVehicleEntityList());
     }
@@ -168,7 +175,7 @@ public class MineFragment
     /**
      * 更新车辆列表
      */
-    public void refreshOdbs(){
+    public void refreshOdbs() {
         mAdapterObd.getData().clear();
         mAdapterObd.setNewData(Base.getUserEntity().getObdEntityList());
     }
@@ -186,5 +193,10 @@ public class MineFragment
     @Subscribe
     public void onRefreshVehicleListEvent(RefreshMineVehicleListtEvent event) {
         refreshCars();
+    }
+
+    @Subscribe
+    public void onNickeNameChangeEvent(ModNickNameEvent event) {
+        TvName.setText(event.getName());
     }
 }

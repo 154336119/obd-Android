@@ -24,7 +24,10 @@ public class ErrorCodeAdapter extends BaseQuickAdapter<ErrorCodeEntity,BaseViewH
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final ErrorCodeEntity entity) {
         baseViewHolder.setText(R.id.TvCode,entity.getTitle());
-        baseViewHolder.setText(R.id.TvIntriduce,entity.getValue());
+//        baseViewHolder.setText(R.id.TvIntriduce,entity.getValue());
+//        if(!TextUtils.isEmpty(entity.getDes())){
+            baseViewHolder.setText(R.id.TvContent,entity.getValue());
+//        }
         CheckBox cb = (CheckBox)baseViewHolder.getView(R.id.ck);
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override

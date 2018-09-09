@@ -87,6 +87,18 @@
             android:name=".ui.activity.SubmitErrorCodeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.ModPasswordActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.ModNickNameActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.SettingActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
         <service
             android:name=".util.io.ObdGatewayService"
             android:exported="false"
@@ -95,6 +107,7 @@
             android:name=".util.io.ChoiseObdGatewayService"
             android:exported="false"
             android:launchMode="singleInstance" />
+
     </application>
 
 </manifest>

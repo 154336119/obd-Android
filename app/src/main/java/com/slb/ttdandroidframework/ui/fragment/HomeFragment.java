@@ -155,10 +155,12 @@ public class HomeFragment
         switch (view.getId()) {
             case R.id.Fl01:
                 //读取故障码
+                RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, ReadErrorCodeActivity.class);
                 break;
             case R.id.Fl02:
                 //冻结帧
+                RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, FreezeFrameActivity.class);
                 break;
             case R.id.Fl03:

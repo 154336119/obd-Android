@@ -121,6 +121,7 @@ public final class ObdConfig {
 
         names.add("Fuel Type");
         names.add("Fuel Consumption Rate");
+        names.add("Fuel Level");
         names.add("Long Term Fuel Trim Bank 1");
         names.add("Long Term Fuel Trim Bank 2");
         names.add("Short Term Fuel Trim Bank 1");
@@ -163,7 +164,6 @@ public final class ObdConfig {
 
     public static ObdCommand getCommandForNameIndex(String name){
         int index = getAllCommandsName().indexOf(name);
-        getAllCommands().get(index);
         return getAllCommands().get(index);
     }
 

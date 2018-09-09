@@ -21,6 +21,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.alibaba.fastjson.JSONObject;
+import com.github.pires.obd.commands.ObdCommand;
 import com.github.pires.obd.commands.control.PendingTroubleCodesCommand;
 import com.github.pires.obd.commands.control.TroubleCodesCommand;
 import com.github.pires.obd.commands.protocol.EchoOffCommand;
@@ -34,12 +37,16 @@ import com.github.pires.obd.enums.ObdProtocols;
 import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
+import com.google.gson.internal.LinkedTreeMap;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.frame.utils.ActivityUtil;
+import com.slb.frame.utils.DateUtils;
 import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.MyApplication;
 import com.slb.ttdandroidframework.R;
@@ -47,6 +54,10 @@ import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
+import com.slb.ttdandroidframework.http.bean.PidEntity;
+import com.slb.ttdandroidframework.http.callback.ActivityDialogCallback;
+import com.slb.ttdandroidframework.http.dns.DnsFactory;
+import com.slb.ttdandroidframework.http.model.LzyResponse;
 import com.slb.ttdandroidframework.ui.adapter.ErrorCodeAdapter;
 import com.slb.ttdandroidframework.ui.contract.ReadErrorCodeContract;
 import com.slb.ttdandroidframework.ui.presenter.ReadErrorCodePresenter;
@@ -57,6 +68,8 @@ import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
 import com.slb.ttdandroidframework.util.io.ObdCommandJob;
 import com.slb.ttdandroidframework.weight.CustomDialog;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+
+import org.w3c.dom.Node;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -236,46 +249,6 @@ public class ReadErrorCodeActivity extends BaseActivity {
             if(!BluetoothUtil.isRunning){
                 showToastMsg("暂未连接OBD");
             }
-//        {
-//            try {
-//                sock = BluetoothUtil.getSockInstance();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                showToastMsg("暂未连接OBD");
-//                finish();
-//            }
-//        }
-
-        //测试
-//        ErrorCodeEntity errorCodeEntity1= new ErrorCodeEntity();
-//        errorCodeEntity1.setTitle("P101");
-//        errorCodeEntity1.setValue("11111");
-//
-//        ErrorCodeEntity errorCodeEntity2= new ErrorCodeEntity();
-//        errorCodeEntity2.setTitle("P102");
-//        errorCodeEntity2.setValue("22222");
-//
-//        ErrorCodeEntity errorCodeEntity3= new ErrorCodeEntity();
-//        errorCodeEntity3.setTitle("P103");
-//        errorCodeEntity3.setValue("33333");
-//
-//        ErrorCodeEntity errorCodeEntity4= new ErrorCodeEntity();
-//        errorCodeEntity4.setTitle("P104");
-//        errorCodeEntity4.setValue("444");
-//
-//        ErrorCodeEntity errorCodeEntity5= new ErrorCodeEntity();
-//        errorCodeEntity5.setTitle("P105");
-//        errorCodeEntity5.setValue("5555");
-//        mAdapter01.getData().clear();
-//        mAdapter01.getData().add(errorCodeEntity1);
-//        mAdapter01.getData().add(errorCodeEntity2);
-//        mAdapter01.getData().add(errorCodeEntity3);
-//
-//        mAdapter02.getData().clear();
-//        mAdapter02.getData().add(errorCodeEntity4);
-//        mAdapter02.getData().add(errorCodeEntity5);
-//        showDialog();
-
         mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
         mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
     }
@@ -286,7 +259,6 @@ public class ReadErrorCodeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-        RxBus.get().post(new ObdServiceStateEvent(false));
     }
 
     @Override
@@ -338,15 +310,49 @@ public class ReadErrorCodeActivity extends BaseActivity {
         if(obdCommand!=null && !TextUtils.isEmpty(obdCommand.getName())){
             for (String dtcCode : obdCommand.getFormattedResult().split("\n")) {
                 value = dtcVals.get(dtcCode);
+                ErrorCodeEntity errorCodeEntity = new ErrorCodeEntity();
+                errorCodeEntity.setTitle(dtcCode);
+                errorCodeEntity.setValue(value);
+                mAdapter01.getData().add(errorCodeEntity);
+                mCodeNum = mCodeNum +1;
             }
-            ErrorCodeEntity errorCodeEntity = new ErrorCodeEntity();
-            errorCodeEntity.setTitle(obdCommand.getFormattedResult());
-            errorCodeEntity.setValue(value);
-            mAdapter01.getData().add(errorCodeEntity);
-            mCodeNum = mCodeNum+1;
             mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
+//            if(mAdapter01.getData()!=null && mAdapter01.getData().size()>0){
+//                gethttpdataOkCodePidDetails((obdCommand));
+//            }
         }
         hideWaitDialog();
+    }
+
+    private void gethttpdataOkCodePidDetails(final TroubleCodesCommand obdCommand){
+        if(obdCommand!=null && !TextUtils.isEmpty(obdCommand.getName())){
+            String confirmPids =  obdCommand.getFormattedResult().replaceAll("\n",",");
+        OkGo.<LzyResponse<Object>>post(DnsFactory.getInstance().getDns().getCommonBaseUrl()+"api/command/dtc")
+                .tag(this)
+                .params("userId",Base.getUserEntity().getId())
+                .params("pids",confirmPids)
+                .isMultipart(true)
+                .headers("Authorization","Bearer "+Base.getUserEntity().getToken())
+                .execute(new ActivityDialogCallback<LzyResponse<Object>>(this) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<Object>> response) {
+                        LinkedTreeMap map =  (LinkedTreeMap)response.body().data;
+                        for(int i=0;i<mAdapter01.getData().size();i++){
+                            ErrorCodeEntity errorCodeEntity= mAdapter01.getData().get(i);
+                            if( map.containsKey(errorCodeEntity.getTitle())){
+                               Object object = map.get(errorCodeEntity.getTitle());
+                               if(object!=null){
+                                   LinkedTreeMap map1  = (LinkedTreeMap)map.get(errorCodeEntity.getTitle());
+                                   String va =  (String)map1.get("description");
+                                   errorCodeEntity.setDes(va);
+                                   mAdapter01.setData(i,errorCodeEntity);
+                               }
+                            }
+                        }
+                        hideWaitDialog();
+                    }
+                });
+        }
     }
 
 
@@ -369,6 +375,11 @@ public class ReadErrorCodeActivity extends BaseActivity {
         protected void onPreExecute() {
             //Create a new progress dialog
             showWaitDialog("刷新中");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -444,15 +455,6 @@ public class ReadErrorCodeActivity extends BaseActivity {
      * 请求错误码
      */
     public void executeCodeCommand(){
-//        tagObdCommand = command;
-        //判断设备连接
-//        if (remoteDevice == null || "".equals(remoteDevice)) {
-//            Log.e(TAG, "No Bluetooth device has been selected.");
-//            mHandler.obtainMessage(NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
-//        } else {
-//            gtct = new GetTroubleCodesTask();
-//            gtct.execute(remoteDevice);
-//        }
         try {
             if(BluetoothUtil.getDeviceInstance() == null){
                 mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
@@ -576,16 +578,51 @@ public class ReadErrorCodeActivity extends BaseActivity {
         if(obdCommand!=null && !TextUtils.isEmpty(obdCommand.getName())){
             for (String dtcCode : obdCommand.getFormattedResult().split("\n")) {
                 value = dtcVals.get(dtcCode);
+                ErrorCodeEntity errorCodeEntity = new ErrorCodeEntity();
+                errorCodeEntity.setTitle(dtcCode);
+                errorCodeEntity.setValue(value);
+                mAdapter02.getData().add(errorCodeEntity);
+                mWaitCodeNum = mWaitCodeNum +1;
             }
-            ErrorCodeEntity errorCodeEntity = new ErrorCodeEntity();
-            errorCodeEntity.setTitle(obdCommand.getFormattedResult());
-            errorCodeEntity.setValue(value);
-            mAdapter02.getData().add(errorCodeEntity);
-            mWaitCodeNum = mWaitCodeNum +1;
             mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
+//            if(mAdapter02.getData()!=null && mAdapter02.getData().size()>0){
+//                gethttpdataOkWaitCodePidDetails((obdCommand));
+//            }
         }
         hideWaitDialog();
     }
+
+    private void gethttpdataOkWaitCodePidDetails(final PendingTroubleCodesCommand obdCommand){
+        if(obdCommand!=null && !TextUtils.isEmpty(obdCommand.getName())){
+            String waitPids =  obdCommand.getFormattedResult().replaceAll("\n",",");
+            OkGo.<LzyResponse<Object>>post(DnsFactory.getInstance().getDns().getCommonBaseUrl()+"api/command/dtc")
+                    .tag(this)
+                    .params("userId",Base.getUserEntity().getId())
+                    .params("pids",waitPids)
+                    .isMultipart(true)
+                    .headers("Authorization","Bearer "+Base.getUserEntity().getToken())
+                    .execute(new ActivityDialogCallback<LzyResponse<Object>>(this) {
+                        @Override
+                        public void onSuccess(Response<LzyResponse<Object>> response) {
+                            LinkedTreeMap map =  (LinkedTreeMap)response.body().data;
+                            for(int i=0;i<mAdapter02.getData().size();i++){
+                                ErrorCodeEntity errorCodeEntity= mAdapter02.getData().get(i);
+                                if( map.containsKey(errorCodeEntity.getTitle())){
+                                    Object object = map.get(errorCodeEntity.getTitle());
+                                    if(object!=null){
+                                        LinkedTreeMap map1  = (LinkedTreeMap)map.get(errorCodeEntity.getTitle());
+                                        String va =  (String)map1.get("description");
+                                        errorCodeEntity.setDes(va);
+                                        mAdapter02.setData(i,errorCodeEntity);
+                                    }
+                                }
+                            }
+                            hideWaitDialog();
+                        }
+                    });
+        }
+    }
+
     //////////////////////////////////////清除故障码//////////////////////////////////
 
     private class ClearTroubleCodesTask extends AsyncTask<String, Integer, ResetTroubleCodesCommand> {
@@ -735,7 +772,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
     /**
      * 显示dialog
      */
-    private void showDialog() {
+    private void showDialog( ) {
         CustomDialog.Builder dialog = new CustomDialog.Builder(this);
         dialog
                 .setTitle("提示")
@@ -777,4 +814,6 @@ public class ReadErrorCodeActivity extends BaseActivity {
         mCommonAlertDialog.setCanceledOnTouchOutside(false);
         mCommonAlertDialog.show();
     }
+
+
 }

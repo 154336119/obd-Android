@@ -43,6 +43,15 @@
                     android:layout_below="@+id/TvHead"
                     android:textColor="@color/white"
                     android:layout_marginTop="@dimen/distance_10"/>
+                <TextView
+                    android:id="@+id/TvSetting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置"
+                    android:textColor="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="@dimen/distance_10"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"

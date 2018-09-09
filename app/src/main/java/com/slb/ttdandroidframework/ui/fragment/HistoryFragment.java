@@ -1,13 +1,18 @@
 package com.slb.ttdandroidframework.ui.fragment;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -166,6 +171,7 @@ public class HistoryFragment
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @OnClick({R.id.mTvScreen, R.id.TvStartTime, R.id.TvEndTime})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -179,9 +185,36 @@ public class HistoryFragment
                 }
                 break;
             case R.id.TvStartTime:
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);//当前年
+                int month = calendar.get(Calendar.MONTH);//当前月
+                int day = calendar.get(Calendar.DAY_OF_MONTH);//当前日
+                //new一个日期选择对话框的对象,并设置默认显示时间为当前的年月日时间.
+                DatePickerDialog dialog = new DatePickerDialog(_mActivity,  DatePickerDialog.THEME_HOLO_LIGHT,mStartDateListener, year, month, day);
+                dialog.show();
                 break;
             case R.id.TvEndTime:
+                Calendar calendar1 = Calendar.getInstance();
+                int year1 = calendar1.get(Calendar.YEAR);//当前年
+                int month1 = calendar1.get(Calendar.MONTH);//当前月
+                int day1 = calendar1.get(Calendar.DAY_OF_MONTH);//当前日
+                //new一个日期选择对话框的对象,并设置默认显示时间为当前的年月日时间.
+                DatePickerDialog dialog1 = new DatePickerDialog(_mActivity,  DatePickerDialog.THEME_HOLO_LIGHT,mStartDateListener, year1, month1, day1);
+                dialog1.show();
                 break;
         }
     }
+
+    private DatePickerDialog.OnDateSetListener mStartDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int years, int monthOfYear, int dayOfMonth) {
+            TvStartTime.setText(years+"-"+monthOfYear+"-"+dayOfMonth);
+        }
+    };
+    private DatePickerDialog.OnDateSetListener mEndDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int years, int monthOfYear, int dayOfMonth) {
+            TvEndTime.setText(years+"-"+monthOfYear+"-"+dayOfMonth);
+        }
+    };
 }

@@ -29,7 +29,6 @@ import com.slb.ttdandroidframework.event.ChoiseComEvent;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.http.bean.DataEntity;
-import com.slb.ttdandroidframework.ui.SharedPreferencesUtil;
 import com.slb.ttdandroidframework.ui.activity.ChoiseDataActivity;
 import com.slb.ttdandroidframework.ui.adapter.DataAdapter;
 import com.slb.ttdandroidframework.ui.contract.DataContract;
@@ -42,7 +41,6 @@ import com.slb.ttdandroidframework.util.io.ObdCommandJob;
 import com.slb.ttdandroidframework.util.io.ObdGatewayService;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +58,8 @@ public class DataFragment
     Unbinder unbinder;
     @BindView(R.id.mTvAgain)
     ImageView mTvAgain;
+    @BindView(R.id.mIvBack)
+    ImageView mIvBack;
     private List<DataEntity> mList = new ArrayList<>();
     private DataAdapter mAdapter;
     private Handler handler = new Handler();
@@ -104,9 +104,9 @@ public class DataFragment
     private final Runnable mQueueCommands = new Runnable() {
         @Override
         public void run() {
-            if (service != null ) {
+            if (service != null) {
                 queueCommands();
-                if(BluetoothUtil.isRunning){
+                if (BluetoothUtil.isRunning) {
                     handler.postDelayed(mQueueCommands, 1000);
                 }
             }
@@ -114,7 +114,7 @@ public class DataFragment
     };
 
     private void queueCommands() {
-        Logger.d("queueCommands:"+ObdConfig.getAllCommands().size());
+        Logger.d("queueCommands:" + ObdConfig.getAllCommands().size());
         for (ObdCommand Command : mCmds) {
             service.queueJob(new ObdCommandJob(Command));
         }
@@ -159,15 +159,16 @@ public class DataFragment
                         .sizeResId(R.dimen.distance_1)
                         .build());
 
-        mCmds =  ObdConfig.getSpCommandList();
-        if(mCmds==null || mCmds.size()==0){
+        mCmds = ObdConfig.getSpCommandList();
+        if (mCmds == null || mCmds.size() == 0) {
             initComs();
         }
 
-        for(ObdCommand command : mCmds){
-            DataEntity dataEntity1 = new DataEntity(command.getName()," ");
+        for (ObdCommand command : mCmds) {
+            DataEntity dataEntity1 = new DataEntity(command.getName(), " ");
             mAdapter.addData(dataEntity1);
         }
+        mIvBack.setVisibility(View.GONE);
         return rootView;
     }
 
@@ -185,7 +186,7 @@ public class DataFragment
     @Subscribe
     public void onObdServiceStateEvent(ObdServiceStateEvent event) {
         if (event.isConnect()) {
-            if(service!=null){
+            if (service != null) {
                 service.clearQueue();
             }
             Intent serviceIntent = new Intent(_mActivity, ObdGatewayService.class);
@@ -193,13 +194,16 @@ public class DataFragment
             handler.post(mQueueCommands);
         } else {
             handler.removeCallbacks(mQueueCommands);
+            if (service != null) {
+                service.clearQueue();
+            }
         }
     }
 
     @Subscribe
     public void onObdConnectStateEvent(ObdConnectStateEvent event) {
         if (event.isConnect()) {
-            if(service!=null){
+            if (service != null) {
                 service.clearQueue();
             }
             Intent serviceIntent = new Intent(_mActivity, ObdGatewayService.class);
@@ -213,13 +217,13 @@ public class DataFragment
 
     public void onObdCommandJobEvent(ObdCommandJob job) {
         if (job.getState().equals(ObdCommandJob.ObdCommandJobState.BROKEN_PIPE)) {
-            if (isServiceBound){
+            if (isServiceBound) {
                 doUnbindService();
                 return;
             }
         }
         boolean isNew = false;
-        if (job == null ) {
+        if (job == null) {
             return;
         }
         for (DataEntity entity : mAdapter.getData()) {
@@ -253,13 +257,14 @@ public class DataFragment
     public void onViewClicked() {
         Bundle bundle = new Bundle();
         ArrayList<String> commandName = new ArrayList<>();
-        for(ObdCommand command:  mCmds){
+        for (ObdCommand command : mCmds) {
             commandName.add(command.getName());
         }
-        bundle.putStringArrayList(BizcContant.PARA_CHOISE_DATA,commandName);
-        ActivityUtil.next(_mActivity, ChoiseDataActivity.class,bundle,false);
+        bundle.putStringArrayList(BizcContant.PARA_CHOISE_DATA, commandName);
+        ActivityUtil.next(_mActivity, ChoiseDataActivity.class, bundle, false);
     }
-    private void initComs(){
+
+    private void initComs() {
         mCmds.add(new AirIntakeTemperatureCommand());
         mCmds.add(new AmbientAirTemperatureCommand());
         mCmds.add(new EngineCoolantTemperatureCommand());
@@ -268,18 +273,18 @@ public class DataFragment
 
     @Subscribe
     public void onChociseComEvent(ChoiseComEvent event) {
-        if(event.isAdd()){
+        if (event.isAdd()) {
             mCmds.add(ObdConfig.getCommandForNameIndex(event.getCommandName()));
-            DataEntity dataEntity1 = new DataEntity(event.getCommandName()," ");
+            DataEntity dataEntity1 = new DataEntity(event.getCommandName(), " ");
             mAdapter.addData(dataEntity1);
-            if(service != null){
+            if (service != null) {
                 service.clearQueue();
             }
-        }else{
+        } else {
             ObdCommand obdCommand = ObdConfig.getCommandForNameIndex(event.getCommandName());
             int index = 0;
-            for(ObdCommand command: mCmds){
-                if(command.getName().equals(obdCommand.getName())){
+            for (ObdCommand command : mCmds) {
+                if (command.getName().equals(obdCommand.getName())) {
                     index = mCmds.indexOf(command);
                 }
             }
@@ -288,47 +293,49 @@ public class DataFragment
             Logger.d(mCmds.size());
             mAdapter.notifyDataSetChanged();
         }
-        if(BluetoothUtil.isRunning){
+        if (BluetoothUtil.isRunning) {
             handler.post(mQueueCommands);
         }
         ObdConfig.saveSpObdCommandName(mCmds);
     }
 
-    public String getRealCinnabdResult(ObdCommandJob job){
+    public String getRealCinnabdResult(ObdCommandJob job) {
         String cmdResult;
         if (job.getState().equals(ObdCommandJob.ObdCommandJobState.EXECUTION_ERROR)) {
             cmdResult = job.getCommand().getResult();
-        }  else if (job.getState().equals(ObdCommandJob.ObdCommandJobState.NOT_SUPPORTED)) {
+        } else if (job.getState().equals(ObdCommandJob.ObdCommandJobState.NOT_SUPPORTED)) {
             cmdResult = getString(R.string.status_obd_no_support);
         } else {
             cmdResult = job.getCommand().getFormattedResult();
 
         }
-        Logger.d(job.getCommand().getName()+"------"+cmdResult);
-             return cmdResult;
+        Logger.d(job.getCommand().getName() + "------" + cmdResult);
+        return cmdResult;
     }
 
-//    private void doUnbindService() {
+    //    private void doUnbindService() {
 //        if (isServiceBound) {
 //            showToastMsg("Obd产品断开连接");
 //            obdStatusTextView.setText(getString(R.string.status_obd_disconnected));
 //        }
 //    }
-private void doUnbindService() {
-    if (isServiceBound) {
-        if (service.isRunning()) {
-            service.stopService();
-            showToastMsg("Obd产品断开连接");
-            Log.d(TAG, "Unbinding OBD service..");
-            isServiceBound = false;
-            _mActivity.unbindService(serviceConn);
+    private void doUnbindService() {
+        if (isServiceBound) {
+            if (service.isRunning()) {
+                service.stopService();
+                showToastMsg("Obd产品断开连接");
+                Log.d(TAG, "Unbinding OBD service..");
+                isServiceBound = false;
+                _mActivity.unbindService(serviceConn);
+            }
         }
     }
-}
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         doUnbindService();
     }
+
+
 }
