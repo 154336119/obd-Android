@@ -2,14 +2,16 @@
     <CheckBox
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/Rb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
         android:textColor="@color/white"
         android:background="@drawable/checkbox_three"
         android:button="@null"
         android:text="测试"
-        android:paddingRight="@dimen/distance_30"
-        android:paddingLeft="@dimen/distance_30"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:checked="false"/>
+        android:paddingRight="@dimen/distance_20"
+        android:paddingLeft="@dimen/distance_20"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:checked="false"
+    android:gravity="center"
+    android:textSize="13sp"/>

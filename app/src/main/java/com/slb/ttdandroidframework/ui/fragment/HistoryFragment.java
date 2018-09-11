@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -19,11 +20,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.hwangjr.rxbus.annotation.Subscribe;
 import com.slb.frame.ui.fragment.BaseFragment;
 import com.slb.frame.ui.fragment.BaseMvpFragment;
+import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.http.bean.ChoiseCarNumEntity;
-import com.slb.ttdandroidframework.http.bean.ChoiseObdEntity;
+import com.slb.ttdandroidframework.event.RefreshMineObdListtEvent;
+import com.slb.ttdandroidframework.event.RefreshMineVehicleListtEvent;
+import com.slb.ttdandroidframework.http.bean.ObdEntity;
+import com.slb.ttdandroidframework.http.bean.VehicleEntity;
 import com.slb.ttdandroidframework.ui.adapter.HisroryChoiseCarNumAdapter;
 import com.slb.ttdandroidframework.ui.adapter.HisroryChoiseOBDAdapter;
 import com.slb.ttdandroidframework.ui.contract.HistoryContract;
@@ -65,6 +70,10 @@ public class HistoryFragment
     TextView TvStartTime;
     @BindView(R.id.TvEndTime)
     TextView TvEndTime;
+    @BindView(R.id.TvResetting)
+    Button mTvResetting;
+    @BindView(R.id.TvComfirm)
+    Button mTvComfirm;
     private BaseFragment[] mFragments = new BaseFragment[3];
     public static final int HD = 0;//历史行车
     public static final int HF = 1; //历史故障
@@ -72,9 +81,11 @@ public class HistoryFragment
     private boolean isOpen = false;
     private HisroryChoiseCarNumAdapter mCarNumAdapter;
     private HisroryChoiseOBDAdapter mOBDAdapter;
-    private List<ChoiseCarNumEntity> mChoiseCarList = new ArrayList<>();
-    private List<ChoiseObdEntity> mChoiseObdList = new ArrayList<>();
-
+    private List<VehicleEntity> mChoiseCarList = new ArrayList<>();
+    private List<ObdEntity> mChoiseObdList = new ArrayList<>();
+    //数据
+    private VehicleEntity mChoiseVehicleEntity;
+    private ObdEntity mChoiseObdEntity;
     @Override
     protected boolean hasToolbar() {
         return false;
@@ -111,14 +122,18 @@ public class HistoryFragment
             mFragments[HF] = findFragment(HistoricalFailureFragment.class);
         }
 
-        //测试
-        for(int i=0;i<3;i++){
-            ChoiseCarNumEntity entity = new ChoiseCarNumEntity();
-            ChoiseObdEntity choiseObdEntity = new ChoiseObdEntity();
-            mChoiseCarList.add(entity);
-            mChoiseObdList.add(choiseObdEntity);
-        }
-        RvObd.setLayoutManager(new GridLayoutManager(_mActivity,2));
+//        //测试
+//        for(int i=0;i<3;i++){
+//            ChoiseCarNumEntity entity = new ChoiseCarNumEntity();
+//            ChoiseObdEntity choiseObdEntity = new ChoiseObdEntity();
+//            mChoiseCarList.add(entity);
+//            mChoiseObdList.add(choiseObdEntity);
+//        }
+        mChoiseCarList = Base.getUserEntity().getVehicleEntityList();
+        mChoiseObdList = Base.getUserEntity().getObdEntityList();
+
+
+        RvObd.setLayoutManager(new GridLayoutManager(_mActivity, 2));
         mOBDAdapter = new HisroryChoiseOBDAdapter(mChoiseObdList);
         RvObd.setAdapter(mOBDAdapter);
         RvObd.addItemDecoration(
@@ -126,7 +141,7 @@ public class HistoryFragment
                         .color(Color.parseColor("#3C444F"))
                         .sizeResId(R.dimen.distance_20)
                         .build());
-        RvPlateNumber.setLayoutManager(new GridLayoutManager(_mActivity,2));
+        RvPlateNumber.setLayoutManager(new GridLayoutManager(_mActivity, 2));
         mCarNumAdapter = new HisroryChoiseCarNumAdapter(mChoiseCarList);
         RvPlateNumber.setAdapter(mCarNumAdapter);
         RvPlateNumber.addItemDecoration(
@@ -138,6 +153,7 @@ public class HistoryFragment
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mOBDAdapter.setItemSel(position);
+                mChoiseObdEntity = (ObdEntity) adapter.getItem(position);
             }
         });
 
@@ -145,6 +161,7 @@ public class HistoryFragment
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mCarNumAdapter.setItemSel(position);
+                mChoiseVehicleEntity = (VehicleEntity) adapter.getItem(position);
             }
         });
 
@@ -172,14 +189,14 @@ public class HistoryFragment
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @OnClick({R.id.mTvScreen, R.id.TvStartTime, R.id.TvEndTime})
+    @OnClick({R.id.mTvScreen, R.id.TvStartTime, R.id.TvEndTime,R.id.TvResetting, R.id.TvComfirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mTvScreen:
-                if(isOpen){
+                if (isOpen) {
                     mDrawerLayout.closeDrawers();   //关闭侧边栏的菜单
                     isOpen = false;
-                }else{
+                } else {
                     mDrawerLayout.openDrawer(mLLRight);  //显示左边的菜单栏的控制
                     isOpen = true;
                 }
@@ -190,7 +207,7 @@ public class HistoryFragment
                 int month = calendar.get(Calendar.MONTH);//当前月
                 int day = calendar.get(Calendar.DAY_OF_MONTH);//当前日
                 //new一个日期选择对话框的对象,并设置默认显示时间为当前的年月日时间.
-                DatePickerDialog dialog = new DatePickerDialog(_mActivity,  DatePickerDialog.THEME_HOLO_LIGHT,mStartDateListener, year, month, day);
+                DatePickerDialog dialog = new DatePickerDialog(_mActivity, DatePickerDialog.THEME_HOLO_LIGHT, mStartDateListener, year, month, day);
                 dialog.show();
                 break;
             case R.id.TvEndTime:
@@ -199,8 +216,13 @@ public class HistoryFragment
                 int month1 = calendar1.get(Calendar.MONTH);//当前月
                 int day1 = calendar1.get(Calendar.DAY_OF_MONTH);//当前日
                 //new一个日期选择对话框的对象,并设置默认显示时间为当前的年月日时间.
-                DatePickerDialog dialog1 = new DatePickerDialog(_mActivity,  DatePickerDialog.THEME_HOLO_LIGHT,mStartDateListener, year1, month1, day1);
+                DatePickerDialog dialog1 = new DatePickerDialog(_mActivity, DatePickerDialog.THEME_HOLO_LIGHT, mEndDateListener, year1, month1, day1);
                 dialog1.show();
+                break;
+            case R.id.TvResetting:
+                break;
+            case R.id.TvComfirm:
+                mPresenter.getHistoryErrorCode(mChoiseObdEntity,mChoiseVehicleEntity,TvStartTime.getText().toString(),TvEndTime.getText().toString());
                 break;
         }
     }
@@ -208,13 +230,41 @@ public class HistoryFragment
     private DatePickerDialog.OnDateSetListener mStartDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int years, int monthOfYear, int dayOfMonth) {
-            TvStartTime.setText(years+"-"+monthOfYear+"-"+dayOfMonth);
+            monthOfYear = monthOfYear +1;
+            String mresult=String.format("%0"+2+"d",monthOfYear);
+            TvStartTime.setText(years + "-" + mresult + "-" + String.format("%0"+2+"d",dayOfMonth));
         }
     };
     private DatePickerDialog.OnDateSetListener mEndDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int years, int monthOfYear, int dayOfMonth) {
-            TvEndTime.setText(years+"-"+monthOfYear+"-"+dayOfMonth);
+            monthOfYear = monthOfYear +1;
+            String mresult=String.format("%0"+2+"d",monthOfYear);
+            TvEndTime.setText(years + "-" + mresult + "-" + String.format("%0"+2+"d",dayOfMonth));
         }
     };
+
+    @Override
+    protected boolean rxBusRegist() {
+        return true;
+    }
+
+    @Subscribe
+    public void onRefreshMineObdListEvent(RefreshMineObdListtEvent event) {
+        mChoiseObdList = Base.getUserEntity().getObdEntityList();
+        mOBDAdapter.setNewData(mChoiseObdList);
+        if(mChoiseObdList!=null &&mChoiseObdList.size()>0){
+            mChoiseObdEntity = mChoiseObdList.get(0);
+        }
+    }
+
+    @Subscribe
+    public void onRefreshVehicleListEvent(RefreshMineVehicleListtEvent event) {
+        mChoiseCarList = Base.getUserEntity().getVehicleEntityList();
+        mCarNumAdapter.setNewData(mChoiseCarList);
+        if(mChoiseCarList!=null &&mChoiseCarList.size()>0){
+            mChoiseVehicleEntity = mChoiseCarList.get(0);
+        }
+    }
+
 }

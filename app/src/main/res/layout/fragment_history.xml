@@ -107,16 +107,17 @@
               android:orientation="horizontal">
                <TextView
                    android:id="@+id/TvStartTime"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
+                   android:layout_width="120dp"
+                   android:layout_height="40dp"
                    android:background="@drawable/bg_un_choise_iten"
                    android:textColor="#636363"
-                   android:paddingRight="@dimen/distance_30"
-                   android:paddingLeft="@dimen/distance_30"
-                   android:paddingTop="15dp"
-                   android:paddingBottom="15dp"
-                   android:textSize="16sp"
-                   android:text="时间段"/>
+                   android:paddingRight="@dimen/distance_10"
+                   android:paddingLeft="@dimen/distance_10"
+                   android:paddingTop="10dp"
+                   android:paddingBottom="10dp"
+                   android:gravity="center"
+                   android:textSize="13sp"
+                   android:hint="请选择开始时间"/>
                <View
                    android:layout_width="20dp"
                    android:layout_height="1dp"
@@ -126,16 +127,17 @@
                    android:layout_marginRight="10dp"></View>
                <TextView
                    android:id="@+id/TvEndTime"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
+                   android:layout_width="120dp"
+                   android:layout_height="40dp"
                    android:background="@drawable/bg_un_choise_iten"
                    android:textColor="#636363"
-                   android:paddingRight="@dimen/distance_30"
-                   android:paddingLeft="@dimen/distance_30"
-                   android:paddingTop="15dp"
-                   android:paddingBottom="15dp"
-                   android:textSize="16sp"
-                   android:text="时间段"/>
+                   android:paddingRight="@dimen/distance_10"
+                   android:paddingLeft="@dimen/distance_10"
+                   android:paddingTop="10dp"
+                   android:paddingBottom="10dp"
+                   android:textSize="13sp"
+                   android:gravity="center"
+                   android:hint="请选择结束时间"/>
           </LinearLayout>
           <LinearLayout
               android:layout_width="match_parent"
@@ -145,6 +147,7 @@
               android:layout_marginTop="40dp"
               android:layout_marginRight="40dp">
                <Button
+                   android:id="@+id/TvResetting"
                    android:layout_width="100dp"
                    android:layout_height="wrap_content"
                    android:textColor="@color/white"
@@ -153,6 +156,7 @@
                    android:text="重置"
                    android:background="@drawable/bg_choise_lef_btn"/>
                <Button
+                   android:id="@+id/TvComfirm"
                    android:layout_width="100dp"
                    android:layout_height="wrap_content"
                    android:textColor="@color/white"

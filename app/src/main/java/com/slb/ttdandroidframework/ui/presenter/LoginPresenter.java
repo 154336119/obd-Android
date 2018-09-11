@@ -86,6 +86,13 @@ public class LoginPresenter extends AbstractBasePresenter<LoginContract.IView>
 					public void onSuccess(Response<String> response) {
 						//注意这里已经是在主线程了
 						JSONObject jsonObject1 = JSONObject.parseObject(response.body());
+						int status = jsonObject1.getInteger("status");
+						if(status!=1){
+							mView.showMsg(jsonObject1.getString("message"));
+							mView.loadingDialogDismiss();
+							return;
+						}
+
 						JSONObject jb = jsonObject1.getJSONObject("result");
 						String token = jb.getString("token");
 
@@ -105,11 +112,10 @@ public class LoginPresenter extends AbstractBasePresenter<LoginContract.IView>
 						super.onError(response);
 						mView.loadingDialogDismiss();
 					}
-
 					@Override
 					public void onStart(Request<String, ? extends Request> request) {
 						super.onStart(request);
-						mView.showLoadingDialog("加载中");
+							mView.showLoadingDialog("加载中");
 					}
 				});
 

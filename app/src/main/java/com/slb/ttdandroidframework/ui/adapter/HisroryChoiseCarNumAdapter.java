@@ -5,20 +5,22 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.http.bean.ChoiseCarNumEntity;
 import com.slb.ttdandroidframework.http.bean.ChoiseObdEntity;
+import com.slb.ttdandroidframework.http.bean.VehicleEntity;
 
 import java.util.List;
 
 
-public class HisroryChoiseCarNumAdapter extends BaseQuickAdapter<ChoiseCarNumEntity,BaseViewHolder> {
+public class HisroryChoiseCarNumAdapter extends BaseQuickAdapter<VehicleEntity,BaseViewHolder> {
     private int selPosition=0;
 
-    public HisroryChoiseCarNumAdapter(List<ChoiseCarNumEntity> data) {
+    public HisroryChoiseCarNumAdapter(List<VehicleEntity> data) {
         //有点问题 先注释
         super(R.layout.adapter_history_choise, data);
     }
 
     @Override
-    protected void convert(final BaseViewHolder baseViewHolder, final ChoiseCarNumEntity entity) {
+    protected void convert(final BaseViewHolder baseViewHolder, final VehicleEntity entity) {
+        baseViewHolder.setText(R.id.Rb,entity.getLicenseNo());
         if (selPosition==baseViewHolder.getLayoutPosition())
         {
             baseViewHolder.setChecked(R.id.Rb,true);
