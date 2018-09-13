@@ -137,7 +137,7 @@ public class SubmitErrorCodeActivity extends BaseActivity {
                 .params("userId",Base.getUserEntity().getId())
                 .params("obdId ",mSelectObdEntity.getId())
                 .params("vehicleId",mSelectVehicleEntity.getId())
-                .params("faultTime", DateUtils.getCurrentTime())
+                .params("faultTime", DateUtils.getStringDateShort())
                 .params("confirmPids",confirmPids)
                 .params("pendingPids",pendingPids)
                 .isMultipart(true)

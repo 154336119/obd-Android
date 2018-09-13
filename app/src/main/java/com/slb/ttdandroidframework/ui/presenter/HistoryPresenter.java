@@ -11,6 +11,7 @@ import com.slb.frame.ui.presenter.AbstractBaseFragmentPresenter;
 import com.slb.frame.ui.presenter.AbstractBasePresenter;
 import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.event.RefreshMineVehicleListtEvent;
+import com.slb.ttdandroidframework.http.bean.HistoryErrorCodeEntity;
 import com.slb.ttdandroidframework.http.bean.ObdEntity;
 import com.slb.ttdandroidframework.http.bean.VehicleEntity;
 import com.slb.ttdandroidframework.http.bean.VehiclesEntity;
@@ -21,6 +22,8 @@ import com.slb.ttdandroidframework.http.model.LzyArrayResponse;
 import com.slb.ttdandroidframework.http.model.LzyResponse;
 import com.slb.ttdandroidframework.ui.contract.HistoryContract;
 import com.slb.ttdandroidframework.ui.contract.MineContract;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/4/10.
@@ -54,19 +57,19 @@ public class HistoryPresenter extends AbstractBaseFragmentPresenter<HistoryContr
         jsonObject.put("startDate", startDate);
         jsonObject.put("endDate", endDate);
 
-        OkGo.<LzyArrayResponse<String>>post(DnsFactory.getInstance().getDns().getCommonBaseUrl()+"api/command-log/history")
+        OkGo.<LzyResponse<List<HistoryErrorCodeEntity>>>post(DnsFactory.getInstance().getDns().getCommonBaseUrl()+"api/command-log/history")
                 .tag(this)
-                .upJson(jsonObject.toString())
-//                .params("userId",Base.getUserEntity().getId())
-//                .params("obdId",obd.getId())
-//                .params("vehicleId",vehicle.getId())
-//                .params("startDate",startDate)
-//                .params("endDate",endDate)
+//                .upJson(jsonObject.toString())
+                .params("userId",Base.getUserEntity().getId())
+                .params("obdId",obd.getId())
+                .params("vehicleId",vehicle.getId())
+                .params("startDate",startDate)
+                .params("endDate",endDate)
                 .isMultipart(true)
                 .headers("Authorization","Bearer "+Base.getUserEntity().getToken())
-                .execute(new DialogCallback<LzyArrayResponse<String>>(this.mView) {
+                .execute(new DialogCallback<LzyResponse<List<HistoryErrorCodeEntity>>>(this.mView) {
                     @Override
-                    public void onSuccess(Response<LzyArrayResponse<String>> response) {
+                    public void onSuccess(Response<LzyResponse<List<HistoryErrorCodeEntity>>> response) {
                         Logger.d(response.body());
                     }
                 });
