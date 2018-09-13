@@ -17,6 +17,8 @@ import com.slb.ttdandroidframework.ui.presenter.DataPresenter;
 import com.slb.ttdandroidframework.ui.presenter.MyComFragmentListPresenter;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.util.List;
+
 import danfei.shulaibao.widget.refresh.BaseBrvahRefreshFragment;
 
 public class HistoricalFailureFragment
@@ -30,12 +32,12 @@ public class HistoricalFailureFragment
 //						.color(Color.parseColor("#2B3139"))
 //						.sizeResId(R.dimen.distance_10)
 //						.build());
-		//测试
-		for (int i = 0; i < 10; i++) {
-			HistoryErrorCodeEntity historyErrorCodeEntity = new HistoryErrorCodeEntity();
-			mList.add(historyErrorCodeEntity);
-		}
-		mAdapter.addData(mList);
+//		//测试
+//		for (int i = 0; i < 10; i++) {
+//			HistoryErrorCodeEntity historyErrorCodeEntity = new HistoryErrorCodeEntity();
+//			mList.add(historyErrorCodeEntity);
+//		}
+//		mAdapter.addData(mList);
 	}
 
 	@Override
@@ -57,5 +59,9 @@ public class HistoricalFailureFragment
 	protected RecyclerView.Adapter setAdapter() {
 		mAdapter = new HistoryErrorAdapter(mList);
 		return mAdapter;
+	}
+
+	public void setList(List<HistoryErrorCodeEntity> list){
+		mAdapter.setNewData(list);
 	}
 }

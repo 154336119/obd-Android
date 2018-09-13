@@ -2,6 +2,7 @@ package com.slb.ttdandroidframework.ui.adapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.http.bean.EmissionTestEntity;
 import com.slb.ttdandroidframework.http.bean.EmissionTestSmallEntity;
@@ -21,7 +22,8 @@ public class HistoryErrorAdapter extends BaseQuickAdapter<HistoryErrorCodeEntity
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final HistoryErrorCodeEntity entity) {
-
+        baseViewHolder.setText(R.id.TvCarNum,entity.getVehicle().getLicenseNo());
+        baseViewHolder.setText(R.id.TvDate,entity.getSaveTime());
     }
 
 }

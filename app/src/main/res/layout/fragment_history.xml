@@ -34,7 +34,8 @@
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="历史行车"
-                   style="@style/com_green_tab_rb"/>
+                   style="@style/com_green_tab_rb"
+                   android:visibility="gone"/>
 
                <RadioButton
                    android:id="@+id/RbHistoricalFailure"

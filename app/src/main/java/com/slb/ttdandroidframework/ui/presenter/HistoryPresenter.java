@@ -30,7 +30,7 @@ import java.util.List;
  */
 
 public class HistoryPresenter extends AbstractBaseFragmentPresenter<HistoryContract.IView>
-    implements HistoryContract.IPresenter<HistoryContract.IView>{
+        implements HistoryContract.IPresenter<HistoryContract.IView>{
     @Override
     public void getHistoryErrorCode(ObdEntity obd , VehicleEntity vehicle, String startDate, String endDate) {
         if(obd == null){

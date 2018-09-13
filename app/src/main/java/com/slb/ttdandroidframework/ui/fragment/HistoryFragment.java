@@ -27,6 +27,7 @@ import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.RefreshMineObdListtEvent;
 import com.slb.ttdandroidframework.event.RefreshMineVehicleListtEvent;
+import com.slb.ttdandroidframework.http.bean.HistoryErrorCodeEntity;
 import com.slb.ttdandroidframework.http.bean.ObdEntity;
 import com.slb.ttdandroidframework.http.bean.VehicleEntity;
 import com.slb.ttdandroidframework.ui.adapter.HisroryChoiseCarNumAdapter;
@@ -83,6 +84,7 @@ public class HistoryFragment
     private HisroryChoiseOBDAdapter mOBDAdapter;
     private List<VehicleEntity> mChoiseCarList = new ArrayList<>();
     private List<ObdEntity> mChoiseObdList = new ArrayList<>();
+    private HistoricalFailureFragment mHistoricalFailureFragment;
     //数据
     private VehicleEntity mChoiseVehicleEntity;
     private ObdEntity mChoiseObdEntity;
@@ -111,15 +113,25 @@ public class HistoryFragment
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
-        segmented.check(R.id.RbHistoricalDriving);
+        segmented.check(R.id.RbHistoricalFailure);
         segmented.setOnCheckedChangeListener(this);
+//        if (savedInstanceState == null) {
+//            mFragments[HD] = HistoricalDrivingFragment.newInstance();
+//            mHistoricalFailureFragment = HistoricalFailureFragment.newInstance();
+//            mFragments[HF] = mHistoricalFailureFragment;
+//            loadMultipleRootFragment(R.id.mainFrame, HD, mFragments[HD], mFragments[HF]);
+//        } else {
+//            mFragments[HD] = findFragment(HistoricalDrivingFragment.class);
+//            mHistoricalFailureFragment = findFragment(HistoricalFailureFragment.class);
+//            mFragments[HF] = mHistoricalFailureFragment;
+//        }
         if (savedInstanceState == null) {
-            mFragments[HD] = HistoricalDrivingFragment.newInstance();
-            mFragments[HF] = HistoricalFailureFragment.newInstance();
-            loadMultipleRootFragment(R.id.mainFrame, HD, mFragments[HD], mFragments[HF]);
+            mHistoricalFailureFragment = HistoricalFailureFragment.newInstance();
+            mFragments[HF] = mHistoricalFailureFragment;
+            loadMultipleRootFragment(R.id.mainFrame, HF, mFragments[HF]);
         } else {
-            mFragments[HD] = findFragment(HistoricalDrivingFragment.class);
-            mFragments[HF] = findFragment(HistoricalFailureFragment.class);
+            mHistoricalFailureFragment = findFragment(HistoricalFailureFragment.class);
+            mFragments[HF] = mHistoricalFailureFragment;
         }
 
 //        //测试
@@ -157,14 +169,13 @@ public class HistoryFragment
             }
         });
 
-        mCarNumAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        mCarNumAdapter.setOnItemClickListener( new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mCarNumAdapter.setItemSel(position);
                 mChoiseVehicleEntity = (VehicleEntity) adapter.getItem(position);
             }
         });
-
         return rootView;
     }
 
@@ -267,4 +278,8 @@ public class HistoryFragment
         }
     }
 
+    @Override
+    public void getHistoryErrorCodeSuccess(List<HistoryErrorCodeEntity> list) {
+        mHistoricalFailureFragment.setList(list);
+    }
 }
