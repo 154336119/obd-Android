@@ -22,8 +22,13 @@ public class HistoryErrorAdapter extends BaseQuickAdapter<HistoryErrorCodeEntity
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final HistoryErrorCodeEntity entity) {
-        baseViewHolder.setText(R.id.TvCarNum,entity.getVehicle().getLicenseNo());
-        baseViewHolder.setText(R.id.TvDate,entity.getSaveTime());
+        if(entity.getDtcs()!=null &&entity.getDtcs().size()>0){
+            String num = String.format("%0" + 2 + "d", entity.getDtcs().size());
+            baseViewHolder.setText(R.id.TvNum,"故障码"+num+"个");
+            baseViewHolder.setText(R.id.TvCarNum,entity.getDtcs().get(0).getVehicleLicenseNo());
+        }else{
+            baseViewHolder.setText(R.id.TvNum,"暂无");
+        }
+        baseViewHolder.setText(R.id.TvDate,entity.getDatetime());
     }
-
 }

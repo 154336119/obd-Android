@@ -22,5 +22,5 @@ public class BizcContant {
     public static final String PARA_ODB= "obd";
 
     public static final String PARA_CHOISE_DATA= "choise_data";
-
+    public static final String PARA_HISTORY_DETAIL = "history_detail";
 }

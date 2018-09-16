@@ -6,96 +6,12 @@
     android:paddingTop="10dp"
     android:paddingLeft="@dimen/distance_10"
     android:paddingRight="@dimen/distance_10">
-    <android.support.v7.widget.CardView
-        android:id="@+id/hidehead"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <LinearLayout
-            android:padding="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp"
-            >
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="#FF3C444F"
-                android:id="@+id/Rl">
-
-                <TextView
-                    android:id="@+id/TvPID"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="8dp"
-                    android:text="PID"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/Iv01"
-                    android:layout_width="1dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/TvDes"
-                    android:layout_alignBottom="@+id/TvDes"
-                    android:layout_toRightOf="@+id/TvPID"
-                    android:background="#2B3139" />
-                <TextView
-                    android:id="@+id/TvDes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:text="@string/description"
-                    android:layout_toRightOf="@+id/Iv01"
-                    android:layout_toLeftOf="@+id/Iv02"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:layout_centerInParent="true"/>
-                <ImageView
-                    android:id="@+id/Iv02"
-                    android:layout_width="1dp"
-                    android:layout_height="45dp"
-                    android:background="#2B3139"
-                    android:layout_alignTop="@+id/TvDes"
-                    android:layout_alignBottom="@+id/TvDes"
-                    android:layout_toLeftOf="@+id/TvValue" />
-                <TextView
-                    android:id="@+id/TvValue"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:text="@string/value"
-                    android:gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"/>
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#2B3139"
-                    android:layout_alignParentBottom="true"/>
-            </RelativeLayout>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/can_content_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/Rl">
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

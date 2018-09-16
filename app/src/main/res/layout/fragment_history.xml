@@ -16,34 +16,14 @@
          android:layout_height="44dp"
          android:background="@color/color_3C444F"
          >
-          <info.hoang8f.android.segmented.SegmentedGroup
-              android:id="@+id/segmented"
+          <TextView
+              android:id="@+id/mTvName"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_margin="10dp"
-              android:layout_centerInParent="true"
-              android:orientation="horizontal"
-              segmentedgroup:sc_border_width="1dp"
-              segmentedgroup:sc_corner_radius="5dp"
-              segmentedgroup:sc_tint_color="@color/color_00A4EF"
-              segmentedgroup:sc_unchecked_tint_color="@color/color_00A4EF"
-              segmentedgroup:sc_checked_text_color="@color/white">
-
-               <RadioButton
-                   android:id="@+id/RbHistoricalDriving"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="历史行车"
-                   style="@style/com_green_tab_rb"
-                   android:visibility="gone"/>
-
-               <RadioButton
-                   android:id="@+id/RbHistoricalFailure"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="历史故障"
-                   style="@style/com_green_tab_rb"/>
-          </info.hoang8f.android.segmented.SegmentedGroup>
+              android:textColor="@color/white"
+              android:text="历史故障"
+              android:textSize="18sp"
+              android:layout_centerInParent="true"/>
           <TextView
               android:id="@+id/mTvScreen"
               android:layout_width="wrap_content"
@@ -56,11 +36,12 @@
               android:drawablePadding="10dp"
               android:layout_marginRight="15dp"/>
      </RelativeLayout>
-     <FrameLayout
-         android:id="@+id/mainFrame"
+     <android.support.v7.widget.RecyclerView
+         android:id="@+id/mRecyclerView"
          android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:background="@color/color_2B3139"/>
+         android:layout_height="wrap_content"
+         android:layout_marginTop="10dp">
+     </android.support.v7.widget.RecyclerView>
 </LinearLayout>
      <LinearLayout
          android:id="@+id/mLLleft"

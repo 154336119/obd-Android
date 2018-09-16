@@ -10,6 +10,7 @@ import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.presenter.AbstractBaseFragmentPresenter;
 import com.slb.frame.ui.presenter.AbstractBasePresenter;
 import com.slb.ttdandroidframework.Base;
+import com.slb.ttdandroidframework.event.HistoryErrorEvent;
 import com.slb.ttdandroidframework.event.RefreshMineVehicleListtEvent;
 import com.slb.ttdandroidframework.http.bean.HistoryErrorCodeEntity;
 import com.slb.ttdandroidframework.http.bean.ObdEntity;
@@ -70,7 +71,8 @@ public class HistoryPresenter extends AbstractBaseFragmentPresenter<HistoryContr
                 .execute(new DialogCallback<LzyResponse<List<HistoryErrorCodeEntity>>>(this.mView) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<HistoryErrorCodeEntity>>> response) {
-                        Logger.d(response.body());
+//                        RxBus.get().post(new HistoryErrorEvent(response.body().data));
+                        mView.getHistoryErrorCodeSuccess(response.body().data);
                     }
                 });
     }

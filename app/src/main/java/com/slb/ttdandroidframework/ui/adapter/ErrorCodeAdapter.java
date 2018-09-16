@@ -34,9 +34,9 @@ public class ErrorCodeAdapter extends BaseQuickAdapter<ErrorCodeEntity,BaseViewH
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if(isChecked){
-                    baseViewHolder.setVisible(R.id.TvContent,true);
+                    baseViewHolder.setVisible(R.id.llDetail,true);
                 }else{
-                    baseViewHolder.setVisible(R.id.TvContent,false);
+                    baseViewHolder.setVisible(R.id.llDetail,false);
                 }
             }
         });

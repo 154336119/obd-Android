@@ -1,67 +1,94 @@
 package com.slb.ttdandroidframework.ui.fragment;
 
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.slb.frame.ui.fragment.BaseMvpFragment;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.slb.frame.ui.fragment.BaseFragment;
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
+import com.slb.ttdandroidframework.event.HistoryErrorEvent;
+import com.slb.ttdandroidframework.http.bean.DataEntity;
 import com.slb.ttdandroidframework.http.bean.HistoryErrorCodeEntity;
-import com.slb.ttdandroidframework.http.bean.MoudleFiveEntity;
-import com.slb.ttdandroidframework.ui.adapter.FreezeFrameAdapter;
+import com.slb.ttdandroidframework.ui.adapter.DataAdapter;
 import com.slb.ttdandroidframework.ui.adapter.HistoryErrorAdapter;
-import com.slb.ttdandroidframework.ui.contract.DataContract;
-import com.slb.ttdandroidframework.ui.contract.MyComFragmentListContract;
-import com.slb.ttdandroidframework.ui.presenter.DataPresenter;
-import com.slb.ttdandroidframework.ui.presenter.MyComFragmentListPresenter;
+import com.slb.ttdandroidframework.util.io.ObdCommandJob;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import danfei.shulaibao.widget.refresh.BaseBrvahRefreshFragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class HistoricalFailureFragment
-		extends BaseBrvahRefreshFragment<MyComFragmentListContract.IView,MyComFragmentListContract.IPresenter,Object,HistoryErrorCodeEntity>
-		implements MyComFragmentListContract.IView{
-	@Override
-	public void initView(View view) {
-		super.initView(view);
-//		mRecyclerView.addItemDecoration(
-//				new HorizontalDividerItemDecoration.Builder(_mActivity)
-//						.color(Color.parseColor("#2B3139"))
-//						.sizeResId(R.dimen.distance_10)
-//						.build());
-//		//测试
-//		for (int i = 0; i < 10; i++) {
-//			HistoryErrorCodeEntity historyErrorCodeEntity = new HistoryErrorCodeEntity();
-//			mList.add(historyErrorCodeEntity);
-//		}
-//		mAdapter.addData(mList);
-	}
+        extends BaseFragment {
+    @BindView(R.id.mRecyclerView)
+    RecyclerView mRecyclerView;
+    Unbinder unbinder;
+//    HistoryErrorAdapter mAdapter;
+//    List<HistoryErrorCodeEntity> mList;
+private DataAdapter mAdapter;
+    List<DataEntity> mList = new ArrayList<>();
+    public static HistoricalFailureFragment newInstance(){
+        HistoricalFailureFragment instance=new HistoricalFailureFragment();
+        return instance;
+    }
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_historical_failure;
+    }
 
-	@Override
-	protected boolean hasToolbar() {
-		return false;
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
 
-	public static HistoricalFailureFragment newInstance(){
-		HistoricalFailureFragment instance=new HistoricalFailureFragment();
-		return instance;
-	}
+//                new HorizontalDividerItemDecoration.Builder(this)
+//                        .color(Color.parseColor("#2B3139"))
+//                        .sizeResId(R.dimen.distance_1)
+//                        .build());
+        return rootView;
+    }
 
-	@Override
-	public MyComFragmentListContract.IPresenter initPresenter() {
-		return new MyComFragmentListPresenter();
-	}
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+    @Override
+    protected boolean rxBusRegist() {
+        return true;
+    }
+    @Subscribe
+    public void onHistoryErrorEvent(HistoryErrorEvent event) {
+//        mAdapter = new HistoryErrorAdapter(event.getmList());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+        mRecyclerView.setAdapter(mAdapter);
+                //测试
+        for (int i = 0; i < 5; i++) {
+            DataEntity entity = new DataEntity();
+            mList.add(entity);
+        }
+        mAdapter = new DataAdapter(mList);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+        mRecyclerView.setAdapter(mAdapter);
+    }
 
-	@Override
-	protected RecyclerView.Adapter setAdapter() {
-		mAdapter = new HistoryErrorAdapter(mList);
-		return mAdapter;
-	}
 
-	public void setList(List<HistoryErrorCodeEntity> list){
-		mAdapter.setNewData(list);
-	}
+    public void setList(List<HistoryErrorCodeEntity> list){
+//        mList = list;
+//        mAdapter = new HistoryErrorAdapter(mList);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+//        mRecyclerView.setAdapter(mAdapter);
+//        mAdapter.notifyDataSetChanged();
+//        mRecyclerView.addItemDecoration(
+    }
+
 }

@@ -5,35 +5,40 @@ import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hwangjr.rxbus.annotation.Subscribe;
-import com.slb.frame.ui.fragment.BaseFragment;
 import com.slb.frame.ui.fragment.BaseMvpFragment;
+import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.RefreshMineObdListtEvent;
 import com.slb.ttdandroidframework.event.RefreshMineVehicleListtEvent;
+import com.slb.ttdandroidframework.http.bean.DataEntity;
 import com.slb.ttdandroidframework.http.bean.HistoryErrorCodeEntity;
 import com.slb.ttdandroidframework.http.bean.ObdEntity;
 import com.slb.ttdandroidframework.http.bean.VehicleEntity;
+import com.slb.ttdandroidframework.ui.activity.HistoryDetailActivity;
+import com.slb.ttdandroidframework.ui.adapter.DataAdapter;
 import com.slb.ttdandroidframework.ui.adapter.HisroryChoiseCarNumAdapter;
 import com.slb.ttdandroidframework.ui.adapter.HisroryChoiseOBDAdapter;
+import com.slb.ttdandroidframework.ui.adapter.HistoryErrorAdapter;
 import com.slb.ttdandroidframework.ui.contract.HistoryContract;
 import com.slb.ttdandroidframework.ui.presenter.HistoryPresenter;
+import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -43,19 +48,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import info.hoang8f.android.segmented.SegmentedGroup;
 
 
 public class HistoryFragment
         extends BaseMvpFragment<HistoryContract.IView, HistoryContract.IPresenter>
-        implements HistoryContract.IView, RadioGroup.OnCheckedChangeListener {
+        implements HistoryContract.IView {
 
-    @BindView(R.id.segmented)
-    SegmentedGroup segmented;
     @BindView(R.id.mTvScreen)
     TextView mTvScreen;
-    @BindView(R.id.mainFrame)
-    FrameLayout mainFrame;
     Unbinder unbinder;
     @BindView(R.id.mLLcontent)
     LinearLayout mLLcontent;
@@ -75,19 +75,19 @@ public class HistoryFragment
     Button mTvResetting;
     @BindView(R.id.TvComfirm)
     Button mTvComfirm;
-    private BaseFragment[] mFragments = new BaseFragment[3];
-    public static final int HD = 0;//历史行车
-    public static final int HF = 1; //历史故障
-    private int prePosition = 0;
+    @BindView(R.id.mRecyclerView)
+    RecyclerView mRecyclerView;
     private boolean isOpen = false;
     private HisroryChoiseCarNumAdapter mCarNumAdapter;
     private HisroryChoiseOBDAdapter mOBDAdapter;
     private List<VehicleEntity> mChoiseCarList = new ArrayList<>();
     private List<ObdEntity> mChoiseObdList = new ArrayList<>();
-    private HistoricalFailureFragment mHistoricalFailureFragment;
     //数据
     private VehicleEntity mChoiseVehicleEntity;
     private ObdEntity mChoiseObdEntity;
+
+    private HistoryErrorAdapter mAdapter;
+    private List<HistoryErrorCodeEntity> mList =new ArrayList<>();
     @Override
     protected boolean hasToolbar() {
         return false;
@@ -113,34 +113,6 @@ public class HistoryFragment
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
-        segmented.check(R.id.RbHistoricalFailure);
-        segmented.setOnCheckedChangeListener(this);
-//        if (savedInstanceState == null) {
-//            mFragments[HD] = HistoricalDrivingFragment.newInstance();
-//            mHistoricalFailureFragment = HistoricalFailureFragment.newInstance();
-//            mFragments[HF] = mHistoricalFailureFragment;
-//            loadMultipleRootFragment(R.id.mainFrame, HD, mFragments[HD], mFragments[HF]);
-//        } else {
-//            mFragments[HD] = findFragment(HistoricalDrivingFragment.class);
-//            mHistoricalFailureFragment = findFragment(HistoricalFailureFragment.class);
-//            mFragments[HF] = mHistoricalFailureFragment;
-//        }
-        if (savedInstanceState == null) {
-            mHistoricalFailureFragment = HistoricalFailureFragment.newInstance();
-            mFragments[HF] = mHistoricalFailureFragment;
-            loadMultipleRootFragment(R.id.mainFrame, HF, mFragments[HF]);
-        } else {
-            mHistoricalFailureFragment = findFragment(HistoricalFailureFragment.class);
-            mFragments[HF] = mHistoricalFailureFragment;
-        }
-
-//        //测试
-//        for(int i=0;i<3;i++){
-//            ChoiseCarNumEntity entity = new ChoiseCarNumEntity();
-//            ChoiseObdEntity choiseObdEntity = new ChoiseObdEntity();
-//            mChoiseCarList.add(entity);
-//            mChoiseObdList.add(choiseObdEntity);
-//        }
         mChoiseCarList = Base.getUserEntity().getVehicleEntityList();
         mChoiseObdList = Base.getUserEntity().getObdEntityList();
 
@@ -169,13 +141,35 @@ public class HistoryFragment
             }
         });
 
-        mCarNumAdapter.setOnItemClickListener( new BaseQuickAdapter.OnItemClickListener() {
+        mCarNumAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 mCarNumAdapter.setItemSel(position);
                 mChoiseVehicleEntity = (VehicleEntity) adapter.getItem(position);
             }
         });
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+        mRecyclerView.addItemDecoration(
+                new HorizontalDividerItemDecoration.Builder(_mActivity)
+                        .color(Color.parseColor("#2B3139"))
+                        .sizeResId(R.dimen.distance_10)
+                        .build());
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new HistoryErrorAdapter(mList);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(_mActivity));
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                HistoryErrorCodeEntity errorCodeEntity = (HistoryErrorCodeEntity) adapter.getItem(position);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(BizcContant.PARA_HISTORY_DETAIL, (ArrayList<? extends Parcelable>) errorCodeEntity.getDtcs());
+                ActivityUtil.next(_mActivity, HistoryDetailActivity.class,bundle,false);
+            }
+        });
+
         return rootView;
     }
 
@@ -185,22 +179,9 @@ public class HistoryFragment
         unbinder.unbind();
     }
 
-    @Override
-    public void onCheckedChanged(RadioGroup radioGroup, int i) {
-        switch (i) {
-            case R.id.RbHistoricalDriving:
-                showHideFragment(mFragments[HD], mFragments[prePosition]);
-                prePosition = HD;
-                break;
-            case R.id.RbHistoricalFailure:
-                showHideFragment(mFragments[HF], mFragments[prePosition]);
-                prePosition = HF;
-                break;
-        }
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @OnClick({R.id.mTvScreen, R.id.TvStartTime, R.id.TvEndTime,R.id.TvResetting, R.id.TvComfirm})
+    @OnClick({R.id.mTvScreen, R.id.TvStartTime, R.id.TvEndTime, R.id.TvResetting, R.id.TvComfirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.mTvScreen:
@@ -233,7 +214,7 @@ public class HistoryFragment
             case R.id.TvResetting:
                 break;
             case R.id.TvComfirm:
-                mPresenter.getHistoryErrorCode(mChoiseObdEntity,mChoiseVehicleEntity,TvStartTime.getText().toString(),TvEndTime.getText().toString());
+                mPresenter.getHistoryErrorCode(mChoiseObdEntity, mChoiseVehicleEntity, TvStartTime.getText().toString(), TvEndTime.getText().toString());
                 break;
         }
     }
@@ -241,17 +222,17 @@ public class HistoryFragment
     private DatePickerDialog.OnDateSetListener mStartDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int years, int monthOfYear, int dayOfMonth) {
-            monthOfYear = monthOfYear +1;
-            String mresult=String.format("%0"+2+"d",monthOfYear);
-            TvStartTime.setText(years + "-" + mresult + "-" + String.format("%0"+2+"d",dayOfMonth));
+            monthOfYear = monthOfYear + 1;
+            String mresult = String.format("%0" + 2 + "d", monthOfYear);
+            TvStartTime.setText(years + "-" + mresult + "-" + String.format("%0" + 2 + "d", dayOfMonth));
         }
     };
     private DatePickerDialog.OnDateSetListener mEndDateListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int years, int monthOfYear, int dayOfMonth) {
-            monthOfYear = monthOfYear +1;
-            String mresult=String.format("%0"+2+"d",monthOfYear);
-            TvEndTime.setText(years + "-" + mresult + "-" + String.format("%0"+2+"d",dayOfMonth));
+            monthOfYear = monthOfYear + 1;
+            String mresult = String.format("%0" + 2 + "d", monthOfYear);
+            TvEndTime.setText(years + "-" + mresult + "-" + String.format("%0" + 2 + "d", dayOfMonth));
         }
     };
 
@@ -264,7 +245,7 @@ public class HistoryFragment
     public void onRefreshMineObdListEvent(RefreshMineObdListtEvent event) {
         mChoiseObdList = Base.getUserEntity().getObdEntityList();
         mOBDAdapter.setNewData(mChoiseObdList);
-        if(mChoiseObdList!=null &&mChoiseObdList.size()>0){
+        if (mChoiseObdList != null && mChoiseObdList.size() > 0) {
             mChoiseObdEntity = mChoiseObdList.get(0);
         }
     }
@@ -273,13 +254,15 @@ public class HistoryFragment
     public void onRefreshVehicleListEvent(RefreshMineVehicleListtEvent event) {
         mChoiseCarList = Base.getUserEntity().getVehicleEntityList();
         mCarNumAdapter.setNewData(mChoiseCarList);
-        if(mChoiseCarList!=null &&mChoiseCarList.size()>0){
+        if (mChoiseCarList != null && mChoiseCarList.size() > 0) {
             mChoiseVehicleEntity = mChoiseCarList.get(0);
         }
     }
 
     @Override
     public void getHistoryErrorCodeSuccess(List<HistoryErrorCodeEntity> list) {
-        mHistoricalFailureFragment.setList(list);
+        mAdapter.setNewData(list);
+        mDrawerLayout.closeDrawers();   //关闭侧边栏的菜单
+        isOpen = false;
     }
 }

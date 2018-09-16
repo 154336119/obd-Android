@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#535B67" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/TvDes"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="14dp"
+            android:text="描述"
+            android:textColor="@color/white" />
+        <ImageView
+            android:id="@+id/IvL"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/TvDes"
+            android:layout_alignBottom="@+id/TvDes"
+            android:background="#2B3139"
+            android:layout_toRightOf="@+id/TvDes"
+            />
+        <TextView
+            android:id="@+id/TvValue"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:text="值"
+            android:layout_toRightOf="@+id/IvL"
+            android:layout_toLeftOf="@+id/IvR"
+            android:padding="14dp"
+            android:gravity="center"
+            android:layout_centerInParent="true"/>
+        <ImageView
+            android:id="@+id/IvR"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#2B3139"
+            android:layout_alignTop="@+id/TvDes"
+            android:layout_alignBottom="@+id/TvDes"
+            android:layout_toLeftOf="@+id/TvUtil" />
+        <TextView
+            android:id="@+id/TvUtil"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:button="@drawable/checkbox_one"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+</RelativeLayout>

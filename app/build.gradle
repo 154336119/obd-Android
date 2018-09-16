@@ -47,16 +47,18 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation project(':widget')
     implementation project(':frame')
-    compile 'com.github.pires:obd-java-api:1.0-RC16'
+    //    compile 'com.github.pires:obd-java-api:1.0-RC16'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'info.hoang8f:android-segmented:1.0.6'
-//    compile 'com.github.lecho:hellocharts-android:v1.5.8'
+    //    compile 'com.github.lecho:hellocharts-android:v1.5.8'
     compile 'com.lzy.net:okgo:3.0.4'
     compile 'com.lzy.net:okserver:2.0.5'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.tencent.bugly:nativecrashreport:3.1.2'
     compile 'com.tencent.bugly:crashreport_upgrade:1.2.3'
     compile 'com.contrarywind:Android-PickerView:4.1.6'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    implementation files('F:/Android_demo/obd_android/obd-Android/libs/obd-java-api-1.2-SNAPSHOT.jar')
 }

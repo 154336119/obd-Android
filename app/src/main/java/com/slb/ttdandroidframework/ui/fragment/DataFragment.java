@@ -114,7 +114,6 @@ public class DataFragment
     };
 
     private void queueCommands() {
-        Logger.d("queueCommands:" + ObdConfig.getAllCommands().size());
         for (ObdCommand Command : mCmds) {
             service.queueJob(new ObdCommandJob(Command));
         }
