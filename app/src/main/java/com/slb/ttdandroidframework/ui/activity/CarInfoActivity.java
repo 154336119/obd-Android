@@ -14,16 +14,22 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.hwangjr.rxbus.RxBus;
 import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.RefreshObdListtEvent;
 import com.slb.ttdandroidframework.event.RefreshVehicleListtEvent;
+import com.slb.ttdandroidframework.http.bean.CarBrandEntity;
+import com.slb.ttdandroidframework.http.bean.CarModelEntity;
 import com.slb.ttdandroidframework.http.bean.ObdEntity;
 import com.slb.ttdandroidframework.http.bean.VehicleEntity;
 import com.slb.ttdandroidframework.ui.contract.CarInfoContract;
 import com.slb.ttdandroidframework.ui.presenter.CarInfoPresenter;
 import com.slb.ttdandroidframework.util.config.BizcContant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +56,13 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
     private int mOperation = BizcContant.ADD;
     private VehicleEntity mVehicleEntity;
     private MenuItem mMenuItem;
+
+    private OptionsPickerView pvCarBrandOptions;
+    private OptionsPickerView pvCarModelOptions;
+    private List<CarBrandEntity> mCarBrandList = new ArrayList<>();
+    private List<CarModelEntity> mCarModelList = new ArrayList<>();
+    private CarBrandEntity mSeleceCarBrandEntity;
+    private CarModelEntity mSelectCarModelEntity;
     @Override
     protected String setToolbarTitle() {
         if (mOperation == BizcContant.ADD) {
@@ -91,6 +104,7 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
                 mMenuItem.setVisible(true);
             }
         }
+        initCarBrandOptionPicker();
     }
 
 
@@ -169,4 +183,49 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
         mPresenter.delectCar(mVehicleEntity.getId());
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void getCArBrandListSuccess(List<CarBrandEntity> list) {
+
+    }
+
+    @Override
+    public void getCarModeListSuccess(List<CarModelEntity> list) {
+        initCarModeOptionPicker();
+    }
+
+    private void initCarBrandOptionPicker() {//条件选择器初始化
+        pvCarBrandOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                edtMake.setText(mCarBrandList.get(options1).getName());
+                mSeleceCarBrandEntity = mCarBrandList.get(options1);
+                mPresenter.getCarModeListSuccess(mSeleceCarBrandEntity.getId());
+            }
+        })
+                .setTitleText("类型选择")
+                .setContentTextSize(20)//设置滚轮文字大小
+                .setSelectOptions(0, 1)//默认选中项
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .build();
+        pvCarBrandOptions.setPicker(mCarBrandList);//二级选择器
+    }
+
+    private void initCarModeOptionPicker() {//条件选择器初始化
+        pvCarModelOptions = new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                edtModel.setText(mCarModelList.get(options1).getName());
+                mSelectCarModelEntity = mCarModelList.get(options1);
+            }
+        })
+                .setTitleText("类型选择")
+                .setContentTextSize(20)//设置滚轮文字大小
+                .setSelectOptions(0, 1)//默认选中项
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .build();
+        pvCarModelOptions.setPicker(mCarModelList);//二级选择器
+    }
+
+
 }

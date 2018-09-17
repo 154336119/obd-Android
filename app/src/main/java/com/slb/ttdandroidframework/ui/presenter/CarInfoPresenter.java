@@ -7,6 +7,8 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.slb.frame.ui.presenter.AbstractBasePresenter;
 import com.slb.ttdandroidframework.Base;
+import com.slb.ttdandroidframework.http.bean.CarBrandEntity;
+import com.slb.ttdandroidframework.http.bean.CarModelEntity;
 import com.slb.ttdandroidframework.http.bean.UserEntity;
 import com.slb.ttdandroidframework.http.callback.DialogCallback;
 import com.slb.ttdandroidframework.http.dns.DnsFactory;
@@ -14,6 +16,8 @@ import com.slb.ttdandroidframework.http.model.LzyResponse;
 import com.slb.ttdandroidframework.http.service.ComServiceUrl;
 import com.slb.ttdandroidframework.ui.contract.CarInfoContract;
 import com.slb.ttdandroidframework.ui.contract.ObdInfoContract;
+
+import java.util.List;
 
 /**
  * 李彬杰
@@ -122,4 +126,31 @@ public class CarInfoPresenter extends AbstractBasePresenter<CarInfoContract.IVie
                     }
                 });
     }
-}
+
+    @Override
+    public void getCArBrandListSuccess() {
+        OkGo.<LzyResponse<List<CarBrandEntity>>>get(DnsFactory.getInstance().getDns().getCommonBaseUrl()+ "api/vehicle/make")//
+                .tag(this)
+                .headers("Authorization","Bearer "+Base.getUserEntity().getToken())
+                .execute(new DialogCallback<LzyResponse<List<CarBrandEntity>>>(this.mView) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<List<CarBrandEntity>>> response) {
+                        mView.getCArBrandListSuccess(response.body().data);
+                    }
+                });
+    }
+
+    @Override
+    public void getCarModeListSuccess(String id) {
+        OkGo.<LzyResponse<List<CarModelEntity>>>get(DnsFactory.getInstance().getDns().getCommonBaseUrl()+ "/api/vehicle/model/"+id)//
+                .tag(this)
+                .headers("Authorization","Bearer "+Base.getUserEntity().getToken())
+                .execute(new DialogCallback<LzyResponse<List<CarModelEntity>>>(this.mView) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<List<CarModelEntity>>> response) {
+                        mView.getCarModeListSuccess(response.body().data);
+                    }
+                });
+    }
+    }
+

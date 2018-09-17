@@ -17,7 +17,7 @@ public class HistoryErrorAdapter extends BaseQuickAdapter<HistoryErrorCodeEntity
 
 
     public HistoryErrorAdapter(List<HistoryErrorCodeEntity> data) {
-        super(R.layout.adapter_history_error_code, data);
+            super(R.layout.adapter_history_error_code, data);
     }
 
     @Override

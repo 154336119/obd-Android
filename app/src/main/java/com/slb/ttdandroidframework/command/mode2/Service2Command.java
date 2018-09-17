@@ -7,16 +7,23 @@ import com.github.pires.obd.commands.ObdCommand;
  */
 
 public class Service2Command extends ObdCommand {
+    int rpm;
+
+    public int getRpm() {
+        return rpm;
+    }
+
+    public void setRpm(int rpm) {
+        this.rpm = rpm;
+    }
 
     public Service2Command(String cmd) {
         super(cmd);
     }
 
-    @Override
     protected void performCalculations() {
-        System.out.println("do calculation");
+        this.rpm = (((Integer)this.buffer.get(2)).intValue() * 256 + ((Integer)this.buffer.get(3)).intValue()) / 4;
     }
-
     @Override
     public String getFormattedResult() {
         return "";

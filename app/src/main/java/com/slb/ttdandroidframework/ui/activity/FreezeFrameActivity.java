@@ -181,6 +181,7 @@ public class FreezeFrameActivity extends BaseActivity {
                                     //第一条是pid数据
                                     if(!TextUtils.isEmpty(pid)){
                                         pid =  pid.substring(pid.length()-4,pid.length());
+                                        pid = "P"+pid;
                                     }
 //                                    Logger.d("=========pid1:"+pid);
                                     freezeFrameEntity.setPid(pid);
@@ -207,8 +208,8 @@ public class FreezeFrameActivity extends BaseActivity {
                                     break;
                                 case 4:
                                     freezeFrameInsideEntity.setDes("发动机RPM");
-                                    pid10 = Integer.parseInt(pid.substring(pid.length()-2,pid.length()),16);
-                                    freezeFrameInsideEntity.setValue(pid10+"");
+                                    Logger.d("==============发动机RPM："+   service2Command.getRpm());
+                                    freezeFrameInsideEntity.setValue(service2Command.getRpm()+"");
                                     mInsideList.add(freezeFrameInsideEntity);
                                     break;
                             }
@@ -239,8 +240,8 @@ public class FreezeFrameActivity extends BaseActivity {
                     return null;
                 } catch (NoDataException e) {
                     Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_NODATA).sendToTarget();
-                    return null;
+//                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_NODATA).sendToTarget();
+                    mHandler.obtainMessage(DATA_OK_CODE, list).sendToTarget();
                 } catch (Exception e) {
                     Log.e("DTCERR", e.getMessage());
                     mHandler.obtainMessage(ObdConfig.OBD_COMMAND_FAILURE).sendToTarget();
