@@ -6,9 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
-import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
-import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.slb.frame.ui.activity.BaseActivity;
@@ -88,7 +86,7 @@ public class SubmitErrorCodeActivity extends BaseActivity {
     }
 
     private void initPvObdOptions(){
-        pvObdOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+        pvObdOptions =  new OptionsPickerView.Builder (this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                 String tx = Base.getUserEntity().getObdEntityList().get(options1).getPickerViewText();
@@ -106,7 +104,7 @@ public class SubmitErrorCodeActivity extends BaseActivity {
     }
 
     private void initPvCarOptions(){
-        pvCarOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+        pvCarOptions =  new OptionsPickerView.Builder(this, new OptionsPickerView.OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                 String tx = Base.getUserEntity().getVehicleEntityList().get(options1).getPickerViewText();

@@ -26,7 +26,7 @@
             android:lines="1"
             android:background="#3C444F"
             android:layout_marginTop="15dp"/>
-        <EditText
+        <TextView
             android:id="@+id/edtMake"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
@@ -34,19 +34,11 @@
             android:lines="1"
             android:background="#3C444F"
             android:layout_marginTop="15dp"/>
-        <EditText
+        <TextView
             android:id="@+id/edtModel"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
             android:hint="请输入您的型号"
-            android:lines="1"
-            android:background="#3C444F"
-            android:layout_marginTop="15dp"/>
-        <TextView
-            android:id="@+id/TvYear"
-            style="@style/edit_padding_10"
-            android:completionThreshold="1"
-            android:hint="请输入年代"
             android:lines="1"
             android:background="#3C444F"
             android:layout_marginTop="15dp"/>

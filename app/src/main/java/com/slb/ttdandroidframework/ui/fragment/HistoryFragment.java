@@ -2,7 +2,7 @@ package com.slb.ttdandroidframework.ui.fragment;
 
 import android.app.DatePickerDialog;
 import android.graphics.Color;
-import android.icu.util.Calendar;
+import java.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;

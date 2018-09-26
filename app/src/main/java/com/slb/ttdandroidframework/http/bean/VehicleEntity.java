@@ -3,7 +3,8 @@ package com.slb.ttdandroidframework.http.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.contrarywind.interfaces.IPickerViewData;
+import com.bigkoo.pickerview.model.IPickerViewData;
+
 
 public class VehicleEntity implements Parcelable , IPickerViewData {
 
@@ -19,13 +20,17 @@ public class VehicleEntity implements Parcelable , IPickerViewData {
      */
 
     private String licenseNo;
-    private String year;
-    private String model;
+    private CarModelEntity model;
     private String remark;
     private String vin;
     private String id;
-    private String make;
     private int version;
+
+
+    @Override
+    public String getPickerViewText() {
+        return getLicenseNo();
+    }
 
     public String getLicenseNo() {
         return licenseNo;
@@ -35,19 +40,11 @@ public class VehicleEntity implements Parcelable , IPickerViewData {
         this.licenseNo = licenseNo;
     }
 
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public String getModel() {
+    public CarModelEntity getModel() {
         return model;
     }
 
-    public void setModel(String model) {
+    public void setModel(CarModelEntity model) {
         this.model = model;
     }
 
@@ -75,14 +72,6 @@ public class VehicleEntity implements Parcelable , IPickerViewData {
         this.id = id;
     }
 
-    public String getMake() {
-        return make;
-    }
-
-    public void setMake(String make) {
-        this.make = make;
-    }
-
     public int getVersion() {
         return version;
     }
@@ -99,12 +88,10 @@ public class VehicleEntity implements Parcelable , IPickerViewData {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.licenseNo);
-        dest.writeString(this.year);
-        dest.writeString(this.model);
+        dest.writeParcelable(this.model, flags);
         dest.writeString(this.remark);
         dest.writeString(this.vin);
         dest.writeString(this.id);
-        dest.writeString(this.make);
         dest.writeInt(this.version);
     }
 
@@ -113,16 +100,14 @@ public class VehicleEntity implements Parcelable , IPickerViewData {
 
     protected VehicleEntity(Parcel in) {
         this.licenseNo = in.readString();
-        this.year = in.readString();
-        this.model = in.readString();
+        this.model = in.readParcelable(CarModelEntity.class.getClassLoader());
         this.remark = in.readString();
         this.vin = in.readString();
         this.id = in.readString();
-        this.make = in.readString();
         this.version = in.readInt();
     }
 
-    public static final Parcelable.Creator<VehicleEntity> CREATOR = new Parcelable.Creator<VehicleEntity>() {
+    public static final Creator<VehicleEntity> CREATOR = new Creator<VehicleEntity>() {
         @Override
         public VehicleEntity createFromParcel(Parcel source) {
             return new VehicleEntity(source);
@@ -133,9 +118,4 @@ public class VehicleEntity implements Parcelable , IPickerViewData {
             return new VehicleEntity[size];
         }
     };
-
-    @Override
-    public String getPickerViewText() {
-        return getLicenseNo();
-    }
 }

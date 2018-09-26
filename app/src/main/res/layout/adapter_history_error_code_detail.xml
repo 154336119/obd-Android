@@ -27,7 +27,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:text="历史数据名称"
             android:padding="20dp"
             android:layout_toRightOf="@+id/TvPid"/>
     </RelativeLayout>

@@ -25,6 +25,7 @@ import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
 import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
 import com.slb.ttdandroidframework.ui.activity.EmissionTestActivity;
 import com.slb.ttdandroidframework.ui.activity.FreezeFrameActivity;
+import com.slb.ttdandroidframework.ui.activity.Mode6Activity;
 import com.slb.ttdandroidframework.ui.activity.ModuleFiveActivity;
 import com.slb.ttdandroidframework.ui.activity.ReadErrorCodeActivity;
 import com.slb.ttdandroidframework.ui.activity.SubmitErrorCodeActivity;
@@ -152,6 +153,7 @@ public class HomeFragment
 
     @OnClick({R.id.Fl01, R.id.Fl02, R.id.Fl03, R.id.Fl04, R.id.Fl05, R.id.Fl06,R.id.tvConnect})
     public void onViewClicked(View view) {
+
         switch (view.getId()) {
             case R.id.Fl01:
                 //读取故障码
@@ -165,19 +167,23 @@ public class HomeFragment
                 break;
             case R.id.Fl03:
                 //尾气检测
+                RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, EmissionTestActivity.class);
                 break;
             case R.id.Fl04:
                 //氧气传感器
+                RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, ModuleFiveActivity.class);
                 break;
             case R.id.Fl05:
                 //故障灯状态
+                RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, TroubleLightSActivity.class);
                 break;
             case R.id.Fl06:
                 //车载监控
-                ActivityUtil.next(_mActivity, ReadErrorCodeActivity.class);
+                RxBus.get().post(new ObdServiceStateEvent(false));
+                ActivityUtil.next(_mActivity, Mode6Activity.class);
                 break;
             case R.id.tvConnect:
 //                if(tvConnect.getText().toString().equals("已连接")){

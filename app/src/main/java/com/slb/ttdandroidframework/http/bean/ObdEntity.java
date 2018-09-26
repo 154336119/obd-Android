@@ -3,7 +3,8 @@ package com.slb.ttdandroidframework.http.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.contrarywind.interfaces.IPickerViewData;
+import com.bigkoo.pickerview.model.IPickerViewData;
+
 
 public class ObdEntity implements IPickerViewData, Parcelable {
     /**

@@ -134,10 +134,10 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     @Override
                     public void onSuccess(Response<LzyResponse<ObdSEntity>> response) {
                         ObdSEntity entity = response.body().data;
-                        if(entity!=null && entity.getObds()!=null && entity.getObds().size()>0){
+//                        if(entity!=null && entity.getObds()!=null && entity.getObds().size()>0){
                             Base.getUserEntity().setObdEntityList(entity.getObds());
                             RxBus.get().post(new RefreshMineObdListtEvent());
-                        }
+//                        }
                     }
                 });
     }
@@ -153,10 +153,10 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     @Override
                     public void onSuccess(Response<LzyResponse<VehiclesEntity>> response) {
                         VehiclesEntity entity = response.body().data;
-                        if(entity!=null && entity.getVehicles()!=null && entity.getVehicles().size()>0){
+//                        if(entity!=null && entity.getVehicles()!=null && entity.getVehicles().size()>0){
                             Base.getUserEntity().setVehicleEntityList(entity.getVehicles());
                             RxBus.get().post(new RefreshMineVehicleListtEvent());
-                        }
+//                        }
                     }
                 });
     }

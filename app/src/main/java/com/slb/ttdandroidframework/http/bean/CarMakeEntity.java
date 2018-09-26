@@ -3,14 +3,14 @@ package com.slb.ttdandroidframework.http.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.bigkoo.pickerview.configure.PickerOptions;
-import com.contrarywind.interfaces.IPickerViewData;
+import com.bigkoo.pickerview.model.IPickerViewData;
+
 
 /**
  * Created by juan on 2018/9/17.
  */
 
-public class CarBrandEntity implements Parcelable,IPickerViewData {
+public class CarMakeEntity implements Parcelable,IPickerViewData {
 
     /**
      * name : Volvo
@@ -80,10 +80,10 @@ public class CarBrandEntity implements Parcelable,IPickerViewData {
         dest.writeInt(this.version);
     }
 
-    public CarBrandEntity() {
+    public CarMakeEntity() {
     }
 
-    protected CarBrandEntity(Parcel in) {
+    protected CarMakeEntity(Parcel in) {
         this.name = in.readString();
         this.logo = in.readString();
         this.remark = in.readString();
@@ -91,15 +91,15 @@ public class CarBrandEntity implements Parcelable,IPickerViewData {
         this.version = in.readInt();
     }
 
-    public static final Parcelable.Creator<CarBrandEntity> CREATOR = new Parcelable.Creator<CarBrandEntity>() {
+    public static final Parcelable.Creator<CarMakeEntity> CREATOR = new Parcelable.Creator<CarMakeEntity>() {
         @Override
-        public CarBrandEntity createFromParcel(Parcel source) {
-            return new CarBrandEntity(source);
+        public CarMakeEntity createFromParcel(Parcel source) {
+            return new CarMakeEntity(source);
         }
 
         @Override
-        public CarBrandEntity[] newArray(int size) {
-            return new CarBrandEntity[size];
+        public CarMakeEntity[] newArray(int size) {
+            return new CarMakeEntity[size];
         }
     };
 

@@ -19,4 +19,5 @@
     <color name="tabSelectColor">@color/colors_a1</color>
     <color name="tabIndicatorcolor">@color/colors_a1</color>
     <color name="colors_d4">#B3B3B3</color>
+    <color name="colors_7ED321">#7ED321</color>
 </resources>

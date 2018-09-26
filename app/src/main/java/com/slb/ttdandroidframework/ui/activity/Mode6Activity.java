@@ -3,7 +3,6 @@ package com.slb.ttdandroidframework.ui.activity;
 import android.bluetooth.BluetoothSocket;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,11 +12,6 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.github.pires.obd.commands.protocol.EchoOffCommand;
-import com.github.pires.obd.commands.protocol.LineFeedOffCommand;
-import com.github.pires.obd.commands.protocol.ObdResetCommand;
-import com.github.pires.obd.commands.protocol.SelectProtocolCommand;
-import com.github.pires.obd.enums.ObdProtocols;
 import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
@@ -26,11 +20,16 @@ import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.command.mode2.Service2Command;
+import com.slb.ttdandroidframework.command.mode6.Mode6AvailablePidsCommand_01_20;
+import com.slb.ttdandroidframework.command.mode6.Mode6AvailablePidsCommand_21_40;
+import com.slb.ttdandroidframework.command.mode6.Mode6AvailablePidsCommand_41_60;
+import com.slb.ttdandroidframework.command.mode6.Service6Command;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameEntity;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameInsideEntity;
+import com.slb.ttdandroidframework.http.bean.ModeSixEntity;
 import com.slb.ttdandroidframework.ui.adapter.FreezeFrameAdapter;
-import com.slb.ttdandroidframework.ui.adapter.HistoryErrorDetailAdapter;
+import com.slb.ttdandroidframework.ui.adapter.ModeSixAdapter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
 import com.slb.ttdandroidframework.util.config.Mode2Util;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
@@ -38,6 +37,7 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +46,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.slb.ttdandroidframework.ui.activity.ReadErrorCodeActivity.DATA_OK_CODE;
-import static com.slb.ttdandroidframework.util.config.ObdConfig.DATA_OK;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_IE;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_IO;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_MIS;
@@ -56,15 +55,15 @@ import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAIL
 /**
  * 作者：Juan on 2017/7/30 18:33
  * 邮箱：154336119@qq.com
- * 描述：冻结帧
+ * 描述：mode6
  */
-public class FreezeFrameActivity extends BaseActivity {
+public class Mode6Activity extends BaseActivity {
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
-    private FreezeFrameAdapter mAdapter;
+    private ModeSixAdapter mAdapter;
     private BluetoothSocket sock;
-    private GetPermanentTroubleCodesTask mCodesTask;
-    private List<FreezeFrameEntity> mList = new ArrayList<>();
+    private ModeSixTask mModeSixTask;
+    private List<ModeSixEntity> mList = new ArrayList<>();
     private Handler mHandler = new Handler(new Handler.Callback() {
         public boolean handleMessage(Message msg) {
             Log.d(TAG, "Message received on handler");
@@ -99,7 +98,7 @@ public class FreezeFrameActivity extends BaseActivity {
                     break;
                 case DATA_OK_CODE:
 //                    dataOk((String) msg.obj);
-                    mList = (List<FreezeFrameEntity>)msg.obj;
+                    mList = (List<ModeSixEntity>)msg.obj;
                     mAdapter.setNewData(mList);
                     break;
             }
@@ -115,14 +114,14 @@ public class FreezeFrameActivity extends BaseActivity {
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_freeze_frame;
+        return R.layout.activity_mode_six;
     }
 
     @Override
     public void initView() {
         super.initView();
         ButterKnife.bind(this);
-        mAdapter = new FreezeFrameAdapter(mList);
+        mAdapter = new ModeSixAdapter(mList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(
@@ -141,15 +140,30 @@ public class FreezeFrameActivity extends BaseActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        executeCodeCommand();
+        executeMode6Command();
     }
 
-
+    /**
+     * 请求mode6
+     */
+    public void executeMode6Command() {
+        try {
+            if (BluetoothUtil.getDeviceInstance() == null) {
+                mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
+            } else {
+                mModeSixTask = new ModeSixTask();
+                mModeSixTask.execute();
+            }
+        } catch (IOException e) {
+            mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
+            e.printStackTrace();
+        }
+    }
     //    @Override
 //    protected Observable<HttpResult<Object, CookBillEntity>> requestHttp() {
 //        return RetrofitSerciveFactory.provideComService().getCookBillList(1);
 //    }
-    private class GetPermanentTroubleCodesTask extends AsyncTask<String, Integer, List<FreezeFrameEntity>> {
+    private class ModeSixTask extends AsyncTask<String, Integer, List<ModeSixEntity>> {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
@@ -157,66 +171,45 @@ public class FreezeFrameActivity extends BaseActivity {
         }
 
         @Override
-        protected List<FreezeFrameEntity> doInBackground(String... params) {
-            List<FreezeFrameEntity> list = new ArrayList<>();
+        protected List<ModeSixEntity> doInBackground(String... params) {
+            List<ModeSixEntity> list = new ArrayList<>();
             //Get the current thread's token
             synchronized (this) {
                 try {
-                    for(int i = 0;i<5;i++){
-                         //构造数据
-                        FreezeFrameEntity freezeFrameEntity = new FreezeFrameEntity();
-                        List<FreezeFrameInsideEntity> mInsideList = new ArrayList<>();
+                    //Step2:查询mode6可用的tid
+                    List<String> tidList = new ArrayList<>();
+                    try {
+                        Mode6AvailablePidsCommand_01_20 available1 = new Mode6AvailablePidsCommand_01_20();
+                        available1.run(sock.getInputStream(),sock.getOutputStream());
+                        String result1 = available1.getFormattedResult();
+                        tidList.addAll(Arrays.asList(result1.split(",")));
+                    } catch (Exception e) {}
 
-                        List<Service2Command> service2CommandList = Mode2Util.getService2CommandForIndex(i);
-                         for(int j=0; j<service2CommandList.size();j++){
-                            FreezeFrameInsideEntity freezeFrameInsideEntity = new FreezeFrameInsideEntity();
+                    try {
+                        Mode6AvailablePidsCommand_21_40 available2 = new Mode6AvailablePidsCommand_21_40();
+                        available2.run(sock.getInputStream(),sock.getOutputStream());
+                        String result2 = available2.getFormattedResult();
+                        tidList.addAll(Arrays.asList(result2.split(",")));
+                    } catch (Exception e) {}
 
-                             Service2Command service2Command = service2CommandList.get(j);
-                            service2Command.run(sock.getInputStream(), sock.getOutputStream());
-                            String pid = service2Command.getResult();
-                            Integer pid10 = null;
-//                            Logger.d("=========pid:"+pid);
-                            switch(j){
-                                case 0:
-                                    //第一条是pid数据
-                                    if(!TextUtils.isEmpty(pid)){
-                                        pid =  pid.substring(pid.length()-4,pid.length());
-                                        pid = "P"+pid;
-                                    }
-//                                    Logger.d("=========pid1:"+pid);
-                                    freezeFrameEntity.setPid(pid);
-                                    break;
-                                case 1:
-                                    freezeFrameInsideEntity.setDes("计算的荷载阈值");
-                                    pid = pid.substring(pid.length()-2,pid.length());
-                                     pid10 = Integer.parseInt(pid.substring(pid.length()-2,pid.length()),16);
-                                    freezeFrameInsideEntity.setValue(pid10+"");
-                                    mInsideList.add(freezeFrameInsideEntity);
-                                    break;
-                                case 2:
-                                    freezeFrameInsideEntity.setDes("发动机冷却液温度");
-                                    pid = pid.substring(pid.length()-2,pid.length());
-                                    pid10 = Integer.parseInt(pid.substring(pid.length()-2,pid.length()),16);
-                                    freezeFrameInsideEntity.setValue(pid10+"");
-                                    mInsideList.add(freezeFrameInsideEntity);
-                                    break;
-                                case 3:
-                                    freezeFrameInsideEntity.setDes("进气歧管绝对压力");
-                                    pid10 = Integer.parseInt(pid.substring(pid.length()-2,pid.length()),16);
-                                    freezeFrameInsideEntity.setValue(pid10+"");
-                                    mInsideList.add(freezeFrameInsideEntity);
-                                    break;
-                                case 4:
-                                    freezeFrameInsideEntity.setDes("发动机RPM");
-                                    Logger.d("==============发动机RPM："+   service2Command.getRpm());
-                                    freezeFrameInsideEntity.setValue(service2Command.getRpm()+"");
-                                    mInsideList.add(freezeFrameInsideEntity);
-                                    break;
-                            }
+                    try {
+                        Mode6AvailablePidsCommand_41_60 available3 = new Mode6AvailablePidsCommand_41_60();
+                        available3.run(sock.getInputStream(),sock.getOutputStream());
+                        String result3 = available3.getFormattedResult();
+                        tidList.addAll(Arrays.asList(result3.split(",")));
+                    } catch (Exception e) {}
+
+                    System.out.println("要查询的mode6 TID集合:"+tidList);
+                    //Step2
+
+                    //Step3:执行mode6查询命令并解析结果
+                    for (String tid : tidList) {
+                        Service6Command command = new Service6Command("06 "+tid);
+                        command.run(sock.getInputStream(),sock.getOutputStream());
+                        command.getFormattedResult();
+                        if(!TextUtils.isEmpty(command.getFormattedResult())){
+                            list.addAll(command.getList());
                         }
-                        freezeFrameEntity.setmInsideList(mInsideList);
-                        list.add(freezeFrameEntity);
-//                        mAdapter.setNewData(mList);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -271,49 +264,13 @@ public class FreezeFrameActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(List<FreezeFrameEntity> result) {
+        protected void onPostExecute(List<ModeSixEntity> result) {
             hideWaitDialog();
             mHandler.obtainMessage(DATA_OK_CODE, result).sendToTarget();
         }
     }
 
-    private void dataOk(String res) {
-        ListView lv = (ListView) findViewById(R.id.listView);
-        Map<String, String> dtcVals = getDict(R.array.dtc_keys, R.array.dtc_values);
-        //TODO replace below codes (res) with aboce dtcVals
-        //String tmpVal = dtcVals.get(res.split("\n"));
-        //String[] dtcCodes = new String[]{};
-        ArrayList<String> dtcCodes = new ArrayList<String>();
-        //int i =1;
-        if (res != null) {
-            for (String dtcCode : res.split("\n")) {
-                dtcCodes.add(dtcCode + " : " + dtcVals.get(dtcCode));
-                Log.d("TEST", dtcCode + " : " + dtcVals.get(dtcCode));
-            }
-        } else {
-            dtcCodes.add("There are no errors");
-        }
-        ArrayAdapter<String> myarrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dtcCodes);
-        lv.setAdapter(myarrayAdapter);
-        lv.setTextFilterEnabled(true);
-    }
 
-    /**
-     * 请求冻结帧
-     */
-    public void executeCodeCommand() {
-        try {
-            if (BluetoothUtil.getDeviceInstance() == null) {
-                mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
-            } else {
-                mCodesTask = new GetPermanentTroubleCodesTask();
-                mCodesTask.execute();
-            }
-        } catch (IOException e) {
-            mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
-            e.printStackTrace();
-        }
-    }
 
     @Override
     protected void onDestroy() {
@@ -321,15 +278,4 @@ public class FreezeFrameActivity extends BaseActivity {
         RxBus.get().post(new ObdServiceStateEvent(true));
     }
 
-    Map<String, String> getDict(int keyId, int valId) {
-        String[] keys = getResources().getStringArray(keyId);
-        String[] vals = getResources().getStringArray(valId);
-
-        Map<String, String> dict = new HashMap<String, String>();
-        for (int i = 0, l = keys.length; i < l; i++) {
-            dict.put(keys[i], vals[i]);
-        }
-
-        return dict;
-    }
 }

@@ -1,16 +1,12 @@
 package com.slb.ttdandroidframework.ui.activity;
 
-import android.app.DatePickerDialog;
-import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -18,11 +14,9 @@ import com.bigkoo.pickerview.OptionsPickerView;
 import com.hwangjr.rxbus.RxBus;
 import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.event.RefreshObdListtEvent;
 import com.slb.ttdandroidframework.event.RefreshVehicleListtEvent;
-import com.slb.ttdandroidframework.http.bean.CarBrandEntity;
+import com.slb.ttdandroidframework.http.bean.CarMakeEntity;
 import com.slb.ttdandroidframework.http.bean.CarModelEntity;
-import com.slb.ttdandroidframework.http.bean.ObdEntity;
 import com.slb.ttdandroidframework.http.bean.VehicleEntity;
 import com.slb.ttdandroidframework.ui.contract.CarInfoContract;
 import com.slb.ttdandroidframework.ui.presenter.CarInfoPresenter;
@@ -45,11 +39,9 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
     @BindView(R.id.edtVin)
     EditText edtVin;
     @BindView(R.id.edtMake)
-    EditText edtMake;
+    TextView edtMake;
     @BindView(R.id.edtModel)
-    EditText edtModel;
-    @BindView(R.id.TvYear)
-    TextView TvYear;
+    TextView edtModel;
     @BindView(R.id.btnComfirm)
     Button btnComfirm;
     //操作
@@ -59,9 +51,9 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
 
     private OptionsPickerView pvCarBrandOptions;
     private OptionsPickerView pvCarModelOptions;
-    private List<CarBrandEntity> mCarBrandList = new ArrayList<>();
+    private List<CarMakeEntity> mCarBrandList = new ArrayList<>();
     private List<CarModelEntity> mCarModelList = new ArrayList<>();
-    private CarBrandEntity mSeleceCarBrandEntity;
+    private CarMakeEntity mSeleceCarBrandEntity;
     private CarModelEntity mSelectCarModelEntity;
     @Override
     protected String setToolbarTitle() {
@@ -95,16 +87,19 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         if(mOperation == BizcContant.EDIT){
+            mSeleceCarBrandEntity = mVehicleEntity.getModel().getMake();
+            mSelectCarModelEntity = mVehicleEntity.getModel();
             edtLicenseNo.setText(mVehicleEntity.getLicenseNo());
             edtVin.setText(mVehicleEntity.getVin());
-            edtMake.setText(mVehicleEntity.getMake());
-            TvYear.setText(mVehicleEntity.getYear());
-            edtModel.setText(mVehicleEntity.getModel());
+            edtMake.setText(mSeleceCarBrandEntity.getName());
+            edtModel.setText(mSelectCarModelEntity.getName());
+            mPresenter.getCarModeList(mSeleceCarBrandEntity.getId());
             if(mMenuItem!=null){
                 mMenuItem.setVisible(true);
             }
         }
-        initCarBrandOptionPicker();
+        mPresenter.getCarBrandList();
+        //initCarBrandOptionPicker();
     }
 
 
@@ -116,43 +111,35 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @OnClick({R.id.TvYear, R.id.btnComfirm})
+    @OnClick({R.id.edtMake,R.id.edtModel, R.id.btnComfirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.TvYear:
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);//当前年
-                int month = calendar.get(Calendar.MONTH);//当前月
-                int day = calendar.get(Calendar.DAY_OF_MONTH);//当前日
-                //new一个日期选择对话框的对象,并设置默认显示时间为当前的年月日时间.
-                DatePickerDialog dialog = new DatePickerDialog(this,  DatePickerDialog.THEME_HOLO_LIGHT,mdateListener, year, month, day);
-                dialog.show();
+            case R.id.edtMake:
+                hideSoftInput();
+                if(mCarBrandList!=null){
+                    pvCarBrandOptions.show();
+                }
+                break;
+            case R.id.edtModel:
+                hideSoftInput();
+                if(mCarModelList!=null){
+                    pvCarModelOptions.show();
+                }
                 break;
             case R.id.btnComfirm:
                 if(mOperation == BizcContant.ADD){
                     mPresenter.addCar(edtLicenseNo.getText().toString()
                             , edtVin.getText().toString()
-                            , edtMake.getText().toString()
-                            , edtModel.getText().toString()
-                            , TvYear.getText().toString());
+                            , mSelectCarModelEntity);
                 }else if(mOperation == BizcContant.EDIT){
                     mPresenter.editCar(mVehicleEntity.getId()
                             ,edtLicenseNo.getText().toString()
                             , edtVin.getText().toString()
-                            , edtMake.getText().toString()
-                            , edtModel.getText().toString()
-                            , TvYear.getText().toString());
+                            ,mSelectCarModelEntity);
                 }
                 break;
         }
     }
-    private DatePickerDialog.OnDateSetListener mdateListener = new DatePickerDialog.OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int years, int monthOfYear, int dayOfMonth) {
-            TvYear.setText(years+"-"+monthOfYear+"-"+dayOfMonth);
-        }
-    };
 
     @Override
     public void edidCarSuccess() {
@@ -185,12 +172,14 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
     }
 
     @Override
-    public void getCArBrandListSuccess(List<CarBrandEntity> list) {
-
+    public void getCarBrandListSuccess(List<CarMakeEntity> list) {
+        mCarBrandList = list;
+        initCarBrandOptionPicker();
     }
 
     @Override
     public void getCarModeListSuccess(List<CarModelEntity> list) {
+        mCarModelList = list;
         initCarModeOptionPicker();
     }
 
@@ -200,7 +189,8 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 edtMake.setText(mCarBrandList.get(options1).getName());
                 mSeleceCarBrandEntity = mCarBrandList.get(options1);
-                mPresenter.getCarModeListSuccess(mSeleceCarBrandEntity.getId());
+                mSelectCarModelEntity = null;
+                mPresenter.getCarModeList(mSeleceCarBrandEntity.getId());
             }
         })
                 .setTitleText("类型选择")

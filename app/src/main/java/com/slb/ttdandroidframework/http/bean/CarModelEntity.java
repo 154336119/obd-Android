@@ -3,7 +3,8 @@ package com.slb.ttdandroidframework.http.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.contrarywind.interfaces.IPickerViewData;
+import com.bigkoo.pickerview.model.IPickerViewData;
+
 
 /**
  * Created by juan on 2018/9/17.
@@ -21,7 +22,16 @@ public class CarModelEntity implements Parcelable ,IPickerViewData {
     private String name;
     private String remark;
     private String id;
+    private CarMakeEntity make;
     private int version;
+
+    public CarMakeEntity getMake() {
+        return make;
+    }
+
+    public void setMake(CarMakeEntity make) {
+        this.make = make;
+    }
 
     public String getName() {
         return name;
@@ -55,6 +65,13 @@ public class CarModelEntity implements Parcelable ,IPickerViewData {
         this.version = version;
     }
 
+
+
+    @Override
+    public String getPickerViewText() {
+        return name;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -65,6 +82,7 @@ public class CarModelEntity implements Parcelable ,IPickerViewData {
         dest.writeString(this.name);
         dest.writeString(this.remark);
         dest.writeString(this.id);
+        dest.writeParcelable(this.make, flags);
         dest.writeInt(this.version);
     }
 
@@ -75,10 +93,11 @@ public class CarModelEntity implements Parcelable ,IPickerViewData {
         this.name = in.readString();
         this.remark = in.readString();
         this.id = in.readString();
+        this.make = in.readParcelable(CarMakeEntity.class.getClassLoader());
         this.version = in.readInt();
     }
 
-    public static final Parcelable.Creator<CarModelEntity> CREATOR = new Parcelable.Creator<CarModelEntity>() {
+    public static final Creator<CarModelEntity> CREATOR = new Creator<CarModelEntity>() {
         @Override
         public CarModelEntity createFromParcel(Parcel source) {
             return new CarModelEntity(source);
@@ -89,9 +108,4 @@ public class CarModelEntity implements Parcelable ,IPickerViewData {
             return new CarModelEntity[size];
         }
     };
-
-    @Override
-    public String getPickerViewText() {
-        return name;
-    }
 }
