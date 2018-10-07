@@ -186,6 +186,18 @@ public class ByteUtils {
     }
 
     /**
+     * 注释：字节数组到short的转换！
+     *
+     * @param b
+     * @return
+     */
+    public static short byteToShort1(byte[] b) {
+        short s = 0;
+        short s0 = (short) (b[0] & 0xff);
+        return s0;
+    }
+
+    /**
      * 把byte[]转换成16进制进制字符串
      *
      * @param b

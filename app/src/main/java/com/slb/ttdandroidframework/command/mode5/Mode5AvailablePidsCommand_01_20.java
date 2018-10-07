@@ -1,8 +1,7 @@
-package com.slb.ttdandroidframework.command.mode2;
+package com.slb.ttdandroidframework.command.mode5;
 
 import com.github.pires.obd.commands.ObdCommand;
 import com.slb.ttdandroidframework.util.ByteUtils;
-
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,10 +12,10 @@ import java.util.List;
  * Created by mabin on 2018-09-07.
  */
 
-public class Mode2AvailablePidsCommand_01_20 extends ObdCommand {
+public class Mode5AvailablePidsCommand_01_20 extends ObdCommand {
 
-    public Mode2AvailablePidsCommand_01_20() {
-        super("02 00 00");
+    public Mode5AvailablePidsCommand_01_20() {
+        super("05 00 01");
     }
 
     @Override
@@ -28,7 +27,6 @@ public class Mode2AvailablePidsCommand_01_20 extends ObdCommand {
     public String getFormattedResult() {
         //计算可用的Test ID
         String availableRawData = getCalculatedResult();
-        System.out.println("---> "+availableRawData);
         StringBuffer sb = new StringBuffer();
         for(int start=0; start<availableRawData.length(); start+=2){
             String hex = availableRawData.substring(start,start+2);

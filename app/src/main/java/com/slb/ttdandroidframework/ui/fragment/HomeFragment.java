@@ -1,7 +1,6 @@
 package com.slb.ttdandroidframework.ui.fragment;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,19 +20,16 @@ import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
-import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
 import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
 import com.slb.ttdandroidframework.ui.activity.EmissionTestActivity;
 import com.slb.ttdandroidframework.ui.activity.FreezeFrameActivity;
+import com.slb.ttdandroidframework.ui.activity.Mode5Activity;
 import com.slb.ttdandroidframework.ui.activity.Mode6Activity;
-import com.slb.ttdandroidframework.ui.activity.ModuleFiveActivity;
 import com.slb.ttdandroidframework.ui.activity.ReadErrorCodeActivity;
-import com.slb.ttdandroidframework.ui.activity.SubmitErrorCodeActivity;
 import com.slb.ttdandroidframework.ui.activity.TroubleLightSActivity;
 import com.slb.ttdandroidframework.ui.contract.HomeContract;
 import com.slb.ttdandroidframework.ui.presenter.HomePresenter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
-import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.weight.CustomDialog;
 
 import butterknife.BindView;
@@ -173,7 +169,7 @@ public class HomeFragment
             case R.id.Fl04:
                 //氧气传感器
                 RxBus.get().post(new ObdServiceStateEvent(false));
-                ActivityUtil.next(_mActivity, ModuleFiveActivity.class);
+                ActivityUtil.next(_mActivity, Mode5Activity.class);
                 break;
             case R.id.Fl05:
                 //故障灯状态

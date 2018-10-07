@@ -49,6 +49,6 @@ public class Mode6AvailablePidsCommand_41_60 extends ObdCommand {
 
     @Override
     public String getName() {
-        return "Mode6AvailablePidsCommand_41_60";
+        return "Mode5AvailablePidsCommand_41_60";
     }
 }

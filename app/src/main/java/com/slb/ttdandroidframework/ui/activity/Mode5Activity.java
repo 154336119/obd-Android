@@ -9,9 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
+import com.github.pires.obd.commands.ObdCommand;
+import com.github.pires.obd.commands.protocol.ObdRawCommand;
 import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
@@ -20,27 +20,32 @@ import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.command.mode2.Service2Command;
+import com.slb.ttdandroidframework.command.mode5.Mode5AvailablePidsCommand_01_20;
+import com.slb.ttdandroidframework.command.mode5.Mode5AvailablePidsCommand_21_40;
+import com.slb.ttdandroidframework.command.mode5.Mode5AvailablePidsCommand_41_60;
+import com.slb.ttdandroidframework.command.mode5.Service5Command;
 import com.slb.ttdandroidframework.command.mode6.Mode6AvailablePidsCommand_01_20;
 import com.slb.ttdandroidframework.command.mode6.Mode6AvailablePidsCommand_21_40;
 import com.slb.ttdandroidframework.command.mode6.Mode6AvailablePidsCommand_41_60;
 import com.slb.ttdandroidframework.command.mode6.Service6Command;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
+import com.slb.ttdandroidframework.http.bean.BankSensorEntiity;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameEntity;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameInsideEntity;
 import com.slb.ttdandroidframework.http.bean.ModeSixEntity;
-import com.slb.ttdandroidframework.ui.adapter.FreezeFrameAdapter;
+import com.slb.ttdandroidframework.http.bean.MoudleFiveEntity;
 import com.slb.ttdandroidframework.ui.adapter.ModeSixAdapter;
+import com.slb.ttdandroidframework.ui.adapter.ModuleFiveAdapter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
 import com.slb.ttdandroidframework.util.config.Mode2Util;
+import com.slb.ttdandroidframework.util.config.Mode5Util;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,13 +62,13 @@ import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAIL
  * 邮箱：154336119@qq.com
  * 描述：mode6
  */
-public class Mode6Activity extends BaseActivity {
+public class Mode5Activity extends BaseActivity {
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
-    private ModeSixAdapter mAdapter;
+    private ModuleFiveAdapter mAdapter;
     private BluetoothSocket sock;
     private ModeSixTask mModeSixTask;
-    private List<ModeSixEntity> mList = new ArrayList<>();
+    private List<BankSensorEntiity> mList = new ArrayList<>();
     private Handler mHandler = new Handler(new Handler.Callback() {
         public boolean handleMessage(Message msg) {
             Log.d(TAG, "Message received on handler");
@@ -98,7 +103,7 @@ public class Mode6Activity extends BaseActivity {
                     break;
                 case DATA_OK_CODE:
 //                    dataOk((String) msg.obj);
-                    mList = (List<ModeSixEntity>)msg.obj;
+                    mList = (List<BankSensorEntiity>)msg.obj;
                     mAdapter.setNewData(mList);
                     break;
             }
@@ -109,7 +114,7 @@ public class Mode6Activity extends BaseActivity {
 
     @Override
     protected String setToolbarTitle() {
-        return getString(R.string.mode_6);
+        return getString(R.string.mode_5);
     }
 
     @Override
@@ -121,7 +126,7 @@ public class Mode6Activity extends BaseActivity {
     public void initView() {
         super.initView();
         ButterKnife.bind(this);
-        mAdapter = new ModeSixAdapter(mList);
+        mAdapter = new ModuleFiveAdapter(mList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(
@@ -163,7 +168,7 @@ public class Mode6Activity extends BaseActivity {
 //    protected Observable<HttpResult<Object, CookBillEntity>> requestHttp() {
 //        return RetrofitSerciveFactory.provideComService().getCookBillList(1);
 //    }
-    private class ModeSixTask extends AsyncTask<String, Integer, List<ModeSixEntity>> {
+    private class ModeSixTask extends AsyncTask<String, Integer, List<BankSensorEntiity>> {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
@@ -171,46 +176,27 @@ public class Mode6Activity extends BaseActivity {
         }
 
         @Override
-        protected List<ModeSixEntity> doInBackground(String... params) {
-            List<ModeSixEntity> list = new ArrayList<>();
+        protected List<BankSensorEntiity> doInBackground(String... params) {
+            List<BankSensorEntiity> list = new ArrayList<>();
             //Get the current thread's token
             synchronized (this) {
                 try {
-                    //Step2:查询mode6可用的tid
-                    List<String> tidList = new ArrayList<>();
-                    try {
-                        Mode6AvailablePidsCommand_01_20 available1 = new Mode6AvailablePidsCommand_01_20();
-                        available1.run(sock.getInputStream(),sock.getOutputStream());
-                        String result1 = available1.getFormattedResult();
-                        tidList.addAll(Arrays.asList(result1.split(",")));
-                    } catch (Exception e) {}
-
-                    try {
-                        Mode6AvailablePidsCommand_21_40 available2 = new Mode6AvailablePidsCommand_21_40();
-                        available2.run(sock.getInputStream(),sock.getOutputStream());
-                        String result2 = available2.getFormattedResult();
-                        tidList.addAll(Arrays.asList(result2.split(",")));
-                    } catch (Exception e) {}
-
-                    try {
-                        Mode6AvailablePidsCommand_41_60 available3 = new Mode6AvailablePidsCommand_41_60();
-                        available3.run(sock.getInputStream(),sock.getOutputStream());
-                        String result3 = available3.getFormattedResult();
-                        tidList.addAll(Arrays.asList(result3.split(",")));
-                    } catch (Exception e) {}
-
-                    System.out.println("要查询的mode6 TID集合:"+tidList);
-                    //Step2
-
-                    //Step3:执行mode6查询命令并解析结果
-                    for (String tid : tidList) {
-                        Service6Command command = new Service6Command("06 "+tid);
-                        command.run(sock.getInputStream(),sock.getOutputStream());
-                        command.getFormattedResult();
-                        if(!TextUtils.isEmpty(command.getFormattedResult())){
-                            list.addAll(command.getList());
-                        }
-                    }
+                    Service6Command command = new Service6Command("01 41");
+                    command.run(sock.getInputStream(), sock.getOutputStream());
+//                    for(int i = 0;i<8;i++){
+//                        //构造数据
+//                        BankSensorEntiity bankSensorEntiity = new BankSensorEntiity();
+//                        bankSensorEntiity.setBankSensorName(Mode5Util.getBankSensorNameForIndex(i));
+//                        List<MoudleFiveEntity> mInsideList = new ArrayList<>();
+//                        List<Service5Command> service5CommandList = Mode5Util.getService5CommandForIndex(i);
+//                        for(int j=0; j<service5CommandList.size();j++){
+//                            Service5Command service5Command = service5CommandList.get(j);
+//                            service5Command.run(sock.getInputStream(), sock.getOutputStream());
+//                            mInsideList.add(service5Command.getMoudleFiveEntity());
+//                        }
+//                        bankSensorEntiity.setList(mInsideList);
+//                        list.add(bankSensorEntiity);
+//                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("DTCERR", e.getMessage());
@@ -246,7 +232,6 @@ public class Mode6Activity extends BaseActivity {
 
             return list;
         }
-
         public void closeSocket(BluetoothSocket sock) {
             if (sock != null)
                 // close socket
@@ -264,7 +249,7 @@ public class Mode6Activity extends BaseActivity {
         }
 
         @Override
-        protected void onPostExecute(List<ModeSixEntity> result) {
+        protected void onPostExecute(List<BankSensorEntiity> result) {
             hideWaitDialog();
             mHandler.obtainMessage(DATA_OK_CODE, result).sendToTarget();
         }
