@@ -2,14 +2,9 @@ package com.slb.ttdandroidframework.ui.adapter;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.http.bean.EmissionTestEntity;
-import com.slb.ttdandroidframework.http.bean.EmissionTestSmallEntity;
 import com.slb.ttdandroidframework.http.bean.HistoryErrorCodeEntity;
-import com.slb.ttdandroidframework.weight.MyListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

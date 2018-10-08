@@ -14,6 +14,7 @@ import com.slb.ttdandroidframework.MainActivity;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.ui.contract.LoginContract;
 import com.slb.ttdandroidframework.ui.presenter.LoginPresenter;
+import com.slb.ttdandroidframework.util.ByteUtils;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 
 import butterknife.BindView;
@@ -66,6 +67,9 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginCon
 
 //        edtMobile.setText("53255941@qq.com");
 //        edtPwd.setText("123abc");
+       byte[] subRawData =  ByteUtils.hexStr2BinArr("0141414100040000");
+        String ss = ByteUtils.bytes2BinStr(new byte[]{subRawData[5]}).substring(1,8);
+        ss.getBytes();
     }
 
     @OnClick({R.id.tvRegister, R.id.tvwForgotPwd, R.id.btnLogin})

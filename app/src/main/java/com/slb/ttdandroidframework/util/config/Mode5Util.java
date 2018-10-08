@@ -2,6 +2,7 @@ package com.slb.ttdandroidframework.util.config;
 
 import com.slb.ttdandroidframework.command.mode5.Service5Command;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,21 +16,21 @@ public class Mode5Util {
         String name = null;
         switch(i){
             case 0:
-                return "Bank 1 - 传观器 1";
+                return "Bank 1          传感器 1";
             case 1:
-                return "Bank 1 - 传观器 2";
+                return "Bank 1          传感器 2";
             case 2:
-                return "Bank 2 - 传观器 1";
+                return "Bank 2          传感器 1";
             case 3:
-                return "Bank 3 - 传观器 2";
+                return "Bank 3          传感器 2";
             case 4:
-                return "Bank 3 - 传观器 1";
+                return "Bank 3          传感器 1";
             case 5:
-                return "Bank 3 - 传观器 2";
+                return "Bank 3          传感器 2";
             case 6:
-                return "Bank 4 - 传观器 1";
+                return "Bank 4          传感器 1";
             case 7:
-                return "Bank 4 - 传观器 2";
+                return "Bank 4          传感器 2";
 
         }
         return name;
@@ -184,5 +185,31 @@ public class Mode5Util {
         list.add(new Service5Command("05 09 80"));
         list.add(new Service5Command("05 0a 80"));
         return list;
+    }
+
+    public static Double getRealValue(String tid,Integer value){
+        BigDecimal bigDecimalValue =  new BigDecimal(value);
+        if(tid.equals("01")){
+            bigDecimalValue = bigDecimalValue.multiply(new BigDecimal("0.005"));
+        }else if(tid.equals("02")){
+            bigDecimalValue = bigDecimalValue.multiply(new BigDecimal("0.005"));
+        }else if(tid.equals("03")){
+            bigDecimalValue = bigDecimalValue.multiply(new BigDecimal("0.005"));
+        }else if(tid.equals("04")){
+            bigDecimalValue = bigDecimalValue.multiply(new BigDecimal("0.005"));
+        }else if(tid.equals("05")){
+            bigDecimalValue =  bigDecimalValue.multiply(new BigDecimal("0.004"));
+        }else if(tid.equals("06")){
+            bigDecimalValue =  bigDecimalValue.multiply(new BigDecimal("0.004"));
+        }else if(tid.equals("07")){
+            bigDecimalValue =  bigDecimalValue.multiply(new BigDecimal("0.005"));
+        }else if(tid.equals("08")){
+            bigDecimalValue = bigDecimalValue.multiply(new BigDecimal("0.005"));
+        }else if(tid.equals("09")){
+            bigDecimalValue =  bigDecimalValue.multiply(new BigDecimal("0.04"));
+        }else if(tid.equals("0a")){
+            bigDecimalValue =  bigDecimalValue.multiply(new BigDecimal("0.04"));
+        }
+        return bigDecimalValue.doubleValue();
     }
 }

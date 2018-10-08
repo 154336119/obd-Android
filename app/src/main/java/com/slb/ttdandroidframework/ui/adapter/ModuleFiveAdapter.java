@@ -1,5 +1,6 @@
 package com.slb.ttdandroidframework.ui.adapter;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.widget.CheckBox;
@@ -47,6 +48,13 @@ public class ModuleFiveAdapter extends BaseQuickAdapter<BankSensorEntiity,BaseVi
         });
         if(!TextUtils.isEmpty(entity.getBankSensorName())){
             baseViewHolder.setText(R.id.TvBankSensor,entity.getBankSensorName());
+        }
+        for(MoudleFiveEntity moudleFiveEntity : entity.getList()){
+            if(!moudleFiveEntity.isState()){
+                baseViewHolder.setTextColor(R.id.TvState,Color.RED);
+                baseViewHolder.setText(R.id.TvState,"错误");
+                return;
+            }
         }
     }
 

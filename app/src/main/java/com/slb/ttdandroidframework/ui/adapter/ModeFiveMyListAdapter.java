@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.http.bean.EmissionTestSmallEntity;
 import com.slb.ttdandroidframework.http.bean.MoudleFiveEntity;
 import com.slb.ttdandroidframework.ui.adapter.base.CommonBaseAdapter;
 
@@ -44,10 +43,10 @@ public class ModeFiveMyListAdapter extends CommonBaseAdapter<MoudleFiveEntity> {
 			mHolder.TvMin.setText("最小值："+entity.getMin());
 		}
 		if(!TextUtils.isEmpty(entity.getValue())){
-			mHolder.TvValue.setText("测试值："+entity.getValue());
+			mHolder.TvValue.setText("当前值："+entity.getValue());
 		}
 		if(!TextUtils.isEmpty(entity.getNum())){
-			mHolder.TvNum.setText("编号："+entity.getNum());
+			mHolder.TvNum.setText("$"+entity.getNum());
 		}
 		if(!TextUtils.isEmpty(entity.getName())){
 			mHolder.TvDes.setText(entity.getName());

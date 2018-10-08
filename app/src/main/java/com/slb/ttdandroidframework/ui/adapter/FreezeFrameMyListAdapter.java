@@ -4,11 +4,9 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.http.bean.EmissionTestSmallEntity;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameInsideEntity;
 import com.slb.ttdandroidframework.ui.adapter.base.CommonBaseAdapter;
 

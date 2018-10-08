@@ -108,7 +108,8 @@ public class Service5Command extends ObdCommand {
                 moudleFiveEntity.setName(this.getName());
                 int testResult = ( ByteUtils.byteToShort1(new byte[]{subRawData[3]}) & 0x0FFFF );
                 System.out.print(", testValue("+ByteUtils.bytes2HexString(new byte[]{subRawData[3]})+"): "+ testResult );
-                moudleFiveEntity.setValue(testResult+"");
+//                moudleFiveEntity.setValue(testResult+"");
+                moudleFiveEntity.setValue(Mode5Util.getRealValue(moudleFiveEntity.getNum(),testResult)+"");
                 moudleFiveEntity.setState(true);
             }
         }else if(rawData.length() == 12){
@@ -125,13 +126,13 @@ public class Service5Command extends ObdCommand {
                 moudleFiveEntity.setName(this.getName());
                 int testResult = ( ByteUtils.byteToShort1(new byte[]{subRawData[3]}) & 0x0FFFF );
                 System.out.print(", testValue("+ByteUtils.bytes2HexString(new byte[]{subRawData[3]})+"): "+ testResult );
-                moudleFiveEntity.setValue(testResult+"");
+                moudleFiveEntity.setValue(Mode5Util.getRealValue(moudleFiveEntity.getNum(),testResult)+"");
                 int min = ( ByteUtils.byteToShort1(new byte[]{subRawData[4]}) & 0x0FFFF );
                 System.out.print(", min("+ByteUtils.bytes2HexString(new byte[]{subRawData[4]})+"): "+ min  );
-                moudleFiveEntity.setMin(min+"");
+                moudleFiveEntity.setMin(Mode5Util.getRealValue(moudleFiveEntity.getNum(),min)+"");
                 int max = ( ByteUtils.byteToShort1(new byte[]{subRawData[5]}) & 0x0FFFF );
                 System.out.print(", max("+ByteUtils.bytes2HexString(new byte[]{subRawData[5]})+"): "+ max  );
-                moudleFiveEntity.setMax(max+"");
+                moudleFiveEntity.setMax(Mode5Util.getRealValue(moudleFiveEntity.getNum(),max)+"");
                 if(testResult<max && testResult>min){
                     moudleFiveEntity.setState(true);
                 }else{

@@ -3,6 +3,7 @@ package com.slb.ttdandroidframework.ui.adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.slb.ttdandroidframework.R;
@@ -25,16 +26,34 @@ public class EmissionTestMyListAdapter extends CommonBaseAdapter<EmissionTestSma
 		if (null == convertView) {
 			mHolder = new ViewHolder();
 			convertView = mLayoutInflater.inflate(R.layout.adapter_mylist_emission_test, parent, false);
+			mHolder.TvTitle = (TextView) convertView.findViewById(R.id.TvTitle);
+			mHolder.TvContent = (TextView) convertView.findViewById(R.id.TvContent);
+			mHolder.Iv = (ImageView) convertView.findViewById(R.id.Iv);
 			convertView.setTag(mHolder);
 		} else {
 			mHolder = (ViewHolder) convertView.getTag();
 		}
-//		FieldValuesEntity entity = getItem(position);
-//			mHolder.TvTxt.setText(entity.getFieldName()+"："+entity.getFieldValue());
+		EmissionTestSmallEntity entity = getItem(position);
+		mHolder.TvTitle.setText(entity.getName());
+		if(entity.getShowState()){
+			mHolder.TvContent.setVisibility(View.VISIBLE);
+			if(entity.getOK()){
+				mHolder.TvContent.setText("OK");
+				mHolder.Iv.setImageResource(R.mipmap.ic_ok);
+			}else{
+				mHolder.TvContent.setText("Unvailable");
+				mHolder.Iv.setImageResource(R.mipmap.ic_what);
+			}
+
+		}else{
+			mHolder.TvContent.setVisibility(View.GONE);
+		}
 		return convertView;
 	}
 	static class ViewHolder {
-		private TextView TvTxt;
+		private TextView TvTitle;
+		private TextView TvContent;
+		private ImageView Iv;
 	}
 
 }

@@ -4,68 +4,62 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#535B67" >
-    <RelativeLayout
+    android:background="#353C46">
+    <LinearLayout
         android:id="@+id/Rl01"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/TvNum"
-            android:layout_marginLeft="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="14dp"
-            android:paddingLeft="16dp"
-            android:text="编号"
-            android:textColor="@color/white" />
-        <TextView
-            android:id="@+id/TvMin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="14dp"
-            android:paddingLeft="16dp"
-            android:text="最小值：无"
-            android:textColor="@color/white"
-            android:layout_toLeftOf="@+id/IvR"
-            android:layout_toRightOf="@+id/IvL"
-            android:layout_below="@+id/TvValue"
-            android:layout_marginRight="125dp"
-            android:layout_alignLeft="@+id/TvValue"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/TvDes"
+        android:layout_marginTop="10dp">
         <TextView
             android:id="@+id/TvMax"
-            android:layout_marginLeft="20dp"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="14dp"
-            android:paddingLeft="16dp"
             android:text="最大值：无"
-            android:textColor="@color/white"
-            android:layout_below="@+id/TvNum"/>
-
+            android:textColor="@color/white"/>
+        <TextView
+            android:id="@+id/TvMin"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="最小值：无"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/TvValue"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_toLeftOf="@+id/IvR"
-            android:layout_toRightOf="@+id/IvL"
             android:gravity="center"
-            android:padding="14dp"
-            android:text="测试值：无"
-            android:layout_marginRight="125dp"
+            android:text="当前值：无"
             android:textColor="@color/white"/>
-    </RelativeLayout>
+    </LinearLayout>
     <TextView
         android:id="@+id/TvDes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:padding="14dp"
         android:text="描述"
+        android:layout_toRightOf="@+id/TvNum"
+        android:layout_marginLeft="40dp"
         android:textColor="@color/white"
-        android:layout_below="@+id/Rl01"/>
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/TvNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="编号"
+        android:layout_marginLeft="40dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="10dp"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#2B3139"
+        android:layout_below="@+id/Rl01"
+        android:layout_marginTop="10dp"/>
 </RelativeLayout>

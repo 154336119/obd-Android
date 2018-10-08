@@ -68,10 +68,10 @@ public class ModeSixAdapter extends BaseQuickAdapter<ModeSixEntity,BaseViewHolde
         }
         if(entity.isState()){
             baseViewHolder.setTextColor(R.id.TvState, Color.GREEN);
-            baseViewHolder.setText(R.id.TvState,"成功");
+            baseViewHolder.setText(R.id.TvState,"正常");
         }else{
             baseViewHolder.setTextColor(R.id.TvState,Color.RED);
-            baseViewHolder.setText(R.id.TvState,"失败");
+            baseViewHolder.setText(R.id.TvState,"错误");
         }
     }
 }

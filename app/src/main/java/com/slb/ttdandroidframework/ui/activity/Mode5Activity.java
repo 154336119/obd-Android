@@ -181,22 +181,20 @@ public class Mode5Activity extends BaseActivity {
             //Get the current thread's token
             synchronized (this) {
                 try {
-                    Service6Command command = new Service6Command("01 41");
-                    command.run(sock.getInputStream(), sock.getOutputStream());
-//                    for(int i = 0;i<8;i++){
-//                        //构造数据
-//                        BankSensorEntiity bankSensorEntiity = new BankSensorEntiity();
-//                        bankSensorEntiity.setBankSensorName(Mode5Util.getBankSensorNameForIndex(i));
-//                        List<MoudleFiveEntity> mInsideList = new ArrayList<>();
-//                        List<Service5Command> service5CommandList = Mode5Util.getService5CommandForIndex(i);
-//                        for(int j=0; j<service5CommandList.size();j++){
-//                            Service5Command service5Command = service5CommandList.get(j);
-//                            service5Command.run(sock.getInputStream(), sock.getOutputStream());
-//                            mInsideList.add(service5Command.getMoudleFiveEntity());
-//                        }
-//                        bankSensorEntiity.setList(mInsideList);
-//                        list.add(bankSensorEntiity);
-//                    }
+                    for(int i = 0;i<8;i++){
+                        //构造数据
+                        BankSensorEntiity bankSensorEntiity = new BankSensorEntiity();
+                        bankSensorEntiity.setBankSensorName(Mode5Util.getBankSensorNameForIndex(i));
+                        List<MoudleFiveEntity> mInsideList = new ArrayList<>();
+                        List<Service5Command> service5CommandList = Mode5Util.getService5CommandForIndex(i);
+                        for(int j=0; j<service5CommandList.size();j++){
+                            Service5Command service5Command = service5CommandList.get(j);
+                            service5Command.run(sock.getInputStream(), sock.getOutputStream());
+                            mInsideList.add(service5Command.getMoudleFiveEntity());
+                        }
+                        bankSensorEntiity.setList(mInsideList);
+                        list.add(bankSensorEntiity);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("DTCERR", e.getMessage());

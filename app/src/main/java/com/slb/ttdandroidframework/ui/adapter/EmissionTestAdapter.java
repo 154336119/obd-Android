@@ -1,15 +1,10 @@
 package com.slb.ttdandroidframework.ui.adapter;
 
-import android.text.TextUtils;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.http.bean.EmissionTestEntity;
 import com.slb.ttdandroidframework.http.bean.EmissionTestSmallEntity;
-import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
 import com.slb.ttdandroidframework.weight.MyListView;
 
 import java.util.ArrayList;
@@ -27,16 +22,12 @@ public class EmissionTestAdapter extends BaseQuickAdapter<EmissionTestEntity,Bas
     protected void convert(final BaseViewHolder baseViewHolder, final EmissionTestEntity entity) {
         MyListView myListView = baseViewHolder.getView(R.id.MyListView);
         EmissionTestMyListAdapter myListAdapter = new EmissionTestMyListAdapter(mContext);
-//        if(!TextUtils.isEmpty(entity.getApplicant())){
-//            baseViewHolder.setText(R.id.TvName,entity.getApplicant());
-//        }
+////        if(!TextUtils.isEmpty(entity.getApplicant())){
+//            baseViewHolder.setText(R.id.TvCode,entity.getName());
+////        }
+        baseViewHolder.setText(R.id.TvCode,entity.getName());
         List<EmissionTestSmallEntity> newList = new ArrayList<>();
-        //测试
-        for(int i=0;i<3;i++){
-            EmissionTestSmallEntity emissionTestSmallEntity = new EmissionTestSmallEntity();
-            newList.add(emissionTestSmallEntity);
-        }
-        myListAdapter.setList(newList);
+        myListAdapter.setList(entity.getList());
         myListView.setAdapter(myListAdapter);
     }
 

@@ -7,13 +7,9 @@ import android.widget.CompoundButton;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.http.bean.EmissionTestSmallEntity;
-import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameEntity;
-import com.slb.ttdandroidframework.http.bean.FreezeFrameInsideEntity;
 import com.slb.ttdandroidframework.weight.MyListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
