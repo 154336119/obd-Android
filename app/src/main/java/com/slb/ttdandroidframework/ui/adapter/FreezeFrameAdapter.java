@@ -43,6 +43,7 @@ public class FreezeFrameAdapter extends BaseQuickAdapter<FreezeFrameEntity,BaseV
         if(!TextUtils.isEmpty(entity.getPid())){
             baseViewHolder.setText(R.id.TvPID,entity.getPid());
         }
+
 //        List<FreezeFrameInsideEntity> newList = new ArrayList<>();
 //        //测试
 //        for(int i=0;i<3;i++){

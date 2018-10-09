@@ -50,6 +50,9 @@ public class Mode2Util {
         list.add(new Service2Command("02 05 00"));
         list.add(new Service2Command("02 0b 00"));
         list.add(new Service2Command("02 0c 00"));
+        list.add(new Service2Command("02 0d 00"));
+        list.add(new Service2Command("02 10 00"));
+        list.add(new Service2Command("02 11 00"));
         return list;
     }
 
@@ -60,6 +63,9 @@ public class Mode2Util {
         list.add(new Service2Command("02 05 01"));
         list.add(new Service2Command("02 0b 01"));
         list.add(new Service2Command("02 0c 01"));
+        list.add(new Service2Command("02 0d 01"));
+        list.add(new Service2Command("02 10 01"));
+        list.add(new Service2Command("02 11 01"));
         return list;
     }
 
@@ -70,6 +76,9 @@ public class Mode2Util {
         list.add(new Service2Command("02 05 02"));
         list.add(new Service2Command("02 0b 02"));
         list.add(new Service2Command("02 0c 02"));
+        list.add(new Service2Command("02 0d 02"));
+        list.add(new Service2Command("02 10 02"));
+        list.add(new Service2Command("02 11 02"));
         return list;
     }
 
@@ -80,6 +89,9 @@ public class Mode2Util {
         list.add(new Service2Command("02 05 03"));
         list.add(new Service2Command("02 0b 03"));
         list.add(new Service2Command("02 0c 03"));
+        list.add(new Service2Command("02 0d 03"));
+        list.add(new Service2Command("02 10 03"));
+        list.add(new Service2Command("02 11 03"));
         return list;
     }
 
@@ -90,6 +102,9 @@ public class Mode2Util {
         list.add(new Service2Command("02 05 04"));
         list.add(new Service2Command("02 0b 04"));
         list.add(new Service2Command("02 0c 04"));
+        list.add(new Service2Command("02 0d 04"));
+        list.add(new Service2Command("02 10 04"));
+        list.add(new Service2Command("02 11 04"));
         return list;
     }
 
@@ -100,6 +115,9 @@ public class Mode2Util {
         list.add(new Service2Command("02 05 05"));
         list.add(new Service2Command("02 0b 05"));
         list.add(new Service2Command("02 0c 05"));
+        list.add(new Service2Command("02 0d 05"));
+        list.add(new Service2Command("02 10 05"));
+        list.add(new Service2Command("02 11 05"));
         return list;
     }
 }

@@ -1,5 +1,6 @@
 package com.slb.ttdandroidframework.ui.fragment;
 
+import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,6 +32,8 @@ import com.slb.ttdandroidframework.ui.contract.HomeContract;
 import com.slb.ttdandroidframework.ui.presenter.HomePresenter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
 import com.slb.ttdandroidframework.weight.CustomDialog;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -149,35 +152,40 @@ public class HomeFragment
 
     @OnClick({R.id.Fl01, R.id.Fl02, R.id.Fl03, R.id.Fl04, R.id.Fl05, R.id.Fl06,R.id.tvConnect})
     public void onViewClicked(View view) {
-
         switch (view.getId()) {
             case R.id.Fl01:
                 //读取故障码
+                if(!checkObd()){return;}
                 RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, ReadErrorCodeActivity.class);
                 break;
             case R.id.Fl02:
                 //冻结帧
+                if(!checkObd()){return;}
                 RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, FreezeFrameActivity.class);
                 break;
             case R.id.Fl03:
                 //尾气检测
+                if(!checkObd()){return;}
                 RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, EmissionTestActivity.class);
                 break;
             case R.id.Fl04:
                 //氧气传感器
+                if(!checkObd()){return;}
                 RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, Mode5Activity.class);
                 break;
             case R.id.Fl05:
                 //故障灯状态
+                if(!checkObd()){return;}
                 RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, TroubleLightSActivity.class);
                 break;
             case R.id.Fl06:
                 //车载监控
+                if(!checkObd()){return;}
                 RxBus.get().post(new ObdServiceStateEvent(false));
                 ActivityUtil.next(_mActivity, Mode6Activity.class);
                 break;
@@ -231,5 +239,15 @@ public class HomeFragment
     @Override
     protected boolean rxBusRegist() {
         return true;
+    }
+
+    private boolean checkObd(){
+        try {
+            BluetoothSocket sock = BluetoothUtil.getSockInstance();
+            return true;
+        } catch (IOException e) {
+            showToastMsg("OBD未连接");
+            return false;
+        }
     }
 }

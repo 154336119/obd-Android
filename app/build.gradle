@@ -60,6 +60,6 @@ dependencies {
     compile 'com.tencent.bugly:crashreport_upgrade:1.2.3'
     compile 'com.contrarywind:Android-PickerView:3.2.3'
     compile 'org.apache.commons:commons-lang3:3.7'
-    //    implementation files('F:/Android_demo/obd_android/obd-Android/libs/obd-java-api-1.2-SNAPSHOT.jar')
-    implementation files('E:/cc/obd_new/obd-Android/libs/obd-java-api-1.2-SNAPSHOT.jar')
+        implementation files('F:/Android_demo/obd_android/obd-Android/libs/obd-java-api-1.2-SNAPSHOT.jar')
+//    implementation files('E:/cc/obd_new/obd-Android/libs/obd-java-api-1.2-SNAPSHOT.jar')
 }

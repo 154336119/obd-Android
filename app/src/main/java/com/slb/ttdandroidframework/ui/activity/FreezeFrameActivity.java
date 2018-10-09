@@ -188,28 +188,44 @@ public class FreezeFrameActivity extends BaseActivity {
                                     break;
                                 case 1:
                                     freezeFrameInsideEntity.setDes("计算的荷载阈值");
-                                    pid = pid.substring(pid.length()-2,pid.length());
-                                     pid10 = Integer.parseInt(pid.substring(pid.length()-2,pid.length()),16);
-                                    freezeFrameInsideEntity.setValue(pid10+"");
+                                    freezeFrameInsideEntity.setValue(service2Command.getPidData04()+"");
+                                    freezeFrameInsideEntity.setUtil("%");
                                     mInsideList.add(freezeFrameInsideEntity);
                                     break;
                                 case 2:
                                     freezeFrameInsideEntity.setDes("发动机冷却液温度");
-                                    pid = pid.substring(pid.length()-2,pid.length());
-                                    pid10 = Integer.parseInt(pid.substring(pid.length()-2,pid.length()),16);
-                                    freezeFrameInsideEntity.setValue(pid10+"");
+                                    freezeFrameInsideEntity.setValue(service2Command.getPidData05()+"");
+                                    freezeFrameInsideEntity.setUtil("C");
                                     mInsideList.add(freezeFrameInsideEntity);
                                     break;
                                 case 3:
                                     freezeFrameInsideEntity.setDes("进气歧管绝对压力");
-                                    pid10 = Integer.parseInt(pid.substring(pid.length()-2,pid.length()),16);
-                                    freezeFrameInsideEntity.setValue(pid10+"");
+                                    freezeFrameInsideEntity.setValue(service2Command.getPidData0b()+"");
+                                    freezeFrameInsideEntity.setUtil("kPa");
                                     mInsideList.add(freezeFrameInsideEntity);
                                     break;
                                 case 4:
                                     freezeFrameInsideEntity.setDes("发动机RPM");
-                                    Logger.d("==============发动机RPM："+   service2Command.getRpm());
-                                    freezeFrameInsideEntity.setValue(service2Command.getRpm()+"");
+                                    freezeFrameInsideEntity.setValue(service2Command.getPidData0c()+"");
+                                    freezeFrameInsideEntity.setUtil("RPM");
+                                    mInsideList.add(freezeFrameInsideEntity);
+                                    break;
+                                case 5:
+                                    freezeFrameInsideEntity.setDes("车辆速度");
+                                    freezeFrameInsideEntity.setValue(service2Command.getPidData0d()+"");
+                                    freezeFrameInsideEntity.setUtil("km/h");
+                                    mInsideList.add(freezeFrameInsideEntity);
+                                    break;
+                                case 6:
+                                    freezeFrameInsideEntity.setDes("空气流速");
+                                    freezeFrameInsideEntity.setValue(service2Command.getPidData10()+"");
+                                    freezeFrameInsideEntity.setUtil("g/s");
+                                    mInsideList.add(freezeFrameInsideEntity);
+                                    break;
+                                case 7:
+                                    freezeFrameInsideEntity.setDes("节气门绝对位置");
+                                    freezeFrameInsideEntity.setValue(service2Command.getPidData11()+"");
+                                    freezeFrameInsideEntity.setUtil("%");
                                     mInsideList.add(freezeFrameInsideEntity);
                                     break;
                             }
