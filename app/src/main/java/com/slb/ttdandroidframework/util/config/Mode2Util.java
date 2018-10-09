@@ -7,6 +7,13 @@ import java.util.List;
 
 /**
  * Created by juan on 2018/9/16.
+ * 04  PercentageObdCommand
+ * 05  EngineCoolantTemperatureCommand
+ * 0b  IntakeManifoldPressureCommand
+ * 0c  RPMCommand
+ * 0D  SpeedCommand
+ * 11  ThrottlePositionCommand(PercentageObdCommand)
+ * 10  MassAirFlowCommand
  */
 
 public class Mode2Util {
