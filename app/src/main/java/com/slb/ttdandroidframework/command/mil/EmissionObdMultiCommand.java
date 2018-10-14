@@ -109,8 +109,19 @@ public class EmissionObdMultiCommand {
             }else if(command.getName().equals(AvailableCommandNames.DTC_NUMBER.getValue())){
                 if(command.getFormattedResult().contains("ON")){
                     smallEntityList1.get(0).setName( "Check Engine Light is On");
+                    smallEntityList1.get(0).setOK(true);
                 }
             }
+        }
+        if(troubleCodesNum>0){
+            smallEntityList1.get(1).setOK(false);
+        }else{
+            smallEntityList1.get(1).setOK(true);
+        }
+        if(pendingTroubleCodesNum>0){
+            smallEntityList1.get(2).setOK(false);
+        }else{
+            smallEntityList1.get(2).setOK(true);
         }
         smallEntityList1.get(1).setName(troubleCodesNum+" Comfirmed Trouble Codes");
         smallEntityList1.get(2).setName(pendingTroubleCodesNum + " Pending Trouble Codes");

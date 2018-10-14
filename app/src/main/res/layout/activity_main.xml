@@ -11,9 +11,11 @@
         android:id="@+id/mainFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_2B3139"/>
+        android:background="@color/color_2B3139"
+        android:layout_above="@+id/Cv"/>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/Cv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

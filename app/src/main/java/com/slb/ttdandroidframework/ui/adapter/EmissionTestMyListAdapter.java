@@ -33,8 +33,10 @@ public class EmissionTestMyListAdapter extends CommonBaseAdapter<EmissionTestSma
 		} else {
 			mHolder = (ViewHolder) convertView.getTag();
 		}
+
 		EmissionTestSmallEntity entity = getItem(position);
 		mHolder.TvTitle.setText(entity.getName());
+
 		if(entity.getShowState()){
 			mHolder.TvContent.setVisibility(View.VISIBLE);
 			if(entity.getOK()){
@@ -47,6 +49,15 @@ public class EmissionTestMyListAdapter extends CommonBaseAdapter<EmissionTestSma
 
 		}else{
 			mHolder.TvContent.setVisibility(View.GONE);
+		}
+
+		if("Check Engine Light is On".equals(entity.getName())
+				||entity.getName().endsWith("Trouble Codes")){
+			if(entity.getOK()){
+				mHolder.Iv.setImageResource(R.mipmap.ic_ok);
+			}else{
+				mHolder.Iv.setImageResource(R.mipmap.ic_not_ok );
+			}
 		}
 		return convertView;
 	}
