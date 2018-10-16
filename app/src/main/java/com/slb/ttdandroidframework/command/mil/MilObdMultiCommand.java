@@ -72,6 +72,7 @@ public class MilObdMultiCommand  {
     public List<TroubleLightSEntity> getList(){
         List<TroubleLightSEntity> list = new ArrayList<>();
         for (ObdCommand command : commands){
+
             TroubleLightSEntity entity = new TroubleLightSEntity();
             entity.setName(command.getName());
             entity.setValue(command.getFormattedResult());

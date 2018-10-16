@@ -20,8 +20,8 @@ public class TroubleLightSAdapter extends BaseQuickAdapter<TroubleLightSEntity,B
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final TroubleLightSEntity entity) {
-        baseViewHolder.setText(R.id.TvTitle,entity.getName());
-        baseViewHolder.setText(R.id.TvContent,entity.getValue());
+        baseViewHolder.setText(R.id.TvTitle,entity.getValue());
+        baseViewHolder.setText(R.id.TvContent,entity.getName());
     }
 
 }

@@ -12,6 +12,7 @@ import android.util.Log;
 import com.github.pires.obd.commands.ObdMultiCommand;
 import com.github.pires.obd.commands.control.DistanceMILOnCommand;
 import com.github.pires.obd.commands.control.DistanceSinceCCCommand;
+import com.github.pires.obd.commands.control.DtcNumberCommand;
 import com.github.pires.obd.commands.engine.RuntimeCommand;
 import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
@@ -23,6 +24,7 @@ import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.command.mil.Command4D;
 import com.slb.ttdandroidframework.command.mil.Command4E;
 import com.slb.ttdandroidframework.command.mil.MilObdMultiCommand;
+import com.slb.ttdandroidframework.command.mil.MyDtcNumberCommand;
 import com.slb.ttdandroidframework.command.mode5.Service5Command;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.http.bean.BankSensorEntiity;
@@ -182,6 +184,7 @@ public class TroubleLightSActivity extends BaseActivity{
             synchronized (this) {
                 try {
                     MilObdMultiCommand obdMultiCommand = new MilObdMultiCommand();
+                    obdMultiCommand.add(new MyDtcNumberCommand());
                     obdMultiCommand.add(new DistanceSinceCCCommand());
                     obdMultiCommand.add(new Command4E());
                     obdMultiCommand.add(new Command4D());
