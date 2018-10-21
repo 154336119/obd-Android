@@ -12,11 +12,12 @@ import java.util.List;
  * Created by mabin on 2018-09-07.
  */
 
-public class Mode5AvailablePidsCommand_21_40 extends ObdCommand {
+public class Mode5AvailablePidsCommand_61_80 extends ObdCommand {
 
-    public Mode5AvailablePidsCommand_21_40() {
-        super("05 20 01");
+    public Mode5AvailablePidsCommand_61_80() {
+        super("05 60 01");
     }
+
     @Override
     protected void performCalculations() {
 
@@ -34,7 +35,7 @@ public class Mode5AvailablePidsCommand_21_40 extends ObdCommand {
         List<String> availablePids = new ArrayList<>();
         for ( int i=0; i<sb.length(); i++){
             if ( sb.charAt(i) == '1' ){
-                String pid = Integer.toHexString(i+32).length() == 1 ? "0"+Integer.toHexString(i+32):Integer.toHexString(i+32);
+                String pid = Integer.toHexString(i+48).length() == 1 ? "0"+Integer.toHexString(i+48):Integer.toHexString(i+48);
                 availablePids.add(pid);
             }
         }
@@ -48,6 +49,6 @@ public class Mode5AvailablePidsCommand_21_40 extends ObdCommand {
 
     @Override
     public String getName() {
-        return "Mode5AvailablePidsCommand_21_40";
+        return "Mode5AvailablePidsCommand_61_80";
     }
 }

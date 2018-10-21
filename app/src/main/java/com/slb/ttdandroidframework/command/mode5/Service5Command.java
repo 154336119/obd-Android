@@ -14,9 +14,20 @@ import java.util.List;
  */
 
 public class Service5Command extends ObdCommand {
-    public Service5Command(String cmd) {
-        super(cmd);
+    public String getUnit() {
+        return unit;
     }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    String unit;
+    public Service5Command(String cmd,String unit) {
+        super(cmd);
+        this.unit = unit;
+    }
+
 
     @Override
     protected void performCalculations() {
@@ -110,6 +121,7 @@ public class Service5Command extends ObdCommand {
                 System.out.print(", testValue("+ByteUtils.bytes2HexString(new byte[]{subRawData[3]})+"): "+ testResult );
 //                moudleFiveEntity.setValue(testResult+"");
                 moudleFiveEntity.setValue(Mode5Util.getRealValue(moudleFiveEntity.getNum(),testResult)+"");
+                moudleFiveEntity.setUnit(unit);
                 moudleFiveEntity.setState(true);
             }
         }else if(rawData.length() == 12){
@@ -133,7 +145,8 @@ public class Service5Command extends ObdCommand {
                 int max = ( ByteUtils.byteToShort1(new byte[]{subRawData[5]}) & 0x0FFFF );
                 System.out.print(", max("+ByteUtils.bytes2HexString(new byte[]{subRawData[5]})+"): "+ max  );
                 moudleFiveEntity.setMax(Mode5Util.getRealValue(moudleFiveEntity.getNum(),max)+"");
-                if(testResult<max && testResult>min){
+                moudleFiveEntity.setUnit(unit);
+                if(testResult<=max && testResult>min){
                     moudleFiveEntity.setState(true);
                 }else{
                     moudleFiveEntity.setState(false);

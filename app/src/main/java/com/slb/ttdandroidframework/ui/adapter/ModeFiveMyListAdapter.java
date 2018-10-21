@@ -37,13 +37,19 @@ public class ModeFiveMyListAdapter extends CommonBaseAdapter<MoudleFiveEntity> {
 		}
 		MoudleFiveEntity entity = getItem(position);
 		if(!TextUtils.isEmpty(entity.getMax())){
-			mHolder.TvMax.setText("最大值："+entity.getMax());
+			mHolder.TvMax.setText("最大值："+entity.getMax()+entity.getUnit());
+		}else{
+			mHolder.TvMax.setText("最大值：无");
 		}
 		if(!TextUtils.isEmpty(entity.getMin())){
-			mHolder.TvMin.setText("最小值："+entity.getMin());
+			mHolder.TvMin.setText("最小值："+entity.getMin()+entity.getUnit());
+		}else{
+			mHolder.TvMin.setText("最小值：无");
 		}
 		if(!TextUtils.isEmpty(entity.getValue())){
-			mHolder.TvValue.setText("当前值："+entity.getValue());
+			mHolder.TvValue.setText("当前值："+entity.getValue()+entity.getUnit());
+		}else{
+			mHolder.TvValue.setText("当前值：无");
 		}
 		if(!TextUtils.isEmpty(entity.getNum())){
 			mHolder.TvNum.setText("$"+entity.getNum());

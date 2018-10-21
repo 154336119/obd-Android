@@ -20,6 +20,16 @@ public class MoudleFiveEntity {
     private boolean state;
     private String name;
 
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    private String unit;
+
     public String getName() {
         return name;
     }

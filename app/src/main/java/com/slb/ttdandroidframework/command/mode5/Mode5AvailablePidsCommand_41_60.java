@@ -15,7 +15,7 @@ import java.util.List;
 public class Mode5AvailablePidsCommand_41_60 extends ObdCommand {
 
     public Mode5AvailablePidsCommand_41_60() {
-        super("01 40");
+        super("05 40 01");
     }
 
     @Override

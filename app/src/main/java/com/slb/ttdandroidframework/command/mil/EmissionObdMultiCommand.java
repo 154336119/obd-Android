@@ -109,6 +109,9 @@ public class EmissionObdMultiCommand {
             }else if(command.getName().equals(AvailableCommandNames.DTC_NUMBER.getValue())){
                 if(command.getFormattedResult().contains("ON")){
                     smallEntityList1.get(0).setName( "Check Engine Light is On");
+                    smallEntityList1.get(0).setOK(false);
+                }else{
+                    smallEntityList1.get(0).setName( "Check Engine Light is Off");
                     smallEntityList1.get(0).setOK(true);
                 }
             }

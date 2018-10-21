@@ -134,7 +134,7 @@ public class TroubleLightSActivity extends BaseActivity{
         mRecyclerView.addItemDecoration(
                 new HorizontalDividerItemDecoration.Builder(this)
                         .color(Color.parseColor("#2B3139"))
-                        .sizeResId(R.dimen.distance_20)
+                        .sizeResId(R.dimen.distance_1)
                         .build());
         try {
             sock = BluetoothUtil.getSockInstance();

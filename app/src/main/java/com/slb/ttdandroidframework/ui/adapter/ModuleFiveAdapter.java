@@ -26,11 +26,11 @@ public class ModuleFiveAdapter extends BaseQuickAdapter<BankSensorEntiity,BaseVi
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final BankSensorEntiity entity) {
+        CheckBox cb = (CheckBox)baseViewHolder.getView(R.id.ck);
         MyListView myListView = baseViewHolder.getView(R.id.MyListView);
         ModeFiveMyListAdapter myListAdapter = new ModeFiveMyListAdapter(mContext);
         myListAdapter.setList(entity.getList());
         myListView.setAdapter(myListAdapter);
-        CheckBox cb = (CheckBox)baseViewHolder.getView(R.id.ck);
         cb.setTag(mData.indexOf(entity));
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
@@ -56,6 +56,8 @@ public class ModuleFiveAdapter extends BaseQuickAdapter<BankSensorEntiity,BaseVi
                 return;
             }
         }
+        baseViewHolder.setTextColor(R.id.TvState,Color.GREEN);
+        baseViewHolder.setText(R.id.TvState,"正常");
     }
 
 }
