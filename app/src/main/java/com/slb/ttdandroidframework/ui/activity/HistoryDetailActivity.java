@@ -103,7 +103,7 @@ public class HistoryDetailActivity extends BaseActivity {
                 confirmPidsSb.append(",");
             }
         String confirmPids = confirmPidsSb.substring(0,confirmPidsSb.length()-1);
-        Logger.d("================="+confirmPids);
+//        Logger.d("================="+confirmPids);
             OkGo.<LzyResponse<Object>>post(DnsFactory.getInstance().getDns().getCommonBaseUrl()+"api/command/dtc")
                     .tag(this)
                     .params("userId", Base.getUserEntity().getId())

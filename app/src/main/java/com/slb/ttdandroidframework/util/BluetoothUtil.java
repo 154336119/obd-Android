@@ -8,6 +8,7 @@ import android.util.Log;
 import com.hwangjr.rxbus.RxBus;
 import com.orhanobut.logger.Logger;
 import com.slb.ttdandroidframework.Base;
+import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.io.BluetoothManager;
 
@@ -43,7 +44,7 @@ public class BluetoothUtil {
 //            final String remoteDevice  = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.PARA_DEV_ADDR,"");\
         final String remoteDevice = getRemoteDevice();
         if (remoteDevice == null || "".equals(remoteDevice)) {
-            Logger.d("获取设备失败");
+//            Logger.d("获取设备失败");
             throw new IOException();
         } else {
             final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -63,6 +64,8 @@ public class BluetoothUtil {
                 final String remoteDevice = getRemoteDevice();
                 if (remoteDevice == null || "".equals(remoteDevice)) {
                     Logger.d("获取设备失败");
+                    isRunning = false;
+                    RxBus.get().post(new ObdConnectStateEvent(false));
                     throw new IOException();
                 } else {
                     final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -76,6 +79,7 @@ public class BluetoothUtil {
                 isRunning = false;
 
                 Logger.d("sock连接失败失败");
+                RxBus.get().post(new ObdConnectStateEvent(false));
                 //closeSocket(sockInstance);
                 throw new IOException();
             }

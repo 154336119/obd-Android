@@ -77,7 +77,7 @@ public class DataFragment
             service.startJob();
             Log.d(TAG, "Starting live data");
             if (service != null) {
-                Logger.d("service1:");
+//                Logger.d("service1:");
             }
             handler.post(mQueueCommands);
 //            try {
@@ -289,7 +289,6 @@ public class DataFragment
             }
             mCmds.remove(index);
             mAdapter.remove(index);
-            Logger.d(mCmds.size());
             mAdapter.notifyDataSetChanged();
         }
         if (BluetoothUtil.isRunning) {
@@ -308,7 +307,7 @@ public class DataFragment
             cmdResult = job.getCommand().getFormattedResult();
 
         }
-        Logger.d(job.getCommand().getName() + "------" + cmdResult);
+//        Logger.d(job.getCommand().getName() + "------" + cmdResult);
         return cmdResult;
     }
 

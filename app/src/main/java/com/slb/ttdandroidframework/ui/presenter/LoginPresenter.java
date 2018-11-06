@@ -56,7 +56,7 @@ public class LoginPresenter extends AbstractBasePresenter<LoginContract.IView>
 				.execute(new DialogCallback<LzyResponse<UserEntity>>(this.mView) {
 					@Override
 					public void onSuccess(Response<LzyResponse<UserEntity>> response) {
-						Logger.d("response:"+response.body().data);
+//						Logger.d("response:"+response.body().data);
 						Base.setUserEntity(response.body().data);
 						Base.getUserEntity().setToken(mToken);
 						Logger.d(Base.getUserEntity().getEmail());

@@ -231,7 +231,7 @@ public abstract class BaseBrvahRefreshActivity<V,T extends IBasePresenter,K,A>  
     }
     /**请求网络错误*/
     protected void onHttpError(Throwable e){
-        Logger.d("onError()");
+//        Logger.d("onError()");
         autoRefreshComplete();
     }
     /**请求网络成功*/

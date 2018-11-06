@@ -18,6 +18,7 @@ import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
 import com.hwangjr.rxbus.RxBus;
+import com.hwangjr.rxbus.annotation.Subscribe;
 import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.ttdandroidframework.R;
@@ -26,6 +27,7 @@ import com.slb.ttdandroidframework.command.mil.Command4E;
 import com.slb.ttdandroidframework.command.mil.MilObdMultiCommand;
 import com.slb.ttdandroidframework.command.mil.MyDtcNumberCommand;
 import com.slb.ttdandroidframework.command.mode5.Service5Command;
+import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.http.bean.BankSensorEntiity;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameEntity;
@@ -69,6 +71,7 @@ public class TroubleLightSActivity extends BaseActivity{
     RecyclerView mRecyclerView;
     private TroubleLightSAdapter mAdapter;
     private List<TroubleLightSEntity> mList = new ArrayList<>();
+    private MyRunnable myRunnable;
     private Handler mHandler = new Handler(new Handler.Callback() {
         public boolean handleMessage(Message msg) {
             Log.d(TAG, "Message received on handler");
@@ -128,6 +131,7 @@ public class TroubleLightSActivity extends BaseActivity{
     public void initView() {
         super.initView();
         ButterKnife.bind(this);
+        myRunnable = new MyRunnable();
         mAdapter = new TroubleLightSAdapter(mList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
@@ -136,20 +140,21 @@ public class TroubleLightSActivity extends BaseActivity{
                         .color(Color.parseColor("#2B3139"))
                         .sizeResId(R.dimen.distance_1)
                         .build());
-        try {
-            sock = BluetoothUtil.getSockInstance();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                executeMode6Command();
-                mHandler.postDelayed(this, 3000);
-            }
-        },1000);
+        mHandler.postDelayed(myRunnable,1000);
     }
 
+    class MyRunnable implements  Runnable{
+        @Override
+        public void run() {
+            try {
+                sock = BluetoothUtil.getSockInstance();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            executeMode6Command();
+            mHandler.postDelayed(this, 3000);
+        }
+    }
     /**
      * 请求mode6
      */
@@ -196,6 +201,9 @@ public class TroubleLightSActivity extends BaseActivity{
 
                 } catch (IOException e) {
                     e.printStackTrace();
+                    if(e.getMessage().equals("Broken pipe")){
+                        RxBus.get().post(new ObdConnectStateEvent(false));
+                    }
                     Log.e("DTCERR", e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_IO).sendToTarget();
                     return null;
@@ -258,6 +266,20 @@ public class TroubleLightSActivity extends BaseActivity{
     protected void onDestroy() {
         super.onDestroy();
         RxBus.get().post(new ObdServiceStateEvent(true));
+        if(mHandler!=null){
+            mHandler.removeCallbacks(myRunnable);
+        }
+    }
+
+    @Subscribe
+    public void onObdConnectStateEvent(ObdConnectStateEvent event) {
+        if (!event.isConnect()) {
+            mHandler.removeCallbacks(myRunnable);
+        }
+    }
+    @Override
+    protected boolean rxBusRegist() {
+        return true;
     }
 
 }

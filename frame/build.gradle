@@ -80,7 +80,7 @@ dependencies {
     //Fragment解决库
     compile 'me.yokeyword:fragmentation:0.10.1'
     //Log工具类
-    compile 'com.orhanobut:logger:1.15'
+    compile 'com.orhanobut:logger:2.1.1'
     //Recyclerview分割线
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
     compile 'com.nineoldandroids:library:2.4.0'

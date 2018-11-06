@@ -251,7 +251,7 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
         String cmdResult = job.getCommand().getFormattedResult();
 //        PendingTroubleCodesCommand command = (PendingTroubleCodesCommand) job.getCommand();
 
-        Logger.d(cmdResult);
+//        Logger.d(cmdResult);
 //        Logger.d(command.getName());
 //        Logger.d(command.getName());
 //        Logger.d(command.getResult());

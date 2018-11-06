@@ -26,6 +26,7 @@ import com.slb.ttdandroidframework.ui.activity.EmissionTestActivity;
 import com.slb.ttdandroidframework.ui.activity.FreezeFrameActivity;
 import com.slb.ttdandroidframework.ui.activity.Mode5Activity;
 import com.slb.ttdandroidframework.ui.activity.Mode6Activity;
+import com.slb.ttdandroidframework.ui.activity.NewReadErrorCodeActivity;
 import com.slb.ttdandroidframework.ui.activity.ReadErrorCodeActivity;
 import com.slb.ttdandroidframework.ui.activity.TroubleLightSActivity;
 import com.slb.ttdandroidframework.ui.contract.HomeContract;
@@ -39,6 +40,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.slb.ttdandroidframework.util.BluetoothUtil.isRunning;
 
 
 public class HomeFragment
@@ -103,7 +106,6 @@ public class HomeFragment
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
         int w = (ScreenUtils.getScreenWidth(_mActivity)) / 2 - ConvertUtils.dp2px(_mActivity, 20);
-        Logger.d(w);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mFl01.getLayoutParams();
         params.height = w;//设置当前控件布局的高度
         params.width = w;
@@ -157,7 +159,7 @@ public class HomeFragment
                 //读取故障码
                 if(!checkObd()){return;}
                 RxBus.get().post(new ObdServiceStateEvent(false));
-                ActivityUtil.next(_mActivity, ReadErrorCodeActivity.class);
+                ActivityUtil.next(_mActivity, NewReadErrorCodeActivity.class);
                 break;
             case R.id.Fl02:
                 //冻结帧
@@ -242,12 +244,19 @@ public class HomeFragment
     }
 
     private boolean checkObd(){
-        try {
-            BluetoothSocket sock = BluetoothUtil.getSockInstance();
+        if(isRunning){
             return true;
-        } catch (IOException e) {
+        }else{
             showToastMsg("OBD未连接");
             return false;
         }
+
+//        try {
+//            BluetoothSocket sock = BluetoothUtil.getSockInstance();
+//            return true;
+//        } catch (IOException e) {
+//            showToastMsg("OBD未连接");
+//            return false;
+//        }
     }
 }

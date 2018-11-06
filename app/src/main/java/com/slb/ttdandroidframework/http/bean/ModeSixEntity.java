@@ -59,4 +59,16 @@ public class ModeSixEntity {
     public void setState(boolean state) {
         this.state = state;
     }
+
+    @Override
+    public String toString() {
+        return "ModeSixEntity{" +
+                "tid='" + tid + '\'' +
+                ", cid='" + cid + '\'' +
+                ", max='" + max + '\'' +
+                ", min='" + min + '\'' +
+                ", value='" + value + '\'' +
+                ", state=" + state +
+                '}';
+    }
 }

@@ -20,7 +20,6 @@ import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand
 import com.github.pires.obd.enums.ObdProtocols;
 import com.github.pires.obd.exceptions.UnsupportedCommandException;
 import com.hwangjr.rxbus.RxBus;
-import com.orhanobut.logger.Logger;
 import com.slb.ttdandroidframework.MainActivity;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.ui.WeepakeActivity;
@@ -170,7 +169,7 @@ public class ObdGatewayService extends AbstractGatewayService {
                 sock = BluetoothUtil.getSockInstance();
             } catch (IOException e) {
                 e.printStackTrace();
-                Logger.d("断开连接拉 =====================================================断开连接拉");
+//                Logger.d("断开连接拉 =====================================================断开连接拉");
             }
             try {
                   job = jobsQueue.take();

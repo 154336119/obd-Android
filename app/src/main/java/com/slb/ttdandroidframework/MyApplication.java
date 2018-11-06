@@ -16,7 +16,8 @@ import com.lzy.okgo.cookie.store.DBCookieStore;
 import com.lzy.okgo.https.HttpsUtils;
 import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.HttpParams;
-import com.orhanobut.logger.LogLevel;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.DiskLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.http2.retrofit.HttpLoggingInterceptor;
 import com.slb.frame.utils.AppConfig;
@@ -53,10 +54,9 @@ public class MyApplication extends Application{
 
 
     private void initLogUtils(){
-        Logger.init("OBD")
-                .hideThreadInfo()
-                .logLevel(LogLevel.FULL)
-                .methodOffset(2);
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Logger.addLogAdapter(new DiskLogAdapter());
+
     }
     private void initOkGo() {
         //---------这里给出的是示例代码,告诉你可以这么传,实际使用的时候,根据需要传,不需要就不传-------------//

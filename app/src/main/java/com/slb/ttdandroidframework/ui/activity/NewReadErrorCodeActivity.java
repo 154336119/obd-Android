@@ -1,8 +1,5 @@
 package com.slb.ttdandroidframework.ui.activity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -22,54 +19,36 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONObject;
-import com.github.pires.obd.commands.ObdCommand;
 import com.github.pires.obd.commands.control.PendingTroubleCodesCommand;
 import com.github.pires.obd.commands.control.TroubleCodesCommand;
-import com.github.pires.obd.commands.protocol.EchoOffCommand;
-import com.github.pires.obd.commands.protocol.LineFeedOffCommand;
 import com.github.pires.obd.commands.protocol.ResetTroubleCodesCommand;
-import com.github.pires.obd.commands.protocol.SelectProtocolCommand;
-import com.github.pires.obd.commands.protocol.TimeoutCommand;
-import com.github.pires.obd.commands.temperature.AmbientAirTemperatureCommand;
-import com.github.pires.obd.commands.temperature.EngineCoolantTemperatureCommand;
-import com.github.pires.obd.enums.ObdProtocols;
 import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
 import com.google.gson.internal.LinkedTreeMap;
 import com.hwangjr.rxbus.RxBus;
-import com.hwangjr.rxbus.annotation.Subscribe;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.DiskLogAdapter;
+import com.orhanobut.logger.DiskLogStrategy;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
-import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.frame.utils.ActivityUtil;
-import com.slb.frame.utils.DateUtils;
 import com.slb.ttdandroidframework.Base;
-import com.slb.ttdandroidframework.MyApplication;
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
-import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
-import com.slb.ttdandroidframework.http.bean.PidEntity;
 import com.slb.ttdandroidframework.http.callback.ActivityDialogCallback;
 import com.slb.ttdandroidframework.http.dns.DnsFactory;
 import com.slb.ttdandroidframework.http.model.LzyResponse;
 import com.slb.ttdandroidframework.ui.adapter.ErrorCodeAdapter;
-import com.slb.ttdandroidframework.ui.contract.ReadErrorCodeContract;
-import com.slb.ttdandroidframework.ui.presenter.ReadErrorCodePresenter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
 import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
-import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
-import com.slb.ttdandroidframework.util.io.ObdCommandJob;
+import com.slb.ttdandroidframework.util.config.ReadCodeUtil;
 import com.slb.ttdandroidframework.weight.CustomDialog;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
-
-import org.w3c.dom.Node;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,14 +60,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.slb.ttdandroidframework.ui.WeepakeActivity.LookUpCommand;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_IE;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_IO;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_MIS;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_NODATA;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_UTC;
 
-public class ReadErrorCodeActivity extends BaseActivity {
+public class NewReadErrorCodeActivity extends BaseActivity {
     @BindView(R.id.mTvName)
     TextView mTvName;
     @BindView(R.id.mIvBack)
@@ -120,11 +98,10 @@ public class ReadErrorCodeActivity extends BaseActivity {
 
 //    public ProgressDialog progressDialog;
     private GetTroubleCodesTask mCodesTask;
-    private GetWaitTroubleCodesTask mCodesTaskWait;
     private ClearTroubleCodesTask mCodesTaskClear;
 
     public static final int DATA_OK_CODE= 100;
-    public static final int DATA_OK_CODE_WAIT = 101;
+    public static final int DATA_OK_CODE_WAIT= 101;
     public static final int DATA_OK_CODE_Clear = 102;
     private int mCodeNum = 0;
     private int mWaitCodeNum = 0;
@@ -159,21 +136,12 @@ public class ReadErrorCodeActivity extends BaseActivity {
                     break;
                 case ObdConfig.NO_DATA:
                     showToastMsg(getString(R.string.text_dtc_no_data));
-                    ///finish();
                     break;
                 case DATA_OK_CODE:
-                    dataOkCode((TroubleCodesCommand) msg.obj);
-                    break;
-                case DATA_OK_CODE_WAIT:
-                    dataOkWaitCode((PendingTroubleCodesCommand) msg.obj);
-                    if(mCodeNum == 0 && mWaitCodeNum ==0){
-
-                    }else{
-                        showDialog();
-                    }
+                    dataOkCode((Map<Integer, List<ErrorCodeEntity>>) msg.obj);
                     break;
                 case DATA_OK_CODE_Clear:
-                    dataOkClearCode((ResetTroubleCodesCommand) msg.obj);
+                    dataOkClearCode();
                     break;
 
             }
@@ -195,7 +163,9 @@ public class ReadErrorCodeActivity extends BaseActivity {
     public void initView() {
         super.initView();
         ButterKnife.bind(this);
-
+        Logger.clearLogAdapters();
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Logger.addLogAdapter(new DiskLogAdapter());
         mNestedScrollView.setNestedScrollingEnabled(false);
 //        //测试
 //        for (int i = 0; i < 10; i++) {
@@ -274,6 +244,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.mTvAgain:
+                Logger.d("读取故障码：点击重新扫描");
                 if(!BluetoothUtil.isRunning){
                     showToastMsg("暂未连接OBD");
                     return;
@@ -282,6 +253,11 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 mWaitCodeNum = 0;
                 mAdapter01.getData().clear();
                 mAdapter02.getData().clear();
+                StringBuffer sb = new StringBuffer();
+                Logger.d("读取故障码：mAdapter01数据:"+mAdapter01.getData().size());
+                Logger.d("读取故障码：mAdapter02数据:"+mAdapter02.getData().size());
+                Logger.d("读取故障码：mCodeNum:"+mCodeNum);
+                Logger.d("读取故障码：mWaitCodeNum:"+mWaitCodeNum);
                 mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
                 mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
                 try {
@@ -290,9 +266,6 @@ public class ReadErrorCodeActivity extends BaseActivity {
                     e.printStackTrace();
                 }
                 executeCodeCommand();
-                executeWaitCodeCommand();
-//                executeCommand(new ModifiedTroubleCodesObdCommand());
-//                executeCommand(new ModifiedPendingTroubleCodesCommand());
                 break;
             case R.id.BtnClearError:
                 if(!BluetoothUtil.isRunning){
@@ -304,122 +277,90 @@ public class ReadErrorCodeActivity extends BaseActivity {
         }
     }
 
-    public void dataOkCode(TroubleCodesCommand obdCommand) {
-        Map<String, String> dtcVals = getDict(R.array.dtc_keys, R.array.dtc_values);
-        String value = null;
-        if(obdCommand!=null && !TextUtils.isEmpty(obdCommand.getName())){
-            for (String dtcCode : obdCommand.getFormattedResult().split("\n")) {
-                value = dtcVals.get(dtcCode);
-                ErrorCodeEntity errorCodeEntity = new ErrorCodeEntity();
-                errorCodeEntity.setTitle(dtcCode);
-                errorCodeEntity.setValue(value);
-                mAdapter01.getData().add(errorCodeEntity);
-                mCodeNum = mCodeNum +1;
+    public void dataOkCode(Map<Integer,List<ErrorCodeEntity>> map) {
+        if(map.isEmpty()){
+            showToastMsg("暂无数据");
+            Logger.d("读取故障码:暂无数据");
+            return;
+        }
+        List<ErrorCodeEntity> comfirmList = map.get(DATA_OK_CODE);
+        if(comfirmList !=null && comfirmList.size()>0){
+            for(ErrorCodeEntity errorCodeEntity : comfirmList){
+                Logger.d("读取故障码:dataOkCode.comfirmList：title-"+errorCodeEntity.getTitle()+",value-"+errorCodeEntity.getValue());
             }
+            mAdapter01.setNewData(comfirmList);
+            mCodeNum = comfirmList.size();
+            Logger.d("读取故障码:mCodeNum:"+mCodeNum);
             mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
-//            if(mAdapter01.getData()!=null && mAdapter01.getData().size()>0){
-//                gethttpdataOkCodePidDetails((obdCommand));
-//            }
         }
-        hideWaitDialog();
-    }
 
-    private void gethttpdataOkCodePidDetails(final TroubleCodesCommand obdCommand){
-        if(obdCommand!=null && !TextUtils.isEmpty(obdCommand.getName())){
-            String confirmPids =  obdCommand.getFormattedResult().replaceAll("\n",",");
-        OkGo.<LzyResponse<Object>>post(DnsFactory.getInstance().getDns().getCommonBaseUrl()+"api/command/dtc")
-                .tag(this)
-                .params("userId",Base.getUserEntity().getId())
-                .params("pids",confirmPids)
-                .isMultipart(true)
-                .headers("Authorization","Bearer "+Base.getUserEntity().getToken())
-                .execute(new ActivityDialogCallback<LzyResponse<Object>>(this) {
-                    @Override
-                    public void onSuccess(Response<LzyResponse<Object>> response) {
-                        LinkedTreeMap map =  (LinkedTreeMap)response.body().data;
-                        for(int i=0;i<mAdapter01.getData().size();i++){
-                            ErrorCodeEntity errorCodeEntity= mAdapter01.getData().get(i);
-                            if( map.containsKey(errorCodeEntity.getTitle())){
-                               Object object = map.get(errorCodeEntity.getTitle());
-                               if(object!=null){
-                                   LinkedTreeMap map1  = (LinkedTreeMap)map.get(errorCodeEntity.getTitle());
-                                   String va =  (String)map1.get("description");
-                                   errorCodeEntity.setDes(va);
-                                   mAdapter01.setData(i,errorCodeEntity);
-                               }
-                            }
-                        }
-                        hideWaitDialog();
-                    }
-                });
+        List<ErrorCodeEntity> waitList = map.get(DATA_OK_CODE_WAIT);
+        if(waitList !=null && waitList.size()>0){
+            for(ErrorCodeEntity errorCodeEntity : waitList){
+                Logger.d("读取故障码:dataOkCode.waitList：title-"+errorCodeEntity.getTitle()+",value-"+errorCodeEntity.getValue());
+            }
+            mAdapter02.setNewData(waitList);
+            mWaitCodeNum = waitList.size();
+            Logger.d("读取故障码：mWaitCodeNum:"+mWaitCodeNum);
+            mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
+        }
+
+        if(mAdapter01.getData().size()>0 || mAdapter02.getData().size()>0){
+            showDialog();
         }
     }
-
 
     @Override
     protected boolean rxBusRegist() {
         return true;
     }
 
-    Map<String, String> getDict(int keyId, int valId) {
-        String[] keys = getResources().getStringArray(keyId);
-        String[] vals = getResources().getStringArray(valId);
-        Map<String, String> dict = new HashMap<String, String>();
-        for (int i = 0, l = keys.length; i < l; i++) {
-            dict.put(keys[i], vals[i]);
-        }
-        return dict;
-    }
-    private class GetTroubleCodesTask extends AsyncTask<String, Integer, TroubleCodesCommand> {
+
+    private class GetTroubleCodesTask extends AsyncTask<String, Integer, Map<Integer,List<ErrorCodeEntity>>> {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
             showWaitDialog("刷新中");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
         @Override
-        protected TroubleCodesCommand doInBackground(String... params) {
-            TroubleCodesCommand result = null;
-            hideWaitDialog();
+        protected Map<Integer,List<ErrorCodeEntity>> doInBackground(String... params) {
+            Map<Integer,List<ErrorCodeEntity>> result = new HashMap<>();
             //Get the current thread's token
             synchronized (this) {
+                //确认故障码
+                TroubleCodesCommand troubleCodesCommand = new TroubleCodesCommand();
                 try {
-                    onProgressUpdate(5);
-                    TroubleCodesCommand tcoc  = new TroubleCodesCommand();
-                    tcoc.run(sock.getInputStream(), sock.getOutputStream());
-                    result = tcoc;
+                    Logger.d("读取故障码：troubleCodesCommand.run(sock.getInputStream(), sock.getOutputStream()");
+                    troubleCodesCommand.run(sock.getInputStream(), sock.getOutputStream());
+                    List<ErrorCodeEntity> comfirmTroubleCodesList = ReadCodeUtil.dataOkWaitCode(troubleCodesCommand);
+                    result.put(DATA_OK_CODE,comfirmTroubleCodesList);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_IO).sendToTarget();
-                    return null;
+                    Logger.d("读取故障码：troubleCodesCommand异常:IOException-------"+e.getMessage());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_IE).sendToTarget();
-                    return null;
-                } catch (UnableToConnectException e) {
-                    e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_UTC).sendToTarget();
-                    return null;
-                } catch (MisunderstoodCommandException e) {
-                    e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_MIS).sendToTarget();
-                    return null;
+                    Logger.d("读取故障码：troubleCodesCommand异常:InterruptedException-------"+e.getMessage());
                 } catch (NoDataException e) {
                     Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_NODATA).sendToTarget();
-                    return null;
-                } catch (Exception e) {
+                    Logger.d("读取故障码：troubleCodesCommand异常:NoDataException-------"+e.getMessage());
+                }
+                //等待故障码
+                PendingTroubleCodesCommand pendingTroubleCodesCommand = new PendingTroubleCodesCommand();
+                try {
+                    Logger.d("读取故障码：pendingTroubleCodesCommand.run(sock.getInputStream(), sock.getOutputStream()");
+                    pendingTroubleCodesCommand.run(sock.getInputStream(), sock.getOutputStream());
+                    List<ErrorCodeEntity> comWaitTroubleCodesList = ReadCodeUtil.dataOkWaitCode(pendingTroubleCodesCommand);
+                    result.put(DATA_OK_CODE_WAIT,comWaitTroubleCodesList);
+                }  catch (IOException e) {
+                    e.printStackTrace();
+                    Logger.d("读取故障码：pendingTroubleCodesCommand异常:IOException-------"+e.getMessage());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Logger.d("读取故障码：pendingTroubleCodesCommand异常:InterruptedException-------"+e.getMessage());
+                } catch (NoDataException e) {
                     Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(ObdConfig.OBD_COMMAND_FAILURE).sendToTarget();
+                    Logger.d("读取故障码：pendingTroubleCodesCommand异常:NoDataException-------"+e.getMessage());
                 } finally {
                     hideWaitDialog();
                 }
@@ -429,24 +370,15 @@ public class ReadErrorCodeActivity extends BaseActivity {
             return result;
         }
 
-        public void closeSocket(BluetoothSocket sock) {
-            if (sock != null)
-                // close socket
-                try {
-                    sock.close();
-                } catch (IOException e) {
-                    Log.e(TAG, e.getMessage());
-                }
-        }
-
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-//            progressDialog.setProgress(values[0]);
         }
 
         @Override
-        protected void onPostExecute(TroubleCodesCommand result) {
+        protected void onPostExecute(Map<Integer,List<ErrorCodeEntity>> result) {
+            Logger.d("读取故障码：onPostExecute().Map<Integer,List<ErrorCodeEntity>> result.size()"+result.size());
+            hideWaitDialog();
             mHandler.obtainMessage(DATA_OK_CODE, result).sendToTarget();
         }
     }
@@ -461,135 +393,13 @@ public class ReadErrorCodeActivity extends BaseActivity {
             }else{
                 mCodesTask = new GetTroubleCodesTask();
                 mCodesTask.execute();
+                Logger.d("读取故障码：mCodesTask.execute()");
             }
         } catch (IOException e) {
             mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
+            Logger.d("读取故障码：executeCodeCommand异常:IOException-------"+e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    //////////////////////////////////////等待错误码//////////////////////////////////
-
-
-    private class GetWaitTroubleCodesTask extends AsyncTask<String, Integer, PendingTroubleCodesCommand> {
-        @Override
-        protected void onPreExecute() {
-            //Create a new progress dialog
-            showWaitDialog("刷新中");
-        }
-
-        @Override
-        protected PendingTroubleCodesCommand doInBackground(String... params) {
-            PendingTroubleCodesCommand result = null;
-            hideWaitDialog();
-            //Get the current thread's token
-            synchronized (this) {
-                try {
-                    onProgressUpdate(5);
-                    PendingTroubleCodesCommand tcoc  = new PendingTroubleCodesCommand();
-                    tcoc.run(sock.getInputStream(), sock.getOutputStream());
-                    result = tcoc;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_IO).sendToTarget();
-                    return null;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_IE).sendToTarget();
-                    return null;
-                } catch (UnableToConnectException e) {
-                    e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_UTC).sendToTarget();
-                    return null;
-                } catch (MisunderstoodCommandException e) {
-                    e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_MIS).sendToTarget();
-                    return null;
-                } catch (NoDataException e) {
-                    Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_NODATA).sendToTarget();
-                    return null;
-                } catch (Exception e) {
-                    Log.e("DTCERR", e.getMessage());
-                    mHandler.obtainMessage(ObdConfig.OBD_COMMAND_FAILURE).sendToTarget();
-                } finally {
-                    hideWaitDialog();
-                }
-
-            }
-
-            return result;
-        }
-
-        public void closeSocket(BluetoothSocket sock) {
-            if (sock != null)
-                // close socket
-                try {
-                    sock.close();
-                } catch (IOException e) {
-                    Log.e(TAG, e.getMessage());
-                }
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-//            progressDialog.setProgress(values[0]);
-        }
-
-        @Override
-        protected void onPostExecute(PendingTroubleCodesCommand result) {
-            mHandler.obtainMessage(DATA_OK_CODE_WAIT, result).sendToTarget();
-        }
-    }
-
-    /**
-     * 请求等待错误码
-     */
-    public void executeWaitCodeCommand(){
-//        tagObdCommand = command;
-        //判断设备连接
-//        if (remoteDevice == null || "".equals(remoteDevice)) {
-//            Log.e(TAG, "No Bluetooth device has been selected.");
-//            mHandler.obtainMessage(NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
-//        } else {
-//            gtct = new GetTroubleCodesTask();
-//            gtct.execute(remoteDevice);
-//        }
-        try {
-            if(BluetoothUtil.getDeviceInstance() == null){
-                mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
-            }else{
-                mCodesTaskWait = new GetWaitTroubleCodesTask();
-                mCodesTaskWait.execute();
-            }
-        } catch (IOException e) {
-            mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
-            e.printStackTrace();
-        }
-    }
-    public void dataOkWaitCode(PendingTroubleCodesCommand obdCommand) {
-        Map<String, String> dtcVals = getDict(R.array.dtc_keys, R.array.dtc_values);
-        String value = null;
-        if(obdCommand!=null && !TextUtils.isEmpty(obdCommand.getName())){
-            for (String dtcCode : obdCommand.getFormattedResult().split("\n")) {
-                value = dtcVals.get(dtcCode);
-                ErrorCodeEntity errorCodeEntity = new ErrorCodeEntity();
-                errorCodeEntity.setTitle(dtcCode);
-                errorCodeEntity.setValue(value);
-                mAdapter02.getData().add(errorCodeEntity);
-                mWaitCodeNum = mWaitCodeNum +1;
-            }
-            mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
-//            if(mAdapter02.getData()!=null && mAdapter02.getData().size()>0){
-//                gethttpdataOkWaitCodePidDetails((obdCommand));
-//            }
-        }
-        hideWaitDialog();
     }
 
     private void gethttpdataOkWaitCodePidDetails(final PendingTroubleCodesCommand obdCommand){
@@ -630,6 +440,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
         protected void onPreExecute() {
             //Create a new progress dialog
             showWaitDialog("清除中");
+            Logger.d("读取故障码：清除中");
         }
 
         @Override
@@ -646,47 +457,43 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("DTCERR", e.getMessage());
+                    Logger.d("读取故障码：ResetTroubleCodesCommand异常:IOException-------"+e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_IO).sendToTarget();
                     return null;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     Log.e("DTCERR", e.getMessage());
+                    Logger.d("读取故障码：ResetTroubleCodesCommand异常:InterruptedException-------"+e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_IE).sendToTarget();
                     return null;
                 } catch (UnableToConnectException e) {
                     e.printStackTrace();
                     Log.e("DTCERR", e.getMessage());
+                    Logger.d("读取故障码：ResetTroubleCodesCommand异常:UnableToConnectException-------"+e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_UTC).sendToTarget();
                     return null;
                 } catch (MisunderstoodCommandException e) {
                     e.printStackTrace();
                     Log.e("DTCERR", e.getMessage());
+                    Logger.d("读取故障码：ResetTroubleCodesCommand异常:IOException-------"+e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_MIS).sendToTarget();
                     return null;
                 } catch (NoDataException e) {
                     Log.e("DTCERR", e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_NODATA).sendToTarget();
+                    Logger.d("读取故障码：ResetTroubleCodesCommand异常:NoDataException-------"+e.getMessage());
                     return null;
                 } catch (Exception e) {
                     Log.e("DTCERR", e.getMessage());
+                    Logger.d("读取故障码：ResetTroubleCodesCommand异常:Exception-------"+e.getMessage());
                     mHandler.obtainMessage(ObdConfig.OBD_COMMAND_FAILURE).sendToTarget();
                 } finally {
                     hideWaitDialog();
                 }
 
             }
-
+            Logger.d("读取故障码：ResetTroubleCodesCommand doInBackground:清除成功");
             return result;
-        }
-
-        public void closeSocket(BluetoothSocket sock) {
-            if (sock != null)
-                // close socket
-                try {
-                    sock.close();
-                } catch (IOException e) {
-                    Log.e(TAG, e.getMessage());
-                }
         }
 
         @Override
@@ -702,7 +509,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
     }
 
     /**
-     * 请求等待错误码
+     * 请求清除故障码
      */
     public void executeResetTroubleCodesCommand(){
 
@@ -716,9 +523,11 @@ public class ReadErrorCodeActivity extends BaseActivity {
         } catch (IOException e) {
             e.printStackTrace();
             mHandler.obtainMessage(ObdConfig.NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
+            Logger.d("读取故障码：executeResetTroubleCodesCommand异常:IOException-------"+e.getMessage());
         }
     }
-    public void dataOkClearCode(ResetTroubleCodesCommand obdCommand) {
+    public void dataOkClearCode() {
+        Logger.d("读取故障码：dataOkClearCode清除成功");
         mCodeNum = 0;
         mWaitCodeNum = 0;
         mAdapter01.getData().clear();
@@ -727,13 +536,15 @@ public class ReadErrorCodeActivity extends BaseActivity {
         mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
         mCheckboxConfirmErrorCode.setChecked(false);
         mCheckboxWaitErrorCode.setChecked(false);
+        Logger.d("mAdapter01.size:"+mAdapter01.getData().size());
+        Logger.d("mAdapter02.size:"+mAdapter02.getData().size());
         hideWaitDialog();
     }
 
     /**
      * 显示dialog
      */
-    private void showDialog( ) {
+    private void showDialog() {
         CustomDialog.Builder dialog = new CustomDialog.Builder(this);
         dialog
                 .setTitle("提示")
@@ -762,7 +573,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
                         Bundle bundle = new Bundle();
                         bundle.putString(BizcContant.PARA_CONFIRM_PIS,confirmPids);
                         bundle.putString(BizcContant.PARA_PENDING_PIS,pendingPids);
-                        ActivityUtil.next(ReadErrorCodeActivity.this,SubmitErrorCodeActivity.class,bundle,false);
+                        ActivityUtil.next(NewReadErrorCodeActivity.this,SubmitErrorCodeActivity.class,bundle,false);
                         dialogInterface.dismiss();
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -775,6 +586,4 @@ public class ReadErrorCodeActivity extends BaseActivity {
         mCommonAlertDialog.setCanceledOnTouchOutside(false);
         mCommonAlertDialog.show();
     }
-
-
 }
