@@ -93,7 +93,8 @@ public class Mode6Activity extends BaseActivity {
                     Logger.d("模式6：troubleCodesCommand异常:-------"+getString(R.string.text_obd_command_failure));
                     break;
                 case OBD_COMMAND_FAILURE_UTC:
-                    showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
+//                    showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
+                    showToastMsg("蓝牙连接失败，请退出重新连接");
                     Logger.d("模式6：troubleCodesCommand异常:-------"+getString(R.string.text_obd_command_failure));
                     break;
                 case OBD_COMMAND_FAILURE_NODATA:
@@ -151,6 +152,8 @@ public class Mode6Activity extends BaseActivity {
         } catch (IOException e) {
             e.printStackTrace();
             Logger.d("模式6：sock连接异常:-------"+e.getMessage());
+            showToastMsg("蓝牙连接失败");
+            return;
         }
         executeMode6Command();
     }

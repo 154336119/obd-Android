@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.github.pires.obd.utils.CommandAvailabilityHelper;
+import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.MainActivity;
@@ -70,6 +72,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginCon
        byte[] subRawData =  ByteUtils.hexStr2BinArr("0141414100040000");
         String ss = ByteUtils.bytes2BinStr(new byte[]{subRawData[5]}).substring(1,8);
         ss.getBytes();
+        int[] a = CommandAvailabilityHelper.digestAvailabilityString("FFC00000");
+        Logger.d(a);
     }
 
     @OnClick({R.id.tvRegister, R.id.tvwForgotPwd, R.id.btnLogin})

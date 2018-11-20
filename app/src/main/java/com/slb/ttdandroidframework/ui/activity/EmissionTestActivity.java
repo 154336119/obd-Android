@@ -201,12 +201,18 @@ public class EmissionTestActivity extends BaseMvpActivity<EmissionTestContract.I
                         troubleCodesNum = troubleCodesCommand.getFormattedResult().split("\n").length;
                     }
                 } catch (IOException e) {
+//                    showConnectFailDialog();
                     e.printStackTrace();
                 } catch (InterruptedException e) {
+//                    showConnectFailDialog();
                     e.printStackTrace();
                 } catch (NoDataException e) {
                     Log.e("DTCERR", e.getMessage());
+                }catch (UnableToConnectException e) {
+//                    showConnectFailDialog();
+                    Log.e("DTCERR", e.getMessage());
                 }
+
 
                 PendingTroubleCodesCommand pendingTroubleCodesCommand = new PendingTroubleCodesCommand();
                 try {

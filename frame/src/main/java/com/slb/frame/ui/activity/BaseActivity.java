@@ -33,11 +33,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hwangjr.rxbus.RxBus;
+import com.orhanobut.logger.Logger;
 import com.slb.frame.R;
+import com.slb.frame.dialog.CustomDialog;
 import com.slb.frame.ui.toolbar.ToolbarBack;
 import com.slb.frame.ui.toolbar.ToolbarContext;
 import com.slb.frame.ui.widget.LoadingDialog;
 import com.slb.frame.ui.widget.nodata.LoadingAndRetryManager;
+import com.slb.frame.utils.ActivityUtil;
 import com.slb.frame.utils.PermissionListener;
 import com.slb.frame.utils.hooklistener.HookCore;
 import com.slb.frame.utils.hooklistener.HookListenerContract;
@@ -484,5 +487,22 @@ public abstract class BaseActivity extends ShakeActivity implements LifecyclePro
     private void keepScreenLongLight(Activity activity) {
         Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    /**
+     * 显示连接失败dialog
+     */
+    public void showConnectFailDialog() {
+        CustomDialog.Builder dialog = new CustomDialog.Builder(this);
+        dialog
+                .setTitle("提示")
+                .setMessage("蓝牙连接失败请重新连接")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                       finish();
+                    }
+                });
+         dialog.create().show();
     }
 }

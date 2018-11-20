@@ -2,6 +2,7 @@ package com.slb.ttdandroidframework.command.mode6;
 
 import com.github.pires.obd.commands.ObdCommand;
 import com.slb.ttdandroidframework.util.ByteUtils;
+import com.slb.ttdandroidframework.util.config.Mode6Util;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,7 +36,7 @@ public class Mode6AvailablePidsCommand_41_60 extends ObdCommand {
         List<String> availablePids = new ArrayList<>();
         for ( int i=0; i<sb.length(); i++){
             if ( sb.charAt(i) == '1' ){
-                String pid = Integer.toHexString(i+48).length() == 1 ? "0"+Integer.toHexString(i+48):Integer.toHexString(i+48);
+                String pid =  Mode6Util.get41_60SupportTid(i+1);
                 availablePids.add(pid);
             }
         }

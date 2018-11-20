@@ -129,10 +129,12 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     showToastMsg(getString(R.string.text_obd_command_failure) + " MIS");
                     break;
                 case OBD_COMMAND_FAILURE_UTC:
-                    showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
+                    showToastMsg("蓝牙连接失败，请退出重新连接");
+//                    showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
                     break;
                 case OBD_COMMAND_FAILURE_NODATA:
-                    showToastMsg(getString(R.string.text_noerrors));
+                    showToastMsg("暂无数据");
+//                    showToastMsg(getString(R.string.text_noerrors));
                     break;
                 case ObdConfig.NO_DATA:
                     showToastMsg(getString(R.string.text_dtc_no_data));
@@ -264,12 +266,23 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     sock = BluetoothUtil.getSockInstance();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    showToastMsg("蓝牙连接失败，请重新连接");
+                    Logger.d("读取故障码：sock连接异常:-------"+e.getMessage());
+                    return;
                 }
                 executeCodeCommand();
                 break;
             case R.id.BtnClearError:
                 if(!BluetoothUtil.isRunning){
                     showToastMsg("暂未连接OBD");
+                    return;
+                }
+                try {
+                    sock = BluetoothUtil.getSockInstance();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Logger.d("读取故障码：sock连接异常:-------"+e.getMessage());
+                    showToastMsg("蓝牙连接失败，请重新连接");
                     return;
                 }
                 executeResetTroubleCodesCommand();
@@ -337,13 +350,18 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     result.put(DATA_OK_CODE,comfirmTroubleCodesList);
                 } catch (IOException e) {
                     e.printStackTrace();
+//                    showConnectFailDialog();
                     Logger.d("读取故障码：troubleCodesCommand异常:IOException-------"+e.getMessage());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+//                    showConnectFailDialog();
                     Logger.d("读取故障码：troubleCodesCommand异常:InterruptedException-------"+e.getMessage());
                 } catch (NoDataException e) {
                     Log.e("DTCERR", e.getMessage());
                     Logger.d("读取故障码：troubleCodesCommand异常:NoDataException-------"+e.getMessage());
+                }catch (UnableToConnectException e) {
+//                    showConnectFailDialog();
+                    Log.e("DTCERR", e.getMessage());
                 }
                 //等待故障码
                 PendingTroubleCodesCommand pendingTroubleCodesCommand = new PendingTroubleCodesCommand();
@@ -354,13 +372,18 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     result.put(DATA_OK_CODE_WAIT,comWaitTroubleCodesList);
                 }  catch (IOException e) {
                     e.printStackTrace();
+//                    showConnectFailDialog();
                     Logger.d("读取故障码：pendingTroubleCodesCommand异常:IOException-------"+e.getMessage());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+//                    showConnectFailDialog();
                     Logger.d("读取故障码：pendingTroubleCodesCommand异常:InterruptedException-------"+e.getMessage());
                 } catch (NoDataException e) {
                     Log.e("DTCERR", e.getMessage());
                     Logger.d("读取故障码：pendingTroubleCodesCommand异常:NoDataException-------"+e.getMessage());
+                }catch (UnableToConnectException e) {
+//                    showConnectFailDialog();
+                    Log.e("DTCERR", e.getMessage());
                 } finally {
                     hideWaitDialog();
                 }
@@ -457,10 +480,12 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("DTCERR", e.getMessage());
+//                    showConnectFailDialog();
                     Logger.d("读取故障码：ResetTroubleCodesCommand异常:IOException-------"+e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_IO).sendToTarget();
                     return null;
                 } catch (InterruptedException e) {
+//                    showConnectFailDialog();
                     e.printStackTrace();
                     Log.e("DTCERR", e.getMessage());
                     Logger.d("读取故障码：ResetTroubleCodesCommand异常:InterruptedException-------"+e.getMessage());
@@ -486,6 +511,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                 } catch (Exception e) {
                     Log.e("DTCERR", e.getMessage());
                     Logger.d("读取故障码：ResetTroubleCodesCommand异常:Exception-------"+e.getMessage());
+//                    showConnectFailDialog();
                     mHandler.obtainMessage(ObdConfig.OBD_COMMAND_FAILURE).sendToTarget();
                 } finally {
                     hideWaitDialog();
