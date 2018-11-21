@@ -47,8 +47,8 @@ public class Mode6AvailablePidsCommand_01_20 extends ObdCommand {
 
     @Override
     public String getCalculatedResult() {
-        return "C0000001";
-//        return rawData.substring(rawData.length()-8,rawData.length());
+//        return "C0000001";
+        return rawData.substring(rawData.length()-8,rawData.length());
     }
 
     @Override

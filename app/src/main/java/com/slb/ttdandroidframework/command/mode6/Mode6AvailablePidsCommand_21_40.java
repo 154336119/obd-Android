@@ -44,7 +44,7 @@ public class Mode6AvailablePidsCommand_21_40 extends ObdCommand {
 
     @Override
     public String getCalculatedResult() {
-        return rawData.substring(6);
+        return rawData.substring(rawData.length()-8,rawData.length());
     }
 
     @Override
