@@ -25,7 +25,7 @@ public class ModPasswordActivity extends BaseMvpActivity<ModPasswordContract.IVi
     Button btnComfirm;
     @Override
     protected String setToolbarTitle() {
-        return "设置";
+        return getString(R.string.Change_your_password);
     }
     @Override
     public void resetSuccess() {

@@ -28,7 +28,7 @@
                 android:id="@+id/edCurPw"
                 style="@style/edit_padding_10"
                 android:completionThreshold="1"
-                android:hint="请输入当前密码"
+                android:hint="@string/Current_password"
                 android:lines="1"
                 android:background="#3C444F"
                 android:layout_toRightOf="@+id/Tv01"/>
@@ -52,7 +52,7 @@
                 android:id="@+id/edtNewPw"
                 style="@style/edit_padding_10"
                 android:completionThreshold="1"
-                android:hint="请输入新密码"
+                android:hint="@string/New_password"
                 android:lines="1"
                 android:background="#3C444F"
                 android:layout_toRightOf="@+id/Tv02"/>
@@ -76,7 +76,7 @@
                 android:id="@+id/edtAgainPw"
                 style="@style/edit_padding_10"
                 android:completionThreshold="1"
-                android:hint="请确认密码"
+                android:hint="@string/Confirm_password"
                 android:lines="1"
                 android:background="#3C444F"
                 android:layout_toRightOf="@+id/Tv03"
@@ -89,6 +89,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/distance_30"
-            android:text="保存" />
+            android:text="@string/Save" />
     </LinearLayout>
 </LinearLayout>

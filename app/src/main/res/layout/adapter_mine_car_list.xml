@@ -8,8 +8,12 @@
         android:id="@+id/TvName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/line2"
         android:textColor="@color/white"
-        android:paddingTop="14dp"
+        android:paddingTop="14dp"/>
+    <TextView
+        android:id="@+id/TvName1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:paddingBottom="14dp"/>
 </LinearLayout>

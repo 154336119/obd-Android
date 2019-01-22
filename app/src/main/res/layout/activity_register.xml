@@ -12,7 +12,7 @@
         android:background="#3C444F"
         android:gravity="center"
         android:padding="@dimen/distance_10"
-        android:text="注册"
+        android:text="@string/register_title"
         android:textColor="@color/white"
         android:textSize="15sp" />
 
@@ -40,7 +40,7 @@
             android:layout_margin="10dp"
             android:completionThreshold="1"
             android:drawableLeft="@mipmap/ic_phone"
-            android:hint="请输入您的邮箱"
+            android:hint="@string/email_address"
             android:lines="1" />
         <RelativeLayout
             android:layout_width="match_parent"
@@ -48,7 +48,7 @@
             <EditText
                 android:id="@+id/edtVCode"
                 style="@style/edit_padding_10"
-                android:hint="请输入验证码"
+                android:hint="@string/enter_the_validation_code"
                 android:layout_margin="10dp"
                 android:lines="1"
                 android:drawablePadding="5dp"
@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="发送验证码"
+                android:text="@string/send_the_validation_code"
                 android:textColor="#00A4EF"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/distance_20"/>
@@ -69,7 +69,7 @@
             style="@style/edit_padding_10"
             android:layout_margin="10dp"
             android:drawableLeft="@mipmap/ic_pw"
-            android:hint="请输入您的密码"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:lines="1" />
 
@@ -105,6 +105,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/distance_30"
-            android:text="立即注册" />
+            android:text="@string/register_immediately" />
     </LinearLayout>
 </LinearLayout>

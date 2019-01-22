@@ -64,16 +64,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginCon
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-        edtMobile.setText("154336119@qq.com");
-        edtPwd.setText("123456");
 
-//        edtMobile.setText("53255941@qq.com");
-//        edtPwd.setText("123abc");
-       byte[] subRawData =  ByteUtils.hexStr2BinArr("0141414100040000");
-        String ss = ByteUtils.bytes2BinStr(new byte[]{subRawData[5]}).substring(1,8);
-        ss.getBytes();
-        int[] a = CommandAvailabilityHelper.digestAvailabilityString("FFC00000");
-        Logger.d(a);
     }
 
     @OnClick({R.id.tvRegister, R.id.tvwForgotPwd, R.id.btnLogin})

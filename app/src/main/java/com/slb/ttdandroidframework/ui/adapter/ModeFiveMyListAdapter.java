@@ -37,19 +37,19 @@ public class ModeFiveMyListAdapter extends CommonBaseAdapter<MoudleFiveEntity> {
 		}
 		MoudleFiveEntity entity = getItem(position);
 		if(!TextUtils.isEmpty(entity.getMax())){
-			mHolder.TvMax.setText("最大值："+entity.getMax()+entity.getUnit());
+			mHolder.TvMax.setText(mContext.getString(R.string.max)+entity.getMax()+entity.getUnit());
 		}else{
-			mHolder.TvMax.setText("最大值：无");
+			mHolder.TvMax.setText(mContext.getString(R.string.max)+mContext.getString(R.string.nothing));
 		}
 		if(!TextUtils.isEmpty(entity.getMin())){
-			mHolder.TvMin.setText("最小值："+entity.getMin()+entity.getUnit());
+			mHolder.TvMin.setText(mContext.getString(R.string.min)+entity.getMin()+entity.getUnit());
 		}else{
-			mHolder.TvMin.setText("最小值：无");
+			mHolder.TvMin.setText(mContext.getString(R.string.min)+mContext.getString(R.string.nothing));
 		}
 		if(!TextUtils.isEmpty(entity.getValue())){
-			mHolder.TvValue.setText("当前值："+entity.getValue()+entity.getUnit());
+			mHolder.TvValue.setText(mContext.getString(R.string.values)+entity.getMax()+entity.getUnit());
 		}else{
-			mHolder.TvValue.setText("当前值：无");
+			mHolder.TvValue.setText(mContext.getString(R.string.values)+mContext.getString(R.string.nothing));
 		}
 		if(!TextUtils.isEmpty(entity.getNum())){
 			mHolder.TvNum.setText("$"+entity.getNum());

@@ -18,7 +18,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textColor="@color/white"
-              android:text="实时数据"
+              android:text="@string/live_data"
               android:textSize="18sp"
               android:layout_centerInParent="true"/>
           <ImageView

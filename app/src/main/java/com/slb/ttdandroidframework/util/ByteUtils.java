@@ -616,4 +616,23 @@ public class ByteUtils {
         return bs;
     }
 
+    /**
+     * 10进制转16进制
+     * @return
+     */
+    public static String intToHex(String a) {
+        int n = Integer.valueOf(a);
+        StringBuffer s = new StringBuffer();
+        char []b = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+        while(n != 0){
+            s = s.append(b[n%16]);
+            n = n/16;
+        }
+        a = s.reverse().toString();
+        if(a.length() == 1){
+            a = "0"+a;
+        }
+        return a;
+    }
+
 }

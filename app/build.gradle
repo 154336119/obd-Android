@@ -14,8 +14,8 @@ android {
         applicationId "com.slb.ttdandroidframework"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 12
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "x86"
@@ -25,8 +25,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable true
+            debuggable false
             jniDebuggable false
+            signingConfig signingConfigs.config
         }
         live {
             minifyEnabled false
@@ -35,10 +36,17 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
     dataBinding {
         enabled true
+    }
+    lintOptions {
+        abortOnError false
+    }
+    dexOptions {
+        jumboMode true
     }
 }
 
@@ -60,6 +68,5 @@ dependencies {
     compile 'com.tencent.bugly:crashreport_upgrade:1.2.3'
     compile 'com.contrarywind:Android-PickerView:3.2.3'
     compile 'org.apache.commons:commons-lang3:3.7'
-        implementation files('F:/Android_demo/obd_android/obd-Android/libs/obd-java-api-1.2-SNAPSHOT.jar')
-//    implementation files('E:/cc/obd_new/obd-Android/libs/obd-java-api-1.2-SNAPSHOT.jar')
+    implementation files('E:/cc/obd-Android//libs/obd-java-api-1.2-SNAPSHOT.jar')
 }

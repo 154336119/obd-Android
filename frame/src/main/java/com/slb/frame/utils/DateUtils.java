@@ -1547,6 +1547,13 @@ public class DateUtils {
 			e.printStackTrace();
 			return 1;
 		}
-    } 
-	
+    }
+
+	public static String formatDuringDHM(long mss) {
+		long days = mss / (1000 * 60 * 60 * 24);
+		long hours = (mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+		long minutes = (mss % (1000 * 60 * 60)) / (1000 * 60);
+		return days + " Days," + hours + " Hours," + minutes + " Minutes ";
+	}
+
 }

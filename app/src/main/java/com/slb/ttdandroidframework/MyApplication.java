@@ -56,7 +56,11 @@ public class MyApplication extends Application{
     private void initLogUtils(){
         Logger.addLogAdapter(new AndroidLogAdapter());
         Logger.addLogAdapter(new DiskLogAdapter());
-
+        Logger.addLogAdapter(new AndroidLogAdapter() {
+            @Override public boolean isLoggable(int priority, String tag) {
+                return BuildConfig.DEBUG;
+            }
+        });
     }
     private void initOkGo() {
         //---------这里给出的是示例代码,告诉你可以这么传,实际使用的时候,根据需要传,不需要就不传-------------//

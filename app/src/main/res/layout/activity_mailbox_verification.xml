@@ -14,7 +14,7 @@
             android:id="@+id/edtMobile"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
-            android:hint="请输入您的邮箱"
+            android:hint="@string/email_address"
             android:lines="1"
             android:drawablePadding="5dp"
             android:layout_margin="10dp"
@@ -26,7 +26,7 @@
             <EditText
                 android:id="@+id/edtPwd"
                 style="@style/edit_padding_10"
-                android:hint="请输入验证码"
+                android:hint="@string/enter_the_validation_code"
                 android:layout_margin="10dp"
                 android:lines="1"
                 android:drawablePadding="5dp"
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="发送验证码"
+                android:text="@string/send_the_validation_code"
                 android:textColor="#00A4EF"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/distance_20"/>
@@ -47,6 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/distance_30"
-            android:text="下一步" />
+            android:text="@string/next" />
     </LinearLayout>
 </LinearLayout>

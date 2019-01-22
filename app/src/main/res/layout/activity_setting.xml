@@ -17,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="昵称"
+            android:text="@string/Username"
             android:textColor="@color/white"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="修改密码"
+            android:text="@string/Change_Password"
             android:textColor="@color/white"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -56,4 +56,11 @@
             android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
+    <Button
+        android:id="@+id/btnLogout"
+        style="@style/btn_bottom_single"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/distance_30"
+        android:text="@string/Logout_Current_Account" />
 </LinearLayout>

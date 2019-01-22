@@ -87,12 +87,16 @@ public class BluetoothUtil {
         return sockInstance;
     }
 
-    private static void closeSocket(BluetoothSocket sock) {
-        if (sock != null)
+    public static void closeSocket() {
+        isRunning = false;
+        BluetoothUtil.setIsRunning(false);
+        if (sockInstance != null)
+            // close socket
             try {
-                sock.close();
+                sockInstance.close();
             } catch (IOException e) {
             }
+        BluetoothUtil.setSockInstance(null);
+        RxBus.get().post(new ObdConnectStateEvent(false));
     }
-
 }

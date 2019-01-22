@@ -16,21 +16,21 @@ public class Mode5Util {
         String name = null;
         switch(i){
             case 0:
-                return "Bank 1          传感器 1";
+                return "Bank 1          sensor 1";
             case 1:
-                return "Bank 1          传感器 2";
+                return "Bank 1          sensor 2";
             case 2:
-                return "Bank 2          传感器 1";
+                return "Bank 2          sensor 1";
             case 3:
-                return "Bank 2          传感器 2";
+                return "Bank 2          sensor 2";
             case 4:
-                return "Bank 3          传感器 1";
+                return "Bank 3          sensor 1";
             case 5:
-                return "Bank 3          传感器 2";
+                return "Bank 3          sensor 2";
             case 6:
-                return "Bank 4          传感器 1";
+                return "Bank 4          sensor 1";
             case 7:
-                return "Bank 4          传感器 2";
+                return "Bank 4          sensor 2";
 
         }
         return name;

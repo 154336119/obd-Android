@@ -204,9 +204,9 @@ public class HomeFragment
     @Subscribe
     public void onObdConnectStateEvent(ObdConnectStateEvent event) {
         if(event.isConnect()){
-            tvConnect.setText("已连接");
+            tvConnect.setText("connected");
         }else{
-            tvConnect.setText("连接obd");
+            tvConnect.setText("connect obd");
         }
     }
 

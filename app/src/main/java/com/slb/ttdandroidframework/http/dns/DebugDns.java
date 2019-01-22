@@ -16,7 +16,7 @@ public class DebugDns implements Dns {
     }
     @Override
     public String getCommonBaseUrl() {
-        return "http://47.98.113.66:9999/";
+        return "http://13.59.50.210:9999/";
     }
 
     @Override

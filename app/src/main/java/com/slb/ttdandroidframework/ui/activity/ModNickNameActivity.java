@@ -26,7 +26,7 @@ public class ModNickNameActivity extends BaseMvpActivity<ModNameContract.IView, 
 
     @Override
     protected String setToolbarTitle() {
-        return "修改昵称";
+        return getString(R.string.Change_Username);
     }
 
     @Override

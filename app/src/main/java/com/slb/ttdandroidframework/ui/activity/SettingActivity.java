@@ -23,7 +23,7 @@ public class SettingActivity extends BaseActivity {
     RelativeLayout RlPw;
     @Override
     protected String setToolbarTitle() {
-        return "设置";
+        return getString(R.string.Settings);
     }
     @Override
     public int getLayoutId() {
@@ -36,14 +36,17 @@ public class SettingActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick({R.id.RlName, R.id.RlPw})
+    @OnClick({R.id.RlName, R.id.RlPw,R.id.btnLogout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.RlName:
-                ActivityUtil.next(this,ModNickNameActivity.class);
+                ActivityUtil.next(this, ModNickNameActivity.class);
                 break;
             case R.id.RlPw:
-                ActivityUtil.next(this,ModPasswordActivity.class);
+                ActivityUtil.next(this, ModPasswordActivity.class);
+                break;
+            case  R.id.btnLogout:
+                ActivityUtil.next(this, LoginActivity.class);
                 break;
         }
     }

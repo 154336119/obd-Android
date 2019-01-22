@@ -27,6 +27,7 @@ import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
 import com.google.gson.internal.LinkedTreeMap;
 import com.hwangjr.rxbus.RxBus;
+import com.hwangjr.rxbus.annotation.Subscribe;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -37,6 +38,7 @@ import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
 import com.slb.ttdandroidframework.http.callback.ActivityDialogCallback;
@@ -120,7 +122,11 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     showToastMsg(getString(R.string.text_obd_command_failure));
                     break;
                 case OBD_COMMAND_FAILURE_IO:
-                    showToastMsg(getString(R.string.text_obd_command_failure) + " IO");
+//                    showToastMsg(getString(R.string.text_obd_command_failure) + " IO");
+                    showToastMsg("读取故障码：设备已断开连接，请重新连接");
+                    BluetoothUtil.closeSocket();
+                    Logger.d("读取故障码：设备已断开连接，请重新连接");
+                    finish();
                     break;
                 case OBD_COMMAND_FAILURE_IE:
                     showToastMsg(getString(R.string.text_obd_command_failure) + " IE");
@@ -129,7 +135,10 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     showToastMsg(getString(R.string.text_obd_command_failure) + " MIS");
                     break;
                 case OBD_COMMAND_FAILURE_UTC:
-                    showToastMsg("蓝牙连接失败，请退出重新连接");
+                    showToastMsg("读取故障码：设备已断开连接，请重新连接");
+                    BluetoothUtil.closeSocket();
+                    Logger.d("读取故障码：设备已断开连接，请重新连接");
+                    finish();
 //                    showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
                     break;
                 case OBD_COMMAND_FAILURE_NODATA:
@@ -271,8 +280,10 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     return;
                 }
                 executeCodeCommand();
+                mTvAgain.setText(getString(R.string.rescan));
                 break;
             case R.id.BtnClearError:
+                Logger.d("读取故障码：点击清除");
                 if(!BluetoothUtil.isRunning){
                     showToastMsg("暂未连接OBD");
                     return;
@@ -349,9 +360,11 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     List<ErrorCodeEntity> comfirmTroubleCodesList = ReadCodeUtil.dataOkWaitCode(troubleCodesCommand);
                     result.put(DATA_OK_CODE,comfirmTroubleCodesList);
                 } catch (IOException e) {
+                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_IO).sendToTarget();
                     e.printStackTrace();
 //                    showConnectFailDialog();
                     Logger.d("读取故障码：troubleCodesCommand异常:IOException-------"+e.getMessage());
+                    return null;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
 //                    showConnectFailDialog();
@@ -362,6 +375,9 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                 }catch (UnableToConnectException e) {
 //                    showConnectFailDialog();
                     Log.e("DTCERR", e.getMessage());
+                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_IO).sendToTarget();
+//                    showConnectFailDialog();
+                    return null;
                 }
                 //等待故障码
                 PendingTroubleCodesCommand pendingTroubleCodesCommand = new PendingTroubleCodesCommand();
@@ -372,8 +388,10 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     result.put(DATA_OK_CODE_WAIT,comWaitTroubleCodesList);
                 }  catch (IOException e) {
                     e.printStackTrace();
+                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_IO).sendToTarget();
 //                    showConnectFailDialog();
                     Logger.d("读取故障码：pendingTroubleCodesCommand异常:IOException-------"+e.getMessage());
+                    return null;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
 //                    showConnectFailDialog();
@@ -384,6 +402,9 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                 }catch (UnableToConnectException e) {
 //                    showConnectFailDialog();
                     Log.e("DTCERR", e.getMessage());
+                    mHandler.obtainMessage(OBD_COMMAND_FAILURE_IO).sendToTarget();
+//                    showConnectFailDialog();
+                    return null;
                 } finally {
                     hideWaitDialog();
                 }
@@ -612,4 +633,5 @@ public class NewReadErrorCodeActivity extends BaseActivity {
         mCommonAlertDialog.setCanceledOnTouchOutside(false);
         mCommonAlertDialog.show();
     }
+
 }

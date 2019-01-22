@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TtdAndroidFramework</string>
+    <string name="app_name">OBDChecks</string>
     <string name="action_settings">Settings</string>
     <string name="action_clear_codes">Clear Codes</string>
     <string name="notification_action">Tap to open OBD-Reader</string>
@@ -106,38 +106,109 @@
     <string name="pref_dev_email_summary">Logs will be emailed to this address</string>
     <string name="text_noerrors">There were no errors found.!</string>
     <!--登录-->
-    <string name="sign_in">Sign in</string>
-    <string name="email_address">Email address</string>
-    <string name="password">Password</string>
-    <string name="forget_your_passoword">Register  Forget your passoword?</string>
-    <string name="register">register</string>
+    <string name="sign_in_title">Login</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email_address">Please enter your email address</string>
+    <string name="password">Please enter your password</string>
+    <string name="forget_your_passoword">Retrieve your password</string>
+    <string name="register">Sign up for free</string>
+    <!--注册-->
+    <string name="register_title">register</string>
+    <string name="enter_the_validation_code">enter the validation code</string>
+    <string name="send_the_validation_code">send code</string>
+    <string name="register_immediately">register</string>
     <!--主页面-->
     <string name="read_dtcs">Read DTCs</string>
     <string name="freeze_frame">Freeze Frame</string>
     <string name="smog_check">SMOG Check</string>
-    <string name="mode_5">Mode 5</string>
-    <string name="mode_6">Mode 6</string>
+    <string name="mode_5">Oxygen Sensors</string>
+    <string name="mode_6">On-board Monitoring</string>
     <string name="mil_status">MIL Status</string>
     <string name="diagnostics">Diagnostics</string>
     <string name="live_data">Live Data</string>
     <string name="history">History</string>
-    <string name="my_device">My Device</string>
-
+    <string name="my_device">My Account</string>
+    <!--修改密码-->
+    <string name="Change_your_password">Change your password</string>
+    <string name="Current_password">Current password</string>
+    <string name="New_password">New password</string>
+    <string name="Confirm_password">Confirm_password</string>
+    <string name="Save">Save</string>
     <!--扫描故障码-->
     <string name="pending_dtcs"> Pending DTCs</string>
     <string name="confirmed_dtcs"> Confirmed DTCs</string>
     <string name="clear_dtcs">Clear DTCs</string>
     <string name="rescan">Rescan</string>
-    Rescan
+    <string name="Read_DTCs">Read DTCs</string>
+    <string name="Upload_DTCs">Upload DTCs</string>
     <!--尾气检测-->
     <string name="pid">PID</string>
     <string name="description">Description</string>
     <string name="value">Value</string>
-
+    <!--设置-->
+    <string name="Settings">Settings</string>
+    <string name="Username">Username</string>
+    <string name="Change_Password">Change_Password</string>
+    <string name="Logout_Current_Account">Logout Current Account</string>
+    <string name="Change_Username">Change Username</string>
     <!--故障灯-->
-    <string name="run_time_with_check_engine_light_on">Run Time with Check Engine Light On</string>
-    <string name="distance_with_check_engine_light_on">Distance with Check Engine Light On</string>
-    <string name="run_time_since_trouble_codes_cleared">Run Time Since Trouble Codes Cleared</string>
-    <string name="distance_since_trouble_codes_cleared">Distance Since Trouble Codes Cleared</string>
-    <string name="run_time_since_engine_start">Run Time Since Engine Start</string>
+    <string name="Your_Check_Engine_Light_MIL_is_ON_OFF">Your Check Engine Light (MIL) is ON/OFF</string>
+    <string name="Run_Time_with_Check_Engine_Light_On">Run Time with Check Engine Light On</string>
+    <string name="Distance_with_Check_Engine_Light_On">Distance with Check Engine Light On</string>
+    <string name="Run_Time_Since_Trouble_Codes_Cleared">Run Time Since Trouble Codes Cleared</string>
+    <string name="Distance_Since_Trouble_Codes_Cleared">Distance Since Trouble Codes Cleared</string>
+    <string name="Run_Time_Since_Engine_Start">Run Time Since Engine Start</string>
+    <string name="unit1_on">On</string>
+    <string name="unit1_off">Offw</string>
+
+    <string name="Scanning">Scanning</string>
+    <string name="Scan">Scan</string>
+
+    <string name="Filter">Filter</string>
+    <string name="Choose_your_OBD_device">Choose your OBD device</string>
+    <string name="Choose_your_vehicle">Choose your vehicle</string>
+    <string name="Period">Period</string>
+    <string name="Start_date">Start date</string>
+    <string name="End_date">End date</string>
+
+    <string name="My_Account">My Account</string>
+    <string name="My_Vehicle">My Vehicle</string>
+    <string name="My_OBD_Device">My OBD Device</string>
+    <string name="Product_serial_number">Product serial number</string>
+    <string name="Product_Model">Product Model</string>
+
+    <!--邮箱验证-->
+    <string name="Mailbox_validation">mailbox validation</string>
+    <string name="next">next</string>
+    <string name="No_description">No description</string>
+    <string name="unit">unit</string>
+
+    <!--冻结桢-->
+    <string name="Calculated_Load_Threshold">Calculated Load Threshold</string>
+    <string name="Engine_Coolant_Temperature">Engine Coolant Temperature</string>
+    <string name="Fuel_Rail_Pressure">Fuel Rail Pressure</string>
+    <string name="Engine_RPM">Engine RPM</string>
+    <string name="Vehicle_Speed"> Vehicle Speed</string>
+    <string name="Mass_Air_Flow">Mass Air Flow</string>
+    <string name="Absolute_throttle_position">Absolute throttle position</string>
+
+    <string name="normal">normal</string>
+    <string name="failed">failed</string>
+
+    <string name="max">max：</string>
+    <string name="min">min：</string>
+    <string name="values">value：</string>
+    <string name="nothing">nothing</string>
+
+    <!--氧气传感器-->
+    <string name="Rich_to_lean_sensorthreshold_voltage">Rich to lean sensorthreshold voltage</string>
+    <string name="Lean_to_rich_sensor_threshold_voltage">Lean to rich sensor threshold voltage</string>
+    <string name="Low_sensor_voltage_for_switch_time_calculation">Low_sensor_voltage_for_switch_time_calculation</string>
+    <string name="High_sensor_voltage_for_switch_time_calculation">High sensor voltage for switch time calculation</string>
+    <string name="Rich_to_lean_sensor_switch_time">Rich to lean sensor switch time</string>
+    <string name="Lean_to_lean_sensor_switch_time">Lean to lean sensor switch time</string>
+    <string name="Minimum_sensor_voltage_for_test_cycle">Minimum sensor voltage for test cycle</string>
+    <string name="Maximum_sensor_voltage_for_test_cycle">Maximum sensor voltage for test cycle</string>
+    <string name="Time_between_sensor_transitions">Time between sensor transitions</string>
+    <string name="Sensor_period">Sensor period</string>
 </resources>

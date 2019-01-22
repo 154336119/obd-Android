@@ -9,10 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.github.pires.obd.commands.ObdMultiCommand;
 import com.github.pires.obd.commands.control.DistanceMILOnCommand;
 import com.github.pires.obd.commands.control.DistanceSinceCCCommand;
-import com.github.pires.obd.commands.control.DtcNumberCommand;
 import com.github.pires.obd.commands.engine.RuntimeCommand;
 import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
@@ -20,27 +18,19 @@ import com.github.pires.obd.exceptions.UnableToConnectException;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.slb.frame.ui.activity.BaseActivity;
-import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.command.mil.Command4D;
-import com.slb.ttdandroidframework.command.mil.Command4E;
 import com.slb.ttdandroidframework.command.mil.MilObdMultiCommand;
-import com.slb.ttdandroidframework.command.mil.MyDtcNumberCommand;
-import com.slb.ttdandroidframework.command.mode5.Service5Command;
+import com.slb.ttdandroidframework.command.mymil.Command4D;
+import com.slb.ttdandroidframework.command.mymil.Command4E;
+import com.slb.ttdandroidframework.command.mymil.MyDistanceMILOnCommand;
+import com.slb.ttdandroidframework.command.mymil.MyDistanceSinceCCCommand;
+import com.slb.ttdandroidframework.command.mymil.MyDtcNumberCommand;
+import com.slb.ttdandroidframework.command.mymil.MyRuntimeCommand;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
-import com.slb.ttdandroidframework.http.bean.BankSensorEntiity;
-import com.slb.ttdandroidframework.http.bean.FreezeFrameEntity;
-import com.slb.ttdandroidframework.http.bean.ModeSixEntity;
-import com.slb.ttdandroidframework.http.bean.MoudleFiveEntity;
 import com.slb.ttdandroidframework.http.bean.TroubleLightSEntity;
-import com.slb.ttdandroidframework.ui.adapter.FreezeFrameAdapter;
-import com.slb.ttdandroidframework.ui.adapter.ModeSixAdapter;
 import com.slb.ttdandroidframework.ui.adapter.TroubleLightSAdapter;
-import com.slb.ttdandroidframework.ui.contract.MyComListContract;
-import com.slb.ttdandroidframework.ui.presenter.MyComListPresenter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
-import com.slb.ttdandroidframework.util.config.Mode5Util;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -50,7 +40,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import danfei.shulaibao.widget.refresh.BaseBrvahRefreshActivity;
 
 import static com.slb.ttdandroidframework.ui.activity.ReadErrorCodeActivity.DATA_OK_CODE;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_IE;
@@ -190,11 +179,11 @@ public class TroubleLightSActivity extends BaseActivity{
                 try {
                     MilObdMultiCommand obdMultiCommand = new MilObdMultiCommand();
                     obdMultiCommand.add(new MyDtcNumberCommand());
-                    obdMultiCommand.add(new DistanceSinceCCCommand());
-                    obdMultiCommand.add(new Command4E());
                     obdMultiCommand.add(new Command4D());
-                    obdMultiCommand.add(new DistanceMILOnCommand());
-                    obdMultiCommand.add(new RuntimeCommand());
+                    obdMultiCommand.add(new MyDistanceMILOnCommand());
+                    obdMultiCommand.add(new Command4E());
+                    obdMultiCommand.add(new MyDistanceSinceCCCommand());
+                    obdMultiCommand.add(new MyRuntimeCommand());
 
                     obdMultiCommand.sendCommands(sock.getInputStream(), sock.getOutputStream());
                     list = obdMultiCommand.getList();

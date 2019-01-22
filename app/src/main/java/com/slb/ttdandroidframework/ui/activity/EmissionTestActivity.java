@@ -14,12 +14,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.pires.obd.commands.control.DistanceMILOnCommand;
-import com.github.pires.obd.commands.control.DistanceSinceCCCommand;
 import com.github.pires.obd.commands.control.DtcNumberCommand;
 import com.github.pires.obd.commands.control.PendingTroubleCodesCommand;
 import com.github.pires.obd.commands.control.TroubleCodesCommand;
-import com.github.pires.obd.commands.engine.RuntimeCommand;
 import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
@@ -27,22 +24,13 @@ import com.hwangjr.rxbus.RxBus;
 import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.command.mil.Command0141;
-import com.slb.ttdandroidframework.command.mil.Command4D;
-import com.slb.ttdandroidframework.command.mil.Command4E;
 import com.slb.ttdandroidframework.command.mil.EmissionObdMultiCommand;
-import com.slb.ttdandroidframework.command.mil.MilObdMultiCommand;
-import com.slb.ttdandroidframework.command.mode6.Service6Command;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
-import com.slb.ttdandroidframework.http.bean.BankSensorEntiity;
 import com.slb.ttdandroidframework.http.bean.EmissionTestEntity;
-import com.slb.ttdandroidframework.http.bean.EmissionTestSmallEntity;
-import com.slb.ttdandroidframework.http.bean.ErrorCodeEntity;
 import com.slb.ttdandroidframework.ui.adapter.EmissionTestAdapter;
-import com.slb.ttdandroidframework.ui.adapter.ErrorCodeAdapter;
 import com.slb.ttdandroidframework.ui.contract.EmissionTestContract;
 import com.slb.ttdandroidframework.ui.presenter.EmissionTestPresenter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
-import com.slb.ttdandroidframework.util.config.EmissionTestUtil;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -306,6 +294,8 @@ public class EmissionTestActivity extends BaseMvpActivity<EmissionTestContract.I
                 finish();
                 break;
             case R.id.mTvAgain:
+                mTvAgain.setText(getString(R.string.rescan));
+                executeMode6Command();
                 break;
         }
     }

@@ -72,8 +72,8 @@ public class Service6Command extends ObdCommand {
             entity.setTid(testId);
             byte b = ByteUtils.bitToByte("0"+ByteUtils.bytes2BinStr(new byte[]{subRawData[2]}).substring(1,8));
             String componentId = ByteUtils.byte2HexString(b);
-            System.out.print(", componentId: "+ componentId);
-            entity.setCid(componentId);
+            System.out.print(", componentId: "+ ByteUtils.intToHex(componentId));
+            entity.setCid(ByteUtils.intToHex(componentId));
             int limitType = Integer.parseInt(ByteUtils.bytes2BinStr(new byte[]{subRawData[2]}).substring(0,1)); //第二个字节的MSB表示limitType 1是最小值 0是最大值
             System.out.print(", limittype: "+ (limitType==0?"最大值":"最小值") );
             int testResult = ( ByteUtils.byteToShort(new byte[]{subRawData[3],subRawData[4]}) & 0x0FFFF );

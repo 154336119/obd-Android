@@ -105,13 +105,24 @@
     <string name="pref_dev_email_title">Developer Email</string>
     <string name="pref_dev_email_summary">Logs will be emailed to this address</string>
     <string name="text_noerrors">There were no errors found.!</string>
+    <!--注册-->
+    <string name="register_title">注册</string>
+    <string name="enter_the_validation_code">输入验证码</string>
+    <string name="send_the_validation_code">发送验证码</string>
+    <string name="register_immediately">注册</string>
     <!--登录-->
+    <string name="sign_in_title">登录</string>
     <string name="sign_in">登录</string>
     <string name="email_address">请输入您的邮箱</string>
     <string name="password">请输入您的密码</string>
     <string name="register">免费注册</string>
     <string name="forget_your_passoword">找回密码</string>
-
+    <!--修改密码-->
+    <string name="Change_your_password">修改密码</string>
+    <string name="Current_password">请输入当前密码</string>
+    <string name="New_password">请输入新密码</string>
+    <string name="Confirm_password">请确认新密码</string>
+    <string name="Save">保存</string>
     <!--主页面-->
     <string name="read_dtcs">读取故障码</string>
     <string name="freeze_frame">冻结帧</string>
@@ -130,15 +141,78 @@
     <string name="confirmed_dtcs"> 个确认故障码</string>
     <string name="clear_dtcs">清除故障码</string>
     <string name="rescan">重新扫描</string>
+    <string name="Upload_DTCs">上传故障码</string>
     <!--冻结帧-->
     <string name="pid">PID</string>
     <string name="description">描述</string>
     <string name="value">值</string>
-
+    <!--设置-->
+    <string name="Settings">设置</string>
+    <string name="Username">昵称</string>
+    <string name="Change_Password">修改密码</string>
+    <string name="Logout_Current_Account">退出当前账户</string>
+    <!--修改昵称-->
+    <string name="Change_Username">Change Username</string>
     <!--故障灯-->
-    <string name="run_time_with_check_engine_light_on">Run Time with Check Engine Light On</string>
-    <string name="distance_with_check_engine_light_on">Distance with Check Engine Light On</string>
-    <string name="run_time_since_trouble_codes_cleared">Run Time Since Trouble Codes Cleared</string>
-    <string name="distance_since_trouble_codes_cleared">Distance Since Trouble Codes Cleared</string>
-    <string name="run_time_since_engine_start">Run Time Since Engine Start</string>
+    <string name="Your_Check_Engine_Light_MIL_is_ON_OFF">故障灯状态</string>
+    <string name="Run_Time_with_Check_Engine_Light_On">检查故障灯亮时的运行时间</string>
+    <string name="Distance_with_Check_Engine_Light_On">检查故障灯亮时的运行距离</string>
+    <string name="Run_Time_Since_Trouble_Codes_Cleared">从故障代码清除后的运行时间</string>
+    <string name="Distance_Since_Trouble_Codes_Cleared">清除代码后的距离</string>
+    <string name="Run_Time_Since_Engine_Start">发动机启动后的运行时间</string>
+    <string name="unit1_on">ON</string>
+    <string name="unit1_off">OFF</string>
+
+
+    <string name="Filter">筛选</string>
+    <string name="Choose_your_OBD_device">OBD选择</string>
+    <string name="Choose_your_vehicle">车牌号选择</string>
+    <string name="Period">时间段</string>
+    <string name="Start_date">起始日期</string>
+    <string name="End_date">结束日期</string>
+
+    <string name="Scanning">扫描中</string>
+    <string name="Scan">扫描</string>
+
+    <string name="My_Account">我的</string>
+    <string name="My_Vehicle">我的汽车</string>
+    <string name="My_OBD_Device">我的OBD</string>
+    <string name="Product_serial_number">产品序列号</string>
+    <string name="Product_Model">产品型号</string>
+
+    <!--邮箱验证-->
+    <string name="Mailbox_validation">邮箱验证</string>
+    <string name="next">下一步</string>
+    <string name="No_description">暂无描述</string>
+    <string name="unit">单位</string>
+
+
+    <!--冻结桢-->
+    <string name="Calculated_Load_Threshold">计算的荷载阈值</string>
+    <string name="Engine_Coolant_Temperature">发动机冷却液温度</string>
+    <string name="Fuel_Rail_Pressure">进气歧管绝对压力</string>
+    <string name="Engine_RPM">发动机RPM</string>
+    <string name="Vehicle_Speed">车辆速度</string>
+    <string name="Mass_Air_Flow">空气流速</string>
+    <string name="Absolute_throttle_position">节气门绝对位置</string>
+
+    <string name="normal">正常</string>
+    <string name="failed">失败</string>
+
+    <string name="max">最大值： </string>
+    <string name="min">最小值： </string>
+    <string name="values">当前值： </string>
+    <string name="nothing">无</string>
+
+    <!--氧气传感器-->
+    <string name="Rich_to_lean_sensorthreshold_voltage">Rich to lean sensor threshold voltage</string>
+    <string name="Lean_to_rich_sensor_threshold_voltage">Lean to rich sensor threshold voltage</string>
+    <string name="Low_sensor_voltage_for_switch_time_calculation">Low sensor voltage for switch time calculation</string>
+    <string name="High_sensor_voltage_for_switch_time_calculation">High sensor voltage for switch time calculation</string>
+    <string name="Rich_to_lean_sensor_switch_time">Rich to lean sensor switch time</string>
+    <string name="Lean_to_lean_sensor_switch_time">Lean to lean sensor switch time</string>
+    <string name="Minimum_sensor_voltage_for_test_cycle">Minimum sensor voltage for test cycle</string>
+    <string name="Maximum_sensor_voltage_for_test_cycle">Maximum sensor voltage for test cycle</string>
+    <string name="Time_between_sensor_transitions">Time between sensor transitions</string>
+    <string name="Sensor_period">Sensor period</string>
 </resources>

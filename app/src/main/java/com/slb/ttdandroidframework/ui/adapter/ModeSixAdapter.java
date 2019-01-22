@@ -6,12 +6,23 @@ import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
+import com.orhanobut.logger.Logger;
+import com.slb.frame.ui.activity.BaseActivity;
+import com.slb.frame.utils.DateUtils;
+import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameEntity;
+import com.slb.ttdandroidframework.http.bean.ModeSixDesEntity;
 import com.slb.ttdandroidframework.http.bean.ModeSixEntity;
+import com.slb.ttdandroidframework.http.callback.ActivityDialogCallback;
+import com.slb.ttdandroidframework.http.dns.DnsFactory;
+import com.slb.ttdandroidframework.http.model.LzyResponse;
 import com.slb.ttdandroidframework.weight.MyListView;
 
 import java.util.HashMap;
@@ -21,8 +32,10 @@ import java.util.Map;
 
 public class ModeSixAdapter extends BaseQuickAdapter<ModeSixEntity,BaseViewHolder> {
     private SparseBooleanArray mCheckStates = new SparseBooleanArray();
-    public ModeSixAdapter(List<ModeSixEntity> data) {
+    public BaseActivity baseActivity;
+    public ModeSixAdapter(List<ModeSixEntity> data, BaseActivity baseActivity) {
         super(R.layout.adapter_mode_six, data);
+        this.baseActivity = baseActivity;
     }
 
     @Override
@@ -42,10 +55,11 @@ public class ModeSixAdapter extends BaseQuickAdapter<ModeSixEntity,BaseViewHolde
                                          boolean isChecked) {
                 int pos = (int) buttonView.getTag();
                 if(isChecked){
-                    baseViewHolder.setVisible(R.id.Rl01,true);
+                    baseViewHolder.setVisible(R.id.llDetail,true);
                     mCheckStates.put(pos, true);
+                    getDes(baseViewHolder,entity);
                 }else{
-                    baseViewHolder.setVisible(R.id.Rl01,false);
+                    baseViewHolder.setVisible(R.id.llDetail,false);
                     mCheckStates.delete(pos);
                 }
             }
@@ -57,21 +71,45 @@ public class ModeSixAdapter extends BaseQuickAdapter<ModeSixEntity,BaseViewHolde
         if(!TextUtils.isEmpty(entity.getCid())){
             baseViewHolder.setText(R.id.TvCID,"CID:"+entity.getCid());
         }
+
         if(!TextUtils.isEmpty(entity.getMax())){
-            baseViewHolder.setText(R.id.TvMax,"最大值:"+entity.getMax());
+            baseViewHolder.setText(R.id.TvMax,mContext.getString(R.string.max)+entity.getMax());
+        }else{
+            baseViewHolder.setText(R.id.TvMax,mContext.getString(R.string.max)+mContext.getString(R.string.nothing));
         }
         if(!TextUtils.isEmpty(entity.getMin())){
-            baseViewHolder.setText(R.id.TvMin,"最小值:"+entity.getMin());
+            baseViewHolder.setText(R.id.TvMin,mContext.getString(R.string.min)+entity.getMin());
+        }else{
+            baseViewHolder.setText(R.id.TvMin,mContext.getString(R.string.min)+mContext.getString(R.string.nothing));
         }
         if(!TextUtils.isEmpty(entity.getValue())){
-            baseViewHolder.setText(R.id.TvValue,"测试值:"+entity.getValue());
+            baseViewHolder.setText(R.id.TvValue,mContext.getString(R.string.values)+entity.getValue());
+        }else{
+            baseViewHolder.setText(R.id.TvValue,mContext.getString(R.string.values)+mContext.getString(R.string.nothing));
         }
+
+
         if(entity.isState()){
             baseViewHolder.setTextColor(R.id.TvState, Color.GREEN);
-            baseViewHolder.setText(R.id.TvState,"正常");
+            baseViewHolder.setText(R.id.TvState,mContext.getString(R.string.normal));
         }else{
             baseViewHolder.setTextColor(R.id.TvState,Color.RED);
-            baseViewHolder.setText(R.id.TvState,"错误");
+            baseViewHolder.setText(R.id.TvState,mContext.getString(R.string.failed));
         }
+    }
+    private void getDes(final BaseViewHolder baseViewHolder,final ModeSixEntity entity){
+        OkGo.<LzyResponse<ModeSixDesEntity>>get(DnsFactory.getInstance().getDns().getCommonBaseUrl()+"api/command/model/"+entity.getCid()+"/"+entity.getTid())
+                .tag(this)
+                .headers("Authorization","Bearer "+Base.getUserEntity().getToken())
+                .execute(new ActivityDialogCallback<LzyResponse<ModeSixDesEntity>>(baseActivity) {
+                    @Override
+                    public void onSuccess(Response<LzyResponse<ModeSixDesEntity>> response) {
+                        if(response!=null && response.body().data!=null &&!TextUtils.isEmpty(response.body().data.getDescription())){
+                            Logger.d("===========================:"+response.body().data.getDescription());
+                            entity.setDes(response.body().data.getDescription());
+                            baseViewHolder.setText(R.id.TvDes,entity.getDes());
+                        }
+                    }
+                });
     }
 }

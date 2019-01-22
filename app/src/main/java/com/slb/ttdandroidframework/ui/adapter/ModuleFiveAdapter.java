@@ -52,12 +52,12 @@ public class ModuleFiveAdapter extends BaseQuickAdapter<BankSensorEntiity,BaseVi
         for(MoudleFiveEntity moudleFiveEntity : entity.getList()){
             if(!moudleFiveEntity.isState()){
                 baseViewHolder.setTextColor(R.id.TvState,Color.RED);
-                baseViewHolder.setText(R.id.TvState,"错误");
+                baseViewHolder.setText(R.id.TvState,mContext.getString(R.string.failed));
                 return;
             }
         }
         baseViewHolder.setTextColor(R.id.TvState,Color.GREEN);
-        baseViewHolder.setText(R.id.TvState,"正常");
+        baseViewHolder.setText(R.id.TvState,mContext.getString(R.string.normal));
     }
 
 }

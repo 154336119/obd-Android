@@ -1,6 +1,8 @@
 package com.slb.ttdandroidframework.command.mode5;
 
 import com.github.pires.obd.commands.ObdCommand;
+import com.slb.ttdandroidframework.Base;
+import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.http.bean.ModeSixEntity;
 import com.slb.ttdandroidframework.http.bean.MoudleFiveEntity;
 import com.slb.ttdandroidframework.util.ByteUtils;
@@ -81,25 +83,25 @@ public class Service5Command extends ObdCommand {
     public String getName() {
         String num = (cmd.substring(cmd.length()-5,cmd.length()-3));
         if(num.equals("01")){
-            return "混合气从富油至贫油传感器阈值电压";
+            return Base.getContext().getString(R.string.Rich_to_lean_sensorthreshold_voltage);
         }else if(num.equals("02")){
-            return "混合气从贫油至富油传感器阈值电压";
+            return Base.getContext().getString(R.string.Lean_to_rich_sensor_threshold_voltage);
         }else if(num.equals("03")){
-            return "进行切换时间计算的传感器低电压";
+            return Base.getContext().getString(R.string.Low_sensor_voltage_for_switch_time_calculation);
         }else if(num.equals("04")){
-            return "进行切换时间计算的传感器高电压";
+            return Base.getContext().getString(R.string.High_sensor_voltage_for_switch_time_calculation);
         }else if(num.equals("05")){
-            return "混合气从富油至贫油传感器切换时间";
+            return Base.getContext().getString(R.string.Rich_to_lean_sensor_switch_time);
         }else if(num.equals("06")){
-            return "混合气从贫油至富油传感器切换时间";
+            return Base.getContext().getString(R.string.Lean_to_lean_sensor_switch_time);
         }else if(num.equals("07")){
-            return "测试周期内的传感器最小电压";
+            return Base.getContext().getString(R.string.Minimum_sensor_voltage_for_test_cycle);
         }else if(num.equals("08")){
-            return "测试周期内的传感器最大电压";
+            return Base.getContext().getString(R.string.Maximum_sensor_voltage_for_test_cycle);
         }else if(num.equals("09")){
-            return "传感器过度时间";
+            return Base.getContext().getString(R.string.Time_between_sensor_transitions);
         }else if(num.equals("0a")){
-            return "传感器周期";
+            return Base.getContext().getString(R.string.Sensor_period);
         }
         return "Command:"+cmd;
     }

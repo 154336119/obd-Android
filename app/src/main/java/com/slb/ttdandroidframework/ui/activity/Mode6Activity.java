@@ -16,8 +16,11 @@ import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
 import com.hwangjr.rxbus.RxBus;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
+import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.command.mode2.Service2Command;
 import com.slb.ttdandroidframework.command.mode6.Mode6AvailablePidsCommand_01_20;
@@ -28,6 +31,9 @@ import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameEntity;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameInsideEntity;
 import com.slb.ttdandroidframework.http.bean.ModeSixEntity;
+import com.slb.ttdandroidframework.http.callback.ActivityDialogCallback;
+import com.slb.ttdandroidframework.http.dns.DnsFactory;
+import com.slb.ttdandroidframework.http.model.LzyResponse;
 import com.slb.ttdandroidframework.ui.adapter.FreezeFrameAdapter;
 import com.slb.ttdandroidframework.ui.adapter.ModeSixAdapter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
@@ -81,8 +87,10 @@ public class Mode6Activity extends BaseActivity {
                     Logger.d("模式6：troubleCodesCommand异常:------"+getString(R.string.text_obd_command_failure));
                     break;
                 case OBD_COMMAND_FAILURE_IO:
-                    showToastMsg(getString(R.string.text_obd_command_failure) + " IO");
-                    Logger.d("模式6：troubleCodesCommand异常:-------"+getString(R.string.text_obd_command_failure));
+                    showToastMsg("模式6：设备已断开连接，请重新连接");
+                    BluetoothUtil.closeSocket();
+                    Logger.d("模式6：设备已断开连接，请重新连接");
+                    finish();
                     break;
                 case OBD_COMMAND_FAILURE_IE:
                     showToastMsg(getString(R.string.text_obd_command_failure) + " IE");
@@ -94,8 +102,10 @@ public class Mode6Activity extends BaseActivity {
                     break;
                 case OBD_COMMAND_FAILURE_UTC:
 //                    showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
-                    showToastMsg("蓝牙连接失败，请退出重新连接");
-                    Logger.d("模式6：troubleCodesCommand异常:-------"+getString(R.string.text_obd_command_failure));
+                    showToastMsg("模式6：设备已断开连接，请重新连接");
+                    BluetoothUtil.closeSocket();
+                    Logger.d("模式6：设备已断开连接，请重新连接");
+                    finish();
                     break;
                 case OBD_COMMAND_FAILURE_NODATA:
                     showToastMsg(getString(R.string.text_noerrors));
@@ -133,7 +143,7 @@ public class Mode6Activity extends BaseActivity {
     public void initView() {
         super.initView();
         ButterKnife.bind(this);
-        mAdapter = new ModeSixAdapter(mList);
+        mAdapter = new ModeSixAdapter(mList ,this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(
