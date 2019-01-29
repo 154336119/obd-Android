@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FF2B3139"
-    android:paddingTop="10dp"
-    android:paddingLeft="@dimen/distance_10"
-    android:paddingRight="@dimen/distance_10">
+    android:paddingTop="3dp"
+    android:paddingLeft="3dp"
+    android:paddingRight="3dp">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mRecyclerView"
         android:layout_width="match_parent"

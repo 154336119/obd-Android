@@ -21,6 +21,7 @@ import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
+import com.slb.ttdandroidframework.ui.activity.AddDeviceListActivity;
 import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
 import com.slb.ttdandroidframework.ui.activity.EmissionTestActivity;
 import com.slb.ttdandroidframework.ui.activity.FreezeFrameActivity;
@@ -49,8 +50,6 @@ public class HomeFragment
         implements HomeContract.IView {
 
 
-    @BindView(R.id.mTvName)
-    TextView mTvName;
     @BindView(R.id.mTvReadErrorCode)
     TextView mTvReadErrorCode;
     @BindView(R.id.Fl01)
@@ -136,7 +135,6 @@ public class HomeFragment
         params6.width = w;
         mFl06.setLayoutParams(params6);//将设置好的布局参数应用到控件中
 
-        mTvName.setText(Base.getUserEntity().getEmail());
 
         return rootView;
     }
@@ -192,11 +190,7 @@ public class HomeFragment
                 ActivityUtil.next(_mActivity, Mode6Activity.class);
                 break;
             case R.id.tvConnect:
-//                if(tvConnect.getText().toString().equals("已连接")){
-//                    showDialog();
-//                }else{
-                    ActivityUtil.next(_mActivity,DeviceActivity.class);
-//                }
+                ActivityUtil.next(_mActivity,AddDeviceListActivity.class);
                 break;
         }
     }
@@ -204,9 +198,9 @@ public class HomeFragment
     @Subscribe
     public void onObdConnectStateEvent(ObdConnectStateEvent event) {
         if(event.isConnect()){
-            tvConnect.setText("connected");
+            tvConnect.setText("Connected");
         }else{
-            tvConnect.setText("connect obd");
+            tvConnect.setText("Connect");
         }
     }
 
@@ -247,7 +241,7 @@ public class HomeFragment
         if(isRunning){
             return true;
         }else{
-            showToastMsg("OBD未连接");
+            showToastMsg(getString(R.string.OBD_is_not_connect));
             return false;
         }
 
@@ -258,5 +252,32 @@ public class HomeFragment
 //            showToastMsg("OBD未连接");
 //            return false;
 //        }
+    }
+    /**
+     * 断开连接dialog
+     */
+    private void showDisConnectDialog() {
+        CustomDialog.Builder dialog = new CustomDialog.Builder(_mActivity);
+        dialog
+                .setTitle("提示")
+                .setMessage("是否断开设备连接？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        BluetoothUtil.setIsRunning(false);
+                        BluetoothUtil.setSockInstance(null);
+                        RxBus.get().post(new ObdServiceStateEvent(false));
+                        RxBus.get().post(new ObdConnectStateEvent(false));
+                        dialogInterface.dismiss();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        mCommonAlertDialog = dialog.create();
+        mCommonAlertDialog.setCanceledOnTouchOutside(false);
+        mCommonAlertDialog.show();
     }
 }

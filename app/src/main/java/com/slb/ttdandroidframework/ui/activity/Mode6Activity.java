@@ -149,7 +149,7 @@ public class Mode6Activity extends BaseActivity {
         mRecyclerView.addItemDecoration(
                 new HorizontalDividerItemDecoration.Builder(this)
                         .color(Color.parseColor("#2B3139"))
-                        .sizeResId(R.dimen.distance_20)
+                        .sizeResId(R.dimen.distance_5)
                         .build());
 //        //测试
 //        for (int i = 0; i < 10; i++) {
@@ -205,56 +205,60 @@ public class Mode6Activity extends BaseActivity {
             synchronized (this) {
                 try {
                     //Step2:查询mode6可用的tid
-                    Logger.d("模式6：=======查询mode6可用的tid");
-                    List<String> tidList = new ArrayList<>();
-                    try {
-                        Mode6AvailablePidsCommand_01_20 available1 = new Mode6AvailablePidsCommand_01_20();
-                        available1.run(sock.getInputStream(),sock.getOutputStream());
-                        String result1 = available1.getFormattedResult();
-                        tidList.addAll(Arrays.asList(result1.split(",")));
-                    } catch (Exception e) {
-                        Logger.d("模式6：Mode6AvailablePidsCommand_01_20===========异常:-------"+e.getMessage());
-                    }
-
-                    try {
-                        Mode6AvailablePidsCommand_21_40 available2 = new Mode6AvailablePidsCommand_21_40();
-                        available2.run(sock.getInputStream(),sock.getOutputStream());
-                        String result2 = available2.getFormattedResult();
-                        tidList.addAll(Arrays.asList(result2.split(",")));
-                    } catch (Exception e) {
-                        Logger.d("模式6：Mode6AvailablePidsCommand_21_40===========异常:-------"+e.getMessage());
-                    }
-
-                    try {
-                        Mode6AvailablePidsCommand_41_60 available3 = new Mode6AvailablePidsCommand_41_60();
-                        available3.run(sock.getInputStream(),sock.getOutputStream());
-                        String result3 = available3.getFormattedResult();
-                        tidList.addAll(Arrays.asList(result3.split(",")));
-                    } catch (Exception e) {
-                        Logger.d("模式6：Mode6AvailablePidsCommand_41_60===========异常:-------"+e.getMessage());
-                    }
-
-                    System.out.println("要查询的mode6 TID集合:"+tidList);
-                    Logger.d("模式6：=======要查询的mode6 TID集合:"+tidList);
-                    //Step2
+//                    Logger.d("模式6：=======查询mode6可用的tid");
+//                    List<String> tidList = new ArrayList<>();
+//                    try {
+//                        Mode6AvailablePidsCommand_01_20 available1 = new Mode6AvailablePidsCommand_01_20();
+//                        available1.run(sock.getInputStream(),sock.getOutputStream());
+//                        String result1 = available1.getFormattedResult();
+//                        tidList.addAll(Arrays.asList(result1.split(",")));
+//                    } catch (Exception e) {
+//                        Logger.d("模式6：Mode6AvailablePidsCommand_01_20===========异常:-------"+e.getMessage());
+//                    }
+//
+//                    try {
+//                        Mode6AvailablePidsCommand_21_40 available2 = new Mode6AvailablePidsCommand_21_40();
+//                        available2.run(sock.getInputStream(),sock.getOutputStream());
+//                        String result2 = available2.getFormattedResult();
+//                        tidList.addAll(Arrays.asList(result2.split(",")));
+//                    } catch (Exception e) {
+//                        Logger.d("模式6：Mode6AvailablePidsCommand_21_40===========异常:-------"+e.getMessage());
+//                    }
+//
+//                    try {
+//                        Mode6AvailablePidsCommand_41_60 available3 = new Mode6AvailablePidsCommand_41_60();
+//                        available3.run(sock.getInputStream(),sock.getOutputStream());
+//                        String result3 = available3.getFormattedResult();
+//                        tidList.addAll(Arrays.asList(result3.split(",")));
+//                    } catch (Exception e) {
+//                        Logger.d("模式6：Mode6AvailablePidsCommand_41_60===========异常:-------"+e.getMessage());
+//                    }
+//
+//                    System.out.println("要查询的mode6 TID集合:"+tidList);
+//                    Logger.d("模式6：=======要查询的mode6 TID集合:"+tidList);
+//                    //Step2
 
                     //Step3:执行mode6查询命令并解析结果
                     String commandString;
                     Logger.d("模式6：=======执行mode6查询命令并解析结果");
-                    for (String tid : tidList) {
-                        commandString = "06 "+tid;
-                        Logger.d("模式6：=======commandString:"+commandString);
-                        Service6Command command = new Service6Command(commandString);
-                        command.run(sock.getInputStream(),sock.getOutputStream());
-                        if(!TextUtils.isEmpty(command.getFormattedResult())){
-                            list.addAll(command.getList());
-                            for(ModeSixEntity modeSixEntity : command.getList()){
-                                Logger.d("模式6：=======modeSixEntity:"+ modeSixEntity.toString());
-                            }
-                        }else{
-                            Logger.d("模式6：======没新的数据:");
-                        }
-                    }
+                    commandString = "06 42";
+                    Logger.d("模式6：=======commandString:"+commandString);
+                    Service6Command command = new Service6Command(commandString);
+                    command.run(sock.getInputStream(),sock.getOutputStream());
+//                    for (String tid : tidList) {
+//                        commandString = "06 "+tid;
+//                        Logger.d("模式6：=======commandString:"+commandString);
+//                        Service6Command command = new Service6Command(commandString);
+//                        command.run(sock.getInputStream(),sock.getOutputStream());
+//                        if(!TextUtils.isEmpty(command.getFormattedResult())){
+//                            list.addAll(command.getList());
+//                            for(ModeSixEntity modeSixEntity : command.getList()){
+//                                Logger.d("模式6：=======modeSixEntity:"+ modeSixEntity.toString());
+//                            }
+//                        }else{
+//                            Logger.d("模式6：======没新的数据:");
+//                        }
+//                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("DTCERR", e.getMessage());

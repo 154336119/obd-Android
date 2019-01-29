@@ -9,20 +9,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="65dp">
+        android:orientation="vertical">
         <EditText
-            android:id="@+id/edtLicenseNo"
+            android:id="@+id/edtName"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
-            android:hint="请输入您的车牌号"
+            android:hint="请输入车辆名称"
             android:lines="1"
-            android:background="#3C444F"/>
-        <EditText
-            android:id="@+id/edtVin"
+            android:background="#3C444F"
+            android:layout_marginTop="15dp"/>
+        <TextView
+            android:id="@+id/edtYear"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
-            android:hint="请输入您的车辆编号"
+            android:hint="请选择车辆年代"
             android:lines="1"
             android:background="#3C444F"
             android:layout_marginTop="15dp"/>

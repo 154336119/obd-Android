@@ -16,7 +16,7 @@
     <string name="menu_item_trip_delete">Delete</string>
     <string name="pref_gps_category" translatable="false">gps_category</string>
     <string name="dialog_loading_title">加载中…</string>
-    <string name="dialog_loading_body">数据加载中，请稍等…</string>
+    <string name="dialog_loading_body">加载中</string>
     <string name="menu_start_live_data">Start Live Data</string>
     <string name="menu_stop_live_data">Stop Live Data</string>
     <string name="menu_settings">Settings</string>
@@ -166,7 +166,7 @@
 
     <string name="Filter">筛选</string>
     <string name="Choose_your_OBD_device">OBD选择</string>
-    <string name="Choose_your_vehicle">车牌号选择</string>
+    <string name="Choose_your_vehicle">车辆选择</string>
     <string name="Period">时间段</string>
     <string name="Start_date">起始日期</string>
     <string name="End_date">结束日期</string>
@@ -215,4 +215,8 @@
     <string name="Maximum_sensor_voltage_for_test_cycle">Maximum sensor voltage for test cycle</string>
     <string name="Time_between_sensor_transitions">Time between sensor transitions</string>
     <string name="Sensor_period">Sensor period</string>
+
+    <string name="OBD_is_not_connect">OBD未连接</string>
+    <string name="device">设备</string>
+    <string name="add">新增</string>
 </resources>

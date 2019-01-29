@@ -161,10 +161,10 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 });
     }
 
-    @Subscribe
-    public void onRefreshObdListEvent(RefreshObdListtEvent event) {
-        getObdList();
-    }
+//    @Subscribe
+//    public void onRefreshObdListEvent(RefreshObdListtEvent event) {
+//        getObdList();
+//    }
 
     @Subscribe
     public void onRefreshVehicleListEvent(RefreshVehicleListtEvent event) {

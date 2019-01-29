@@ -129,7 +129,7 @@ public class Mode5Activity extends BaseActivity {
         mRecyclerView.addItemDecoration(
                 new HorizontalDividerItemDecoration.Builder(this)
                         .color(Color.parseColor("#2B3139"))
-                        .sizeResId(R.dimen.distance_20)
+                        .sizeResId(R.dimen.distance_5)
                         .build());
 //        //测试
 //        for (int i = 0; i < 10; i++) {

@@ -26,25 +26,26 @@ import java.util.List;
 public class CarInfoPresenter extends AbstractBasePresenter<CarInfoContract.IView>
         implements CarInfoContract.IPresenter<CarInfoContract.IView> {
     @Override
-    public void addCar(String licenseNo, String vin, CarModelEntity carModelEntity) {
-        if(TextUtils.isEmpty(licenseNo)){
-            mView.showMsg("请输入车牌号");
-            return;
-        }
-        if(TextUtils.isEmpty(vin)){
-            mView.showMsg("请输入车辆编号");
-            return;
-        }
+    public void addCar( CarModelEntity carModelEntity ,String year,String name) {
+
         if(carModelEntity == null){
             mView.showMsg("请输入型号");
+            return;
+        }
+        if(year == null){
+            mView.showMsg("请选择车辆年代");
+            return;
+        }
+        if(name == null){
+            mView.showMsg("请输入车辆名称");
             return;
         }
         String id = Base.getUserEntity().getId();
         OkGo.<LzyResponse<UserEntity>>post(DnsFactory.getInstance().getDns().getCommonBaseUrl()+ ComServiceUrl.addCar)//
                 .tag(this)//
-                .params("licenseNo",licenseNo)
-                .params("vin",vin)
                 .params("vehicleModelId",carModelEntity.getId())
+                .params("name ",name)
+                .params("year ",year)
                 .params("userId",id)
                 .isMultipart(true)         //强制使用 multipart/form-data 表单上传（只是演示，不需要的话不要设置。默认就是false）
                 .headers("Authorization","Bearer "+Base.getUserEntity().getToken())
@@ -59,26 +60,26 @@ public class CarInfoPresenter extends AbstractBasePresenter<CarInfoContract.IVie
 
     @Override
     public void editCar(String vehicleId
-            ,String licenseNo
-            ,String vin
-            , CarModelEntity carModelEntity) {
-        if(TextUtils.isEmpty(licenseNo)){
-            mView.showMsg("请输入车牌号");
-            return;
-        }
-        if(TextUtils.isEmpty(vin)){
-            mView.showMsg("请输入车辆编号");
-            return;
-        }
+            , CarModelEntity carModelEntity
+            ,String year
+            ,String name) {
         if(carModelEntity == null){
             mView.showMsg("请输入型号");
+            return;
+        }
+        if(year == null){
+            mView.showMsg("请选择车辆年代");
+            return;
+        }
+        if(name == null){
+            mView.showMsg("请输入车辆名称");
             return;
         }
         String id = Base.getUserEntity().getId();
         OkGo.<LzyResponse<UserEntity>>post(DnsFactory.getInstance().getDns().getCommonBaseUrl()+ ComServiceUrl.editCar)//
                 .tag(this)//
-                .params("licenseNo",licenseNo)
-                .params("vin",vin)
+                .params("name ",name)
+                .params("year ",year)
                 .params("vehicleModelId",carModelEntity.getId())
                 .params("userId ",id)
                 .params("vehicleId",vehicleId)
@@ -117,7 +118,9 @@ public class CarInfoPresenter extends AbstractBasePresenter<CarInfoContract.IVie
                 .execute(new DialogCallback<LzyResponse<List<CarMakeEntity>>>(this.mView) {
                     @Override
                     public void onSuccess(Response<LzyResponse<List<CarMakeEntity>>> response) {
-                        mView.getCarBrandListSuccess(response.body().data);
+                        if(mView!=null){
+                            mView.getCarBrandListSuccess(response.body().data);
+                        }
                     }
                 });
     }

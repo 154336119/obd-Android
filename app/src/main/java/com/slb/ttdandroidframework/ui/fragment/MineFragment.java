@@ -43,23 +43,11 @@ public class MineFragment
 
     @BindView(R.id.TvHead)
     CircleImageView TvHead;
-    @BindView(R.id.Tv01)
-    TextView Tv01;
     @BindView(R.id.Rl01)
     RelativeLayout Rl01;
-    @BindView(R.id.line1)
-    ImageView line1;
-    @BindView(R.id.Tv02)
-    TextView Tv02;
-    @BindView(R.id.Rl02)
-    RelativeLayout Rl02;
-    @BindView(R.id.line2)
-    ImageView line2;
     Unbinder unbinder;
     @BindView(R.id.Rv01)
     RecyclerView Rv01;
-    @BindView(R.id.Rv02)
-    RecyclerView Rv02;
     @BindView(R.id.TvName)
     TextView TvName;
     @BindView(R.id.TvSetting)
@@ -104,23 +92,6 @@ public class MineFragment
                         .sizeResId(R.dimen.line_height_1)
                         .build());
 
-        mAdapterObd = new MineObdAdapter(Base.getUserEntity().getObdEntityList());
-        Rv02.setLayoutManager(new LinearLayoutManager(_mActivity));
-        Rv02.setAdapter(mAdapterObd);
-        Rv02.addItemDecoration(
-                new HorizontalDividerItemDecoration.Builder(_mActivity)
-                        .color(Color.parseColor("#2B3139"))
-                        .sizeResId(R.dimen.line_height_1)
-                        .build());
-        mAdapterObd.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(BizcContant.PARA_ODB, mAdapterObd.getData().get(position));
-                bundle.putInt(BizcContant.PARA_OPERATION, BizcContant.EDIT);
-                ActivityUtil.next(_mActivity, ObdInfoActivity.class, bundle, false);
-            }
-        });
         mAdapterCar.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -131,7 +102,6 @@ public class MineFragment
             }
         });
         refreshCars();
-        refreshOdbs();
         if (Base.getUserEntity().getNickname() != null) {
             TvName.setText(Base.getUserEntity().getNickname());
         }
@@ -144,14 +114,11 @@ public class MineFragment
         unbinder.unbind();
     }
 
-    @OnClick({R.id.Rl01, R.id.Rl02,R.id.TvSetting})
+    @OnClick({R.id.Rl01,R.id.TvSetting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.Rl01:
                 ActivityUtil.next(_mActivity, CarInfoActivity.class);
-                break;
-            case R.id.Rl02:
-                ActivityUtil.next(_mActivity, ObdInfoActivity.class);
                 break;
             case R.id.TvSetting:
                 ActivityUtil.next(_mActivity, SettingActivity.class);
@@ -172,22 +139,10 @@ public class MineFragment
         mAdapterCar.setNewData(Base.getUserEntity().getVehicleEntityList());
     }
 
-    /**
-     * 更新车辆列表
-     */
-    public void refreshOdbs() {
-        mAdapterObd.getData().clear();
-        mAdapterObd.setNewData(Base.getUserEntity().getObdEntityList());
-    }
 
     @Override
     protected boolean rxBusRegist() {
         return true;
-    }
-
-    @Subscribe
-    public void onRefreshMineObdListEvent(RefreshMineObdListtEvent event) {
-        refreshOdbs();
     }
 
     @Subscribe

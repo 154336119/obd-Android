@@ -19,8 +19,8 @@ public class MineObdAdapter extends BaseQuickAdapter<ObdEntity,BaseViewHolder> {
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final ObdEntity entity) {
-        baseViewHolder.setText(R.id.TvName, Base.getContext().getString(R.string.Product_serial_number)+" : "+entity.getSerialsNumber());
-        baseViewHolder.setText(R.id.TvName1,Base.getContext().getString(R.string.Product_Model)+" : "+entity.getProductModel());
+//        baseViewHolder.setText(R.id.TvName, Base.getContext().getString(R.string.Product_serial_number)+" : "+entity.getSerialsNumber());
+//        baseViewHolder.setText(R.id.TvName1,Base.getContext().getString(R.string.Product_Model)+" : "+entity.getProductModel());
     }
 
 }

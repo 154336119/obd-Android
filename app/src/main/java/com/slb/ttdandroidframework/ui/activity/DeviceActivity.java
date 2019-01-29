@@ -338,8 +338,6 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
                     public void onClick(DialogInterface dialog, int which) {
                         String remoteDevice = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.PARA_DEV_ADDR, "");
                         BluetoothUtil.setRemoteDevice(remoteDevice);
-
-
                         ObdHelper obdHelper = new ObdHelper(mHandler, DeviceActivity.this);
                         obdHelper.connectToDevice();
                     }

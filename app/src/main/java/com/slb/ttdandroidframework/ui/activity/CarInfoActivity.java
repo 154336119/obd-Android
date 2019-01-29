@@ -1,5 +1,6 @@
 package com.slb.ttdandroidframework.ui.activity;
 
+import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -7,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import com.slb.ttdandroidframework.ui.presenter.CarInfoPresenter;
 import com.slb.ttdandroidframework.util.config.BizcContant;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,16 +37,16 @@ import butterknife.OnClick;
  */
 public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarInfoContract.IPresenter>
         implements CarInfoContract.IView {
-    @BindView(R.id.edtLicenseNo)
-    EditText edtLicenseNo;
-    @BindView(R.id.edtVin)
-    EditText edtVin;
     @BindView(R.id.edtMake)
     TextView edtMake;
     @BindView(R.id.edtModel)
     TextView edtModel;
     @BindView(R.id.btnComfirm)
     Button btnComfirm;
+    @BindView(R.id.edtYear)
+    TextView edtYear;
+    @BindView(R.id.edtName)
+    EditText edtName;
     //操作
     private int mOperation = BizcContant.ADD;
     private VehicleEntity mVehicleEntity;
@@ -55,11 +58,12 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
     private List<CarModelEntity> mCarModelList = new ArrayList<>();
     private CarMakeEntity mSeleceCarBrandEntity;
     private CarModelEntity mSelectCarModelEntity;
+
     @Override
     protected String setToolbarTitle() {
         if (mOperation == BizcContant.ADD) {
             return "添加车辆";
-        }else if(mOperation == BizcContant.EDIT){
+        } else if (mOperation == BizcContant.EDIT) {
             return "修改车辆";
         }
         return null;
@@ -86,15 +90,15 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        if(mOperation == BizcContant.EDIT){
+        if (mOperation == BizcContant.EDIT) {
             mSeleceCarBrandEntity = mVehicleEntity.getModel().getMake();
             mSelectCarModelEntity = mVehicleEntity.getModel();
-            edtLicenseNo.setText(mVehicleEntity.getLicenseNo());
-            edtVin.setText(mVehicleEntity.getVin());
+            edtName.setText(mVehicleEntity.getName());
+            edtYear.setText(mVehicleEntity.getYear());
             edtMake.setText(mSeleceCarBrandEntity.getName());
             edtModel.setText(mSelectCarModelEntity.getName());
             mPresenter.getCarModeList(mSeleceCarBrandEntity.getId());
-            if(mMenuItem!=null){
+            if (mMenuItem != null) {
                 mMenuItem.setVisible(true);
             }
         }
@@ -111,31 +115,42 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @OnClick({R.id.edtMake,R.id.edtModel, R.id.btnComfirm})
+    @OnClick({R.id.edtMake, R.id.edtModel, R.id.btnComfirm, R.id.edtYear})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.edtYear:
+                hideSoftInput();
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);//当前年
+                int month = calendar.get(Calendar.MONTH);//当前月
+                int day = calendar.get(Calendar.DAY_OF_MONTH);//当前日
+                //new一个日期选择对话框的对象,并设置默认显示时间为当前的年月日时间.
+                DatePickerDialog dialog = new DatePickerDialog(CarInfoActivity.this, DatePickerDialog.THEME_HOLO_LIGHT, mStartDateListener, year, month, day);
+                dialog.show();
+                break;
             case R.id.edtMake:
                 hideSoftInput();
-                if(mCarBrandList!=null){
+                if (mCarBrandList != null) {
                     pvCarBrandOptions.show();
                 }
                 break;
             case R.id.edtModel:
                 hideSoftInput();
-                if(mCarModelList!=null){
+                if (mCarModelList != null && pvCarModelOptions != null) {
                     pvCarModelOptions.show();
                 }
                 break;
             case R.id.btnComfirm:
-                if(mOperation == BizcContant.ADD){
-                    mPresenter.addCar(edtLicenseNo.getText().toString()
-                            , edtVin.getText().toString()
-                            , mSelectCarModelEntity);
-                }else if(mOperation == BizcContant.EDIT){
+                if (mOperation == BizcContant.ADD) {
+                    mPresenter.addCar(
+                            mSelectCarModelEntity
+                            , edtYear.getText().toString()
+                            , edtName.getText().toString());
+                } else if (mOperation == BizcContant.EDIT) {
                     mPresenter.editCar(mVehicleEntity.getId()
-                            ,edtLicenseNo.getText().toString()
-                            , edtVin.getText().toString()
-                            ,mSelectCarModelEntity);
+                            , mSelectCarModelEntity
+                            , edtYear.getText().toString()
+                            , edtName.getText().toString());
                 }
                 break;
         }
@@ -157,9 +172,9 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_delete, menu);
         mMenuItem = menu.getItem(0);
-        if(mOperation == BizcContant.ADD){
+        if (mOperation == BizcContant.ADD) {
             mMenuItem.setVisible(false);
-        }else if(mOperation == BizcContant.EDIT){
+        } else if (mOperation == BizcContant.EDIT) {
             mMenuItem.setVisible(true);
         }
         return super.onCreateOptionsMenu(menu);
@@ -217,5 +232,13 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
         pvCarModelOptions.setPicker(mCarModelList);//二级选择器
     }
 
+    private DatePickerDialog.OnDateSetListener mStartDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int years, int monthOfYear, int dayOfMonth) {
+            monthOfYear = monthOfYear + 1;
+            String mresult = String.format("%0" + 2 + "d", monthOfYear);
+            edtYear.setText(years + "-" + mresult + "-" + String.format("%0" + 2 + "d", dayOfMonth));
+        }
+    };
 
 }

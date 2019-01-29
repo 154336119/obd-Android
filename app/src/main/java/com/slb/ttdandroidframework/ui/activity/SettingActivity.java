@@ -7,10 +7,13 @@ import android.widget.RelativeLayout;
 import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.slb.ttdandroidframework.util.config.BizcContant.SP_USER;
 
 /**
  * Created by juan on 2018/9/5.
@@ -46,7 +49,8 @@ public class SettingActivity extends BaseActivity {
                 ActivityUtil.next(this, ModPasswordActivity.class);
                 break;
             case  R.id.btnLogout:
-                ActivityUtil.next(this, LoginActivity.class);
+                SharedPreferencesUtils.setParam(this, SP_USER,"");
+                ActivityUtil.nextActivityWithClearTop(this, LoginActivity.class);
                 break;
         }
     }

@@ -69,8 +69,8 @@ public class ObdInfoActivity extends BaseMvpActivity<ObdInfoContract.IView, ObdI
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
         if(mOperation == BizcContant.EDIT){
-            edtSerialNumber.setText(mEditObdEntity.getSerialsNumber());
-            edtModelNumber.setText(mEditObdEntity.getProductModel());
+//            edtSerialNumber.setText(mEditObdEntity.getSerialsNumber());
+//            edtModelNumber.setText(mEditObdEntity.getProductModel());
             if(mMenuItem!=null){
                 mMenuItem.setVisible(true);
             }

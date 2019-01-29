@@ -26,11 +26,11 @@ public class CarInfoContract {
     public interface IPresenter<T> extends IBasePresenter<T> {
         void getCarBrandList();
         void getCarModeList(String id);
-       void addCar(String licenseNo , String vin, CarModelEntity carModelEntity);
+       void addCar(CarModelEntity carModelEntity ,String year,String name);
         void editCar(String vehicleId
-                ,String licenseNo
-                ,String vin
-                ,CarModelEntity carModelEntity);
+                ,CarModelEntity carModelEntity
+                ,String year
+                ,String name);
         void delectCar(String obdId);
     }
 }

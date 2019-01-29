@@ -54,7 +54,7 @@ public class RegisterPresenter extends AbstractBasePresenter<RegisterContract.IV
 					@Override
 					public void onStart(Request<String, ? extends Request> request) {
 						super.onStart(request);
-						mView.showLoadingDialog("加载中");
+						mView.showLoadingDialog("loading");
 					}
 				});
 	}
@@ -94,7 +94,7 @@ public class RegisterPresenter extends AbstractBasePresenter<RegisterContract.IV
 					@Override
 					public void onStart(Request<String, ? extends Request> request) {
 						super.onStart(request);
-						mView.showLoadingDialog("加载中");
+						mView.showLoadingDialog("loading");
 					}
 				});
 

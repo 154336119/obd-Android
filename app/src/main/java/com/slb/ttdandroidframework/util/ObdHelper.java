@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.hwangjr.rxbus.RxBus;
+import com.slb.frame.ui.activity.BaseActivity;
 import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.event.ObdConnectStateEvent;
 import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
@@ -44,7 +45,7 @@ public class ObdHelper {
     public static final int OBD_COMMAND_FAILURE_MIS = 14;
     public static final int OBD_COMMAND_FAILURE_NODATA = 15;
 
-    private DeviceActivity DeviceActivity;
+    private BaseActivity DeviceActivity;
     private Handler mHandler;
 
     private static BluetoothAdapter bluetoothAdapter;
@@ -58,7 +59,7 @@ public class ObdHelper {
 
     private GetTroubleCodesTask gtct;
 
-    public ObdHelper(Handler mHandler, DeviceActivity DeviceActivity) {
+    public ObdHelper(Handler mHandler, BaseActivity DeviceActivity) {
         this.DeviceActivity = DeviceActivity;
         this.mHandler = mHandler;
         gtct = new GetTroubleCodesTask();
@@ -99,7 +100,7 @@ public class ObdHelper {
     private class GetTroubleCodesTask extends AsyncTask<String, Integer, String> {
         @Override
         protected void onPreExecute() {
-            DeviceActivity.showLoadingDialog("连接中...");
+            DeviceActivity.showWaitDialog("连接中...");
         }
         @Override
         protected String doInBackground(String... params) {

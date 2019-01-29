@@ -7,44 +7,6 @@ import com.bigkoo.pickerview.model.IPickerViewData;
 
 
 public class ObdEntity implements IPickerViewData, Parcelable {
-    /**
-     * productModel : 刚刚给
-     * serialsNumber : 光顾
-     * remark :
-     * id : 000000006505835c01650e78d7020004
-     * version : 0
-     */
-
-    private String productModel;
-    private String serialsNumber;
-    private String remark;
-    private String id;
-    private int version;
-
-    public String getProductModel() {
-        return productModel;
-    }
-
-    public void setProductModel(String productModel) {
-        this.productModel = productModel;
-    }
-
-    public String getSerialsNumber() {
-        return serialsNumber;
-    }
-
-    public void setSerialsNumber(String serialsNumber) {
-        this.serialsNumber = serialsNumber;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     public String getId() {
         return id;
     }
@@ -53,17 +15,41 @@ public class ObdEntity implements IPickerViewData, Parcelable {
         this.id = id;
     }
 
-    public int getVersion() {
-        return version;
+    private String id;
+    private String obdModel;
+    private String bluetoothName;
+    private String bluetoothAddress;
+
+    public String getObdModel() {
+        return obdModel;
     }
 
-    public void setVersion(int version) {
-        this.version = version;
+    public void setObdModel(String obdModel) {
+        this.obdModel = obdModel;
+    }
+
+    public String getBluetoothName() {
+        return bluetoothName;
+    }
+
+    public void setBluetoothName(String bluetoothName) {
+        this.bluetoothName = bluetoothName;
+    }
+
+    public String getBluetoothAddress() {
+        return bluetoothAddress;
+    }
+
+    public void setBluetoothAddress(String bluetoothAddress) {
+        this.bluetoothAddress = bluetoothAddress;
+    }
+
+    public ObdEntity() {
     }
 
     @Override
     public String getPickerViewText() {
-        return getProductModel();
+        return bluetoothName;
     }
 
     @Override
@@ -73,22 +59,17 @@ public class ObdEntity implements IPickerViewData, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.productModel);
-        dest.writeString(this.serialsNumber);
-        dest.writeString(this.remark);
         dest.writeString(this.id);
-        dest.writeInt(this.version);
-    }
-
-    public ObdEntity() {
+        dest.writeString(this.obdModel);
+        dest.writeString(this.bluetoothName);
+        dest.writeString(this.bluetoothAddress);
     }
 
     protected ObdEntity(Parcel in) {
-        this.productModel = in.readString();
-        this.serialsNumber = in.readString();
-        this.remark = in.readString();
         this.id = in.readString();
-        this.version = in.readInt();
+        this.obdModel = in.readString();
+        this.bluetoothName = in.readString();
+        this.bluetoothAddress = in.readString();
     }
 
     public static final Parcelable.Creator<ObdEntity> CREATOR = new Parcelable.Creator<ObdEntity>() {

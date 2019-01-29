@@ -211,4 +211,8 @@
     <string name="Maximum_sensor_voltage_for_test_cycle">Maximum sensor voltage for test cycle</string>
     <string name="Time_between_sensor_transitions">Time between sensor transitions</string>
     <string name="Sensor_period">Sensor period</string>
+
+    <string name="OBD_is_not_connect">OBD is not connect</string>
+    <string name="device">device</string>
+    <string name="add">add</string>
 </resources>

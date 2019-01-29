@@ -19,7 +19,7 @@ public class HisroryChoiseOBDAdapter extends BaseQuickAdapter<ObdEntity,BaseView
     }
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final ObdEntity entity) {
-        baseViewHolder.setText(R.id.Rb,entity.getProductModel());
+        baseViewHolder.setText(R.id.Rb,entity.getBluetoothName());
         if (selPosition==baseViewHolder.getLayoutPosition())
         {
             baseViewHolder.setChecked(R.id.Rb,true);

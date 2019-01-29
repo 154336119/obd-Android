@@ -33,7 +33,7 @@
                     android:layout_height="66dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
-                    android:src="@mipmap/image_avatar_5"/>
+                    android:src="@mipmap/ic_logo"/>
                 <TextView
                     android:id="@+id/TvName"
                     android:layout_width="wrap_content"
@@ -97,51 +97,6 @@
                     android:layout_below="@+id/Rl01"/>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FF3C444F"
-                android:layout_marginTop="10dp">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/Rl02">
-                    <TextView
-                        android:id="@+id/Tv02"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:paddingTop="14dp"
-                        android:paddingBottom="14dp"
-                        android:text="@string/My_OBD_Device"
-                        android:textColor="@color/white"
-                        android:layout_marginTop="@dimen/distance_10"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@mipmap/ic_white_right_arrow"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="20dp"/>
-                </RelativeLayout>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/Rv02"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_below="@+id/Rl02"
-                    >
-                </android.support.v7.widget.RecyclerView>
-                <ImageView
-                    android:id="@+id/line2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#FF2B3139"
-                    android:layout_below="@+id/Rl02"/>
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

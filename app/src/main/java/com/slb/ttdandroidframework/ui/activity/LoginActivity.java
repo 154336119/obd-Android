@@ -3,20 +3,26 @@ package com.slb.ttdandroidframework.ui.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pires.obd.utils.CommandAvailabilityHelper;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseMvpActivity;
 import com.slb.frame.utils.ActivityUtil;
+import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.MainActivity;
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.http.bean.UserEntity;
 import com.slb.ttdandroidframework.ui.contract.LoginContract;
 import com.slb.ttdandroidframework.ui.presenter.LoginPresenter;
 import com.slb.ttdandroidframework.util.ByteUtils;
+import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
+import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 
 import butterknife.BindView;
@@ -24,6 +30,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import danfei.shulaibao.widget.common.ChooseEditText;
 import danfei.shulaibao.widget.common.autoedt.ClearAutoCompleteEditText;
+
+import static com.slb.ttdandroidframework.util.config.BizcContant.PARA_DEV_ADDR;
+import static com.slb.ttdandroidframework.util.config.BizcContant.SP_PW;
+import static com.slb.ttdandroidframework.util.config.BizcContant.SP_USER;
+import static com.slb.ttdandroidframework.util.config.BizcContant.SP_USER_NAME;
 
 public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginContract.IPresenter>
         implements LoginContract.IView{
@@ -64,7 +75,13 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginCon
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
-
+        String userJsonStr = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.SP_USER, "");
+        if(!TextUtils.isDigitsOnly(userJsonStr)){
+            UserEntity entity =JSONObject.parseObject(userJsonStr,UserEntity.class);
+            Base.setUserEntity(entity);
+            ActivityUtil.next(this, MainActivity.class);
+            finish();
+        }
     }
 
     @OnClick({R.id.tvRegister, R.id.tvwForgotPwd, R.id.btnLogin})
@@ -85,6 +102,8 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginCon
     @Override
     public void loginSuccess() {
         ActivityUtil.next(this, MainActivity.class);
+        String userJsonStr = JSONObject.toJSONString(Base.getUserEntity());//将java对象转换为json对象
+        SharedPreferencesUtils.setParam(this, SP_USER,userJsonStr);
         finish();
     }
 }

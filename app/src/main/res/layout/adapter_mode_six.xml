@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/TvState"
             android:padding="14dp"
-            android:text="CID:"
+            android:text="MID:"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:layout_marginRight="30dp"/>

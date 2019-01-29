@@ -23,4 +23,8 @@ public class BizcContant {
 
     public static final String PARA_CHOISE_DATA= "choise_data";
     public static final String PARA_HISTORY_DETAIL = "history_detail";
+
+    public static final String SP_USER_NAME = "sp_user_name";
+    public static final String SP_PW = "sp_pw";
+    public static final String SP_USER= "sp_user";
 }

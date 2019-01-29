@@ -26,7 +26,9 @@ import com.slb.ttdandroidframework.http.callback.DialogCallback;
 import com.slb.ttdandroidframework.http.dns.DnsFactory;
 import com.slb.ttdandroidframework.http.model.LzyResponse;
 import com.slb.ttdandroidframework.http.service.ComServiceUrl;
+import com.slb.ttdandroidframework.ui.activity.DeviceActivity;
 import com.slb.ttdandroidframework.ui.contract.LoginContract;
+import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +42,7 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 import static com.slb.ttdandroidframework.http.RetrofitSerciveFactory.provideComService;
+import static com.slb.ttdandroidframework.util.config.BizcContant.PARA_DEV_ADDR;
 
 
 /**

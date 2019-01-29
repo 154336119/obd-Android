@@ -20,7 +20,7 @@ public class HisroryChoiseCarNumAdapter extends BaseQuickAdapter<VehicleEntity,B
 
     @Override
     protected void convert(final BaseViewHolder baseViewHolder, final VehicleEntity entity) {
-        baseViewHolder.setText(R.id.Rb,entity.getLicenseNo());
+        baseViewHolder.setText(R.id.Rb,entity.getName());
         if (selPosition==baseViewHolder.getLayoutPosition())
         {
             baseViewHolder.setChecked(R.id.Rb,true);

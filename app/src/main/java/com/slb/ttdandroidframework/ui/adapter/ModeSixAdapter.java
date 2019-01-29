@@ -69,7 +69,7 @@ public class ModeSixAdapter extends BaseQuickAdapter<ModeSixEntity,BaseViewHolde
             baseViewHolder.setText(R.id.TvTID,"TID:"+entity.getTid());
         }
         if(!TextUtils.isEmpty(entity.getCid())){
-            baseViewHolder.setText(R.id.TvCID,"CID:"+entity.getCid());
+            baseViewHolder.setText(R.id.TvCID,"MID:"+entity.getCid());
         }
 
         if(!TextUtils.isEmpty(entity.getMax())){

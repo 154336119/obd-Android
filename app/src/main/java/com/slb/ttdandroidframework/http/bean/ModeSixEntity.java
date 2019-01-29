@@ -13,6 +13,16 @@ public class ModeSixEntity {
     private boolean state;
     private String des;
 
+    public String getMid() {
+        return mid;
+    }
+
+    public void setMid(String mid) {
+        this.mid = mid;
+    }
+
+    private String mid;
+
     public String getDes() {
         return des;
     }
