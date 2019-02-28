@@ -321,7 +321,7 @@ public class DataFragment
         if (isServiceBound) {
             if (service.isRunning()) {
                 service.stopService();
-                showToastMsg("Obd产品断开连接");
+                showToastMsg(BizcContant.STR_OBD_DISCONNECTED);
                 Log.d(TAG, "Unbinding OBD service..");
                 isServiceBound = false;
                 _mActivity.unbindService(serviceConn);

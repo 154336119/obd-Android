@@ -101,22 +101,21 @@ public class ScanLIstActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
     }
-
     private void createDialog(final BluetoothDevice device){
         new MDEditDialog.Builder(ScanLIstActivity.this).setTitleVisible(true)
-                .setTitleText("产品型号")
+                .setTitleText(getString(R.string.product_model))
                 .setTitleTextSize(20)
                 .setMaxLength(50)
                 .setTitleTextColor(R.color.black_light)
                 .setContentTextSize(18)
-                .setHintText("请输入产品型号")
+                .setHintText(getString(R.string.entry_product_model))
                 .setMaxLines(1)
                 .setContentTextColor(R.color.colorPrimary)
                 .setButtonTextSize(14)
                 .setLeftButtonTextColor(R.color.colorPrimary)
-                .setLeftButtonText("取消")
+                .setLeftButtonText(getString(R.string.NO))
                 .setRightButtonTextColor(R.color.colorPrimary)
-                .setRightButtonText("确定")
+                .setRightButtonText(getString(R.string.YES))
                 .setLineColor(R.color.colorPrimary)
                 .setInputTpye(InputType.TYPE_CLASS_TEXT)
                 .setOnclickListener(new DialogInterface.OnLeftAndRightClickListener<MDEditDialog>

@@ -100,7 +100,7 @@ public class ObdHelper {
     private class GetTroubleCodesTask extends AsyncTask<String, Integer, String> {
         @Override
         protected void onPreExecute() {
-            DeviceActivity.showWaitDialog("连接中...");
+            DeviceActivity.showWaitDialog(BizcContant.STR_CONNECTING);
         }
         @Override
         protected String doInBackground(String... params) {

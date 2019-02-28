@@ -15,8 +15,8 @@
     <string name="menu_trip_list">Trips</string>
     <string name="menu_item_trip_delete">Delete</string>
     <string name="pref_gps_category" translatable="false">gps_category</string>
-    <string name="dialog_loading_title">加载中…</string>
-    <string name="dialog_loading_body">加载中</string>
+    <string name="dialog_loading_title">loading...</string>
+    <string name="dialog_loading_body">loading...</string>
     <string name="menu_start_live_data">Start Live Data</string>
     <string name="menu_stop_live_data">Stop Live Data</string>
     <string name="menu_settings">Settings</string>
@@ -197,7 +197,7 @@
     <string name="Absolute_throttle_position">节气门绝对位置</string>
 
     <string name="normal">正常</string>
-    <string name="failed">失败</string>
+    <string name="failed">错误</string>
 
     <string name="max">最大值： </string>
     <string name="min">最小值： </string>
@@ -219,4 +219,34 @@
     <string name="OBD_is_not_connect">OBD未连接</string>
     <string name="device">设备</string>
     <string name="add">新增</string>
+
+    <string name="Warning_1">Attempting to operate a phone or touchscreen device whiledriving is dangerous and is not recommended. Many functions of this applicationare not intended for use while driving. Do not try to enter information or navigate this application while driving. Doing so can result in serious injury,death, or damage to property and could be unlawful.
+        Many features of this application are meant for diagnosticpurposes only. We strongly recommend that you do not initiate a connection to the vehicle or perform diagnostics functions while the vehicle is in motion.
+        If you ignore this warning, you do so at your own risk and agree to not hold the developer liable for any consequences.</string>
+
+    <string name="Warning_2">This will reset the check engine light and clear all emission-related diagnostic information, including: Diagnostics trouble codes Freeze frame data Oxygen sensor test data Status of system monitoring tests On-board monitoring test result
+    Distance travelled while CEL activated Engine run time while CEL activated Distance travelled since DTCs cleared The loss of data may cause the vehicle to run poorly for a short period of time while      the ECU recalibrates itself.
+    Do you want to continue?</string>
+
+    <string name="Warning_3">This feature is currently only available on vehicles using CAN protocols. Would you like to continue?</string>
+
+    <string name="Warning_4">Please fist go to Bluetooth setting and pair with the OBD device.</string>
+
+
+
+    <string name="prompt">提示</string>string>
+    <string name="prompt_upload_error_codes_content">是否上传故障码？</string>
+    <string name="prompt_disconnect_content">是否断开OBD连接？</string>
+
+    <string name="YES">确定</string>
+    <string name="NO">取消</string>
+    <string name="NO_DATA">暂无数据</string>
+
+    <string name="add_a_vehicle">添加车辆</string>
+    <string name="Ignore_this_message">忽略</string>
+    <string name="product_model">产品型号</string>
+    <string name="entry_product_model">请输入产品型号</string>
+    <string name="Enter_your_username">请输入新昵称</string>
+
+
 </resources>

@@ -38,6 +38,6 @@
             android:textSize="12sp"
             android:layout_toRightOf="@+id/Iv"
             android:layout_below="@+id/TvTitle"
-            android:text="Unvailable"/>
+            android:text="Unavailable"/>
     </LinearLayout>
 </RelativeLayout>

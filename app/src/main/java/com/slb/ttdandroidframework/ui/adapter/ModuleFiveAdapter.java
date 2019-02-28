@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.http.bean.BankSensorEntiity;
 import com.slb.ttdandroidframework.http.bean.FreezeFrameEntity;
+import com.slb.ttdandroidframework.http.bean.ModeSixEntity;
 import com.slb.ttdandroidframework.http.bean.MoudleFiveEntity;
 import com.slb.ttdandroidframework.weight.MyListView;
 
@@ -49,7 +50,7 @@ public class ModuleFiveAdapter extends BaseQuickAdapter<BankSensorEntiity,BaseVi
         if(!TextUtils.isEmpty(entity.getBankSensorName())){
             baseViewHolder.setText(R.id.TvBankSensor,entity.getBankSensorName());
         }
-        for(MoudleFiveEntity moudleFiveEntity : entity.getList()){
+        for(ModeSixEntity moudleFiveEntity : entity.getList()){
             if(!moudleFiveEntity.isState()){
                 baseViewHolder.setTextColor(R.id.TvState,Color.RED);
                 baseViewHolder.setText(R.id.TvState,mContext.getString(R.string.failed));

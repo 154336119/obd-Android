@@ -1,14 +1,17 @@
 package com.slb.ttdandroidframework.ui.activity;
 
 import android.content.DialogInterface;
+import android.content.Entity;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
@@ -39,19 +42,25 @@ import com.slb.ttdandroidframework.ui.adapter.AddDeviceListdapter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
 import com.slb.ttdandroidframework.util.ObdHelper;
 import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
+import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.weight.CustomDialog;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.slb.ttdandroidframework.util.config.BizcContant.PARA_DEV_ADDR;
+import static com.slb.ttdandroidframework.util.config.BizcContant.SP_CONNECT_DEV;
+import static com.slb.ttdandroidframework.util.config.BizcContant.SP_IGNORE_OPEN_BLUE;
+import static com.slb.ttdandroidframework.util.config.BizcContant.SP_IS_FIRST;
 
 public class AddDeviceListActivity extends BaseActivity {
+    private AlertDialog.Builder builder;
     private static final int NO_BLUETOOTH_DEVICE_SELECTED = 0;
     private static final int CANNOT_CONNECT_TO_DEVICE = 1;
     private static final int NO_DATA = 3;
@@ -62,6 +71,7 @@ public class AddDeviceListActivity extends BaseActivity {
     private static final int OBD_COMMAND_FAILURE_MIS = 14;
     private static final int OBD_COMMAND_FAILURE_NODATA = 15;
     private CustomDialog mCommonAlertDialog;
+    private int mTemPosition = 0;
     private Handler mHandler = new Handler(new Handler.Callback() {
         private ObdHelper obdHelper;
 
@@ -69,31 +79,31 @@ public class AddDeviceListActivity extends BaseActivity {
             Log.d(TAG, "Message received on handler");
             switch (msg.what) {
                 case NO_BLUETOOTH_DEVICE_SELECTED:
-                    showToastMsg("连接失败");
+                    showToastMsg(BizcContant.STR_CONNECT_FAILED);
                     // showToastMsg(getString(R.string.text_bluetooth_nodevice));
                     break;
                 case CANNOT_CONNECT_TO_DEVICE:
-                    showToastMsg("连接失败");
+                    showToastMsg(BizcContant.STR_CONNECT_FAILED);
                     //    showToastMsg(getString(R.string.text_bluetooth_error_connecting));
                     break;
                 case OBD_COMMAND_FAILURE:
-                    showToastMsg("连接失败");
+                    showToastMsg(BizcContant.STR_CONNECT_FAILED);
                     //   showToastMsg(getString(R.string.text_obd_command_failure));
                     break;
                 case OBD_COMMAND_FAILURE_IO:
-                    showToastMsg("连接失败");
+                    showToastMsg(BizcContant.STR_CONNECT_FAILED);
                     //   showToastMsg(getString(R.string.text_obd_command_failure) + " IO");
                     break;
                 case OBD_COMMAND_FAILURE_IE:
-                    showToastMsg("连接失败");
+                    showToastMsg(BizcContant.STR_CONNECT_FAILED);
                     //   showToastMsg(getString(R.string.text_obd_command_failure) + " IE");
                     break;
                 case OBD_COMMAND_FAILURE_MIS:
-                    showToastMsg("连接失败");
+                    showToastMsg(BizcContant.STR_CONNECT_FAILED);
                     //   showToastMsg(getString(R.string.text_obd_command_failure) + " MIS");
                     break;
                 case OBD_COMMAND_FAILURE_UTC:
-                    showToastMsg("连接失败");
+                    showToastMsg(BizcContant.STR_CONNECT_FAILED);
                     //  showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
                     break;
                 case OBD_COMMAND_FAILURE_NODATA:
@@ -150,6 +160,7 @@ public class AddDeviceListActivity extends BaseActivity {
                     BluetoothUtil.setRemoteDevice(addr);
                     ObdHelper obdHelper = new ObdHelper(mHandler, AddDeviceListActivity.this);
                     obdHelper.connectToDevice();
+                    mTemPosition = position;
                 }
             }
         });
@@ -200,17 +211,38 @@ public class AddDeviceListActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Response<LzyResponse<ObdSEntity>> response) {
                         ObdSEntity entity = response.body().data;
+                        List<ObdEntity> obdEntityList = entity.getObds();
 //                        if(entity!=null && entity.getObds()!=null && entity.getObds().size()>0){
-                            Base.getUserEntity().setObdEntityList(entity.getObds());
-                            mAdapter.setNewData( Base.getUserEntity().getObdEntityList());
-//                        }
+                        ///连接状态
+                        if (BluetoothUtil.isRunning) {
+                            String dev = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.SP_CONNECT_DEV, "");
+                            if(!TextUtils.isEmpty(dev)){
+                                for(int i=0;i<obdEntityList.size();i++){
+                                    ObdEntity obdEntity = obdEntityList.get(i);
+                                    if(obdEntity.getBluetoothName().equals(dev)){
+                                        obdEntity.setContect(true);
+                                        obdEntityList.set(i,obdEntity);
+                                    }
+                                }
+                            }
+                        }
+                            List<ObdEntity> obdEntities = entity.getObds();
+                            Base.getUserEntity().setObdEntityList(obdEntities);
+                            mAdapter.setNewData( obdEntities);
+                            //提示
+                        Boolean isIgnore = (Boolean) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.SP_IGNORE_OPEN_BLUE, false);
+                        if(obdEntities==null || obdEntities.size()==0){
+                            if(!isIgnore){
+                                showWarning_4();
+                            }
+                        }
                     }
                 });
     }
 
     @Subscribe
     public void onConnectEvent(ConnectEvent event) {
-        showWaitDialog("连接中");
+        showWaitDialog("");
 //                dialog.dismiss();
         try {
             if (BluetoothUtil.getSockInstance() != null) {
@@ -218,7 +250,7 @@ public class AddDeviceListActivity extends BaseActivity {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            showToastMsg("连接失败");
+            showToastMsg(BizcContant.STR_CONNECT_FAILED);
         }
         hideWaitDialog();
     }
@@ -227,7 +259,10 @@ public class AddDeviceListActivity extends BaseActivity {
     public void onObdConnectStateEvent(ObdConnectStateEvent event) {
         if (event.isConnect()) {
             BluetoothUtil.setIsRunning(true);
-            showToastMsg("连接成功");
+            showToastMsg(BizcContant.STR_CONNECTING_SUCCESS);
+            ObdEntity obdEntity =  Base.getUserEntity().getObdEntityList().get(mTemPosition);
+            SharedPreferencesUtils.setParam(AddDeviceListActivity.this, SP_CONNECT_DEV,obdEntity.getBluetoothName());
+            Base.getUserEntity().getObdEntityList().set(mTemPosition,obdEntity);
             finish();
 //            MyApplication.getService().queueJob(new ObdCommandJob(new PendingTroubleCodesCommand()));
 //            MyApplication.getService().queueJob(new ObdCommandJob(new EchoOffCommand()));
@@ -238,7 +273,7 @@ public class AddDeviceListActivity extends BaseActivity {
             hideWaitDialog();
         } else {
             BluetoothUtil.setIsRunning(false);
-            showToastMsg("连接失败");
+            showToastMsg(BizcContant.STR_CONNECT_FAILED);
         }
     }
 
@@ -271,9 +306,9 @@ public class AddDeviceListActivity extends BaseActivity {
     private void showDisConnectDialog() {
         CustomDialog.Builder dialog = new CustomDialog.Builder(this);
         dialog
-                .setTitle("提示")
-                .setMessage("是否断开设备连接？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.prompt))
+                .setMessage(getString(R.string.prompt_disconnect_content))
+                .setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         BluetoothUtil.setIsRunning(false);
@@ -283,7 +318,7 @@ public class AddDeviceListActivity extends BaseActivity {
                         dialogInterface.dismiss();
                         finish();
                     }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.NO), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -294,4 +329,26 @@ public class AddDeviceListActivity extends BaseActivity {
         mCommonAlertDialog.show();
     }
 
+    /**
+     * dialog
+     */
+    private void showWarning_4() {
+        builder = new AlertDialog.Builder(this)
+                .setMessage(R.string.Warning_4).setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //ToDo: 你想做的事情
+                        SharedPreferencesUtils.setParam(AddDeviceListActivity.this, SP_IS_FIRST,false);
+                        dialogInterface.dismiss();
+                    }
+                }).setNegativeButton(getString(R.string.Ignore_this_message), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //ToDo: 你想做的事情
+                        SharedPreferencesUtils.setParam(AddDeviceListActivity.this, SP_IGNORE_OPEN_BLUE,true);
+                        dialogInterface.dismiss();
+                    }
+                });
+        builder.create().show();
+    }
 }

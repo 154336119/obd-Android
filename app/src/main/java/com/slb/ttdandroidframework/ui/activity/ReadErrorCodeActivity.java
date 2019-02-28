@@ -247,7 +247,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
         });
 
             if(!BluetoothUtil.isRunning){
-                showToastMsg("暂未连接OBD");
+                showToastMsg(getString(R.string.text_bluetooth_nodevice));
             }
         mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
         mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
@@ -275,7 +275,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 break;
             case R.id.mTvAgain:
                 if(!BluetoothUtil.isRunning){
-                    showToastMsg("暂未连接OBD");
+                    showToastMsg(getString(R.string.text_bluetooth_nodevice));
                     return;
                 }
                 mCodeNum = 0;
@@ -296,7 +296,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
                 break;
             case R.id.BtnClearError:
                 if(!BluetoothUtil.isRunning){
-                    showToastMsg("暂未连接OBD");
+                    showToastMsg(getString(R.string.text_bluetooth_nodevice));
                     return;
                 }
                 executeResetTroubleCodesCommand();
@@ -374,7 +374,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
-            showWaitDialog("刷新中");
+            showWaitDialog("loading...");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -389,7 +389,6 @@ public class ReadErrorCodeActivity extends BaseActivity {
             //Get the current thread's token
             synchronized (this) {
                 try {
-                    onProgressUpdate(5);
                     TroubleCodesCommand tcoc  = new TroubleCodesCommand();
                     tcoc.run(sock.getInputStream(), sock.getOutputStream());
                     result = tcoc;
@@ -475,7 +474,7 @@ public class ReadErrorCodeActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
-            showWaitDialog("刷新中");
+            showWaitDialog("loading...");
         }
 
         @Override
@@ -485,7 +484,6 @@ public class ReadErrorCodeActivity extends BaseActivity {
             //Get the current thread's token
             synchronized (this) {
                 try {
-                    onProgressUpdate(5);
                     PendingTroubleCodesCommand tcoc  = new PendingTroubleCodesCommand();
                     tcoc.run(sock.getInputStream(), sock.getOutputStream());
                     result = tcoc;

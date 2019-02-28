@@ -127,6 +127,14 @@
             android:name=".ui.activity.AddDeviceListActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.NewMode6Activity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.NewMode5Activity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

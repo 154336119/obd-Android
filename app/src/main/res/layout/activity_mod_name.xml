@@ -15,7 +15,7 @@
             android:id="@+id/edtSerialNumber"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
-            android:hint="请输入新昵称"
+            android:hint="@string/Enter_your_username"
             android:lines="1"
             android:background="#3C444F"/>
         <Button

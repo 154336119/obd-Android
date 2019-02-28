@@ -183,7 +183,7 @@ public class NewChoiseDataActivity
             }
         } catch (IOException e) {
             e.printStackTrace();
-            showToastMsg("暂无连接设备");
+            showToastMsg(getString(R.string.text_bluetooth_nodevice));
             handler.removeCallbacks(mQueueCommands);
         }
 

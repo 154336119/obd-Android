@@ -78,7 +78,7 @@ public class BluetoothUtil {
                 e.printStackTrace();
                 isRunning = false;
                 sockInstance = null;
-                Logger.d("sock连接失败失败");
+                Logger.d("sock connect failed");
                 RxBus.get().post(new ObdConnectStateEvent(false));
                 //closeSocket(sockInstance);
                 throw new IOException();

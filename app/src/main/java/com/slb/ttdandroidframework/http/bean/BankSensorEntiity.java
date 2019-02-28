@@ -8,7 +8,7 @@ import java.util.List;
 
 public class BankSensorEntiity {
     String bankSensorName;
-    List<MoudleFiveEntity> list;
+    List<ModeSixEntity> list;
 
     public String getBankSensorName() {
         return bankSensorName;
@@ -18,11 +18,11 @@ public class BankSensorEntiity {
         this.bankSensorName = bankSensorName;
     }
 
-    public List<MoudleFiveEntity> getList() {
+    public List<ModeSixEntity> getList() {
         return list;
     }
 
-    public void setList(List<MoudleFiveEntity> list) {
+    public void setList(List<ModeSixEntity> list) {
         this.list = list;
     }
 }

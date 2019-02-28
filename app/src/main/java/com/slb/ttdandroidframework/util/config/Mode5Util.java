@@ -1,5 +1,7 @@
 package com.slb.ttdandroidframework.util.config;
 
+import com.slb.ttdandroidframework.Base;
+import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.command.mode5.Service5Command;
 
 import java.math.BigDecimal;
@@ -211,5 +213,107 @@ public class Mode5Util {
             bigDecimalValue =  bigDecimalValue.multiply(new BigDecimal("0.04"));
         }
         return bigDecimalValue.doubleValue();
+    }
+
+    /////////////////////////////////////////////////CAN协议////////////////////////////////////////////////////
+    public static String getNameForMid(String mid){
+
+        if(mid.equals("01")){
+            return "Bank 1    sensor 1";
+        }else if(mid.equals("02")){
+            return "Bank 1    sensor 2";
+        }else if(mid.equals("03")){
+            return "Bank 1    sensor 3";
+        }else if(mid.equals("04")){
+            return "Bank 1    sensor 4";
+        }else if(mid.equals("05")){
+            return "Bank 2    sensor 1";
+        }else if(mid.equals("06")){
+            return "Bank 2    sensor 2";
+        }else if(mid.equals("07")){
+            return "Bank 2    sensor 3";
+        }else if(mid.equals("08")){
+            return "Bank 2    sensor 4";
+        }else if(mid.equals("09")){
+            return "Bank 3    sensor 1";
+        }else if(mid.equals("0A")){
+            return "Bank 3    sensor 2";
+        }else if(mid.equals("0B")){
+            return "Bank 3    sensor 3";
+        }else if(mid.equals("0C")){
+            return "Bank 3    sensor 4";
+        }else if(mid.equals("0D")){
+            return "Bank 4    sensor 1";
+        }else if(mid.equals("0E")){
+            return "Bank 4    sensor 2";
+        }else if(mid.equals("0F")){
+            return "Bank 4    sensor 3";
+        }else if(mid.equals("10")){
+            return "Bank 4    sensor 4";
+        }
+        return null;
+    }
+
+    public static boolean isMode5Mid(String mid){
+        if(mid.equals("01")){
+            return true;
+        }else if(mid.equals("02")){
+            return true;
+        }else if(mid.equals("03")){
+            return true;
+        }else if(mid.equals("04")){
+            return true;
+        }else if(mid.equals("05")){
+            return true;
+        }else if(mid.equals("06")){
+            return true;
+        }else if(mid.equals("07")){
+            return true;
+        }else if(mid.equals("08")){
+            return true;
+        }else if(mid.equals("09")){
+            return true;
+        }else if(mid.equals("0A")){
+            return true;
+        }else if(mid.equals("0B")){
+            return true;
+        }else if(mid.equals("0C")){
+            return true;
+        }else if(mid.equals("0D")){
+            return true;
+        }else if(mid.equals("0E")){
+            return true;
+        }else if(mid.equals("0F")){
+            return true;
+        }else if(mid.equals("10")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public static String getDes(String num) {
+        if(num.equals("01")){
+            return Base.getContext().getString(R.string.Rich_to_lean_sensorthreshold_voltage);
+        }else if(num.equals("02")){
+            return Base.getContext().getString(R.string.Lean_to_rich_sensor_threshold_voltage);
+        }else if(num.equals("03")){
+            return Base.getContext().getString(R.string.Low_sensor_voltage_for_switch_time_calculation);
+        }else if(num.equals("04")){
+            return Base.getContext().getString(R.string.High_sensor_voltage_for_switch_time_calculation);
+        }else if(num.equals("05")){
+            return Base.getContext().getString(R.string.Rich_to_lean_sensor_switch_time);
+        }else if(num.equals("06")){
+            return Base.getContext().getString(R.string.Lean_to_lean_sensor_switch_time);
+        }else if(num.equals("07")){
+            return Base.getContext().getString(R.string.Minimum_sensor_voltage_for_test_cycle);
+        }else if(num.equals("08")){
+            return Base.getContext().getString(R.string.Maximum_sensor_voltage_for_test_cycle);
+        }else if(num.equals("09")){
+            return Base.getContext().getString(R.string.Time_between_sensor_transitions);
+        }else if(num.equals("0A")){
+            return Base.getContext().getString(R.string.Sensor_period);
+        }
+        return null;
     }
 }

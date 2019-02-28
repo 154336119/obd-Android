@@ -16,7 +16,7 @@ public class LiveDns implements Dns {
     }
     @Override
     public String getCommonBaseUrl() {
-        return "http://125.69.150.167:17811/";
+        return "http://erp.veepeak.net:9999/";
     }
 
     @Override

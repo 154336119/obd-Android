@@ -21,7 +21,7 @@ public class BaseSubscriber<T> extends Subscriber<T> {
     @Override
     public void onStart() {
         super.onStart();
-        mView.showLoadingDialog("正在加载");
+        mView.showLoadingDialog("loading...");
     }
 
     @Override

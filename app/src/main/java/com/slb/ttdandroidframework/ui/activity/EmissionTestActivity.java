@@ -172,7 +172,7 @@ public class EmissionTestActivity extends BaseMvpActivity<EmissionTestContract.I
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
-            showWaitDialog("刷新中");
+            showWaitDialog("loading...");
         }
 
         @Override

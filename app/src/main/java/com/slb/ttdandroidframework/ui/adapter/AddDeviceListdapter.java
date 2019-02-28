@@ -21,6 +21,11 @@ public class AddDeviceListdapter extends BaseItemDraggableAdapter<ObdEntity,Base
     protected void convert(final BaseViewHolder baseViewHolder, final ObdEntity entity) {
         baseViewHolder.setText(R.id.TvName,entity.getBluetoothName());
         baseViewHolder.setText(R.id.TvDes,entity.getObdModel());
+        if(entity.getContect()){
+            baseViewHolder.setText(R.id.TvState,"Disconnect");
+        }else{
+            baseViewHolder.setText(R.id.TvState,"Connect");
+        }
     }
 
 }

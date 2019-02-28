@@ -25,7 +25,7 @@ public class ModNamePresenter extends AbstractBasePresenter<ModNameContract.IVie
     @Override
     public void modName(final String name) {
         if(TextUtils.isEmpty(name)){
-            mView.showMsg("请输入新昵称");
+            mView.showMsg("Enter your username");
             return;
         }
         OkGo.<LzyResponse<Object>>post(DnsFactory.getInstance().getDns().getCommonBaseUrl()+ "api/user/edit-nickname")//

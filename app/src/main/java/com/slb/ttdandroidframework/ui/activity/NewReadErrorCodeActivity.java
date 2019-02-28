@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -46,6 +47,7 @@ import com.slb.ttdandroidframework.http.dns.DnsFactory;
 import com.slb.ttdandroidframework.http.model.LzyResponse;
 import com.slb.ttdandroidframework.ui.adapter.ErrorCodeAdapter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
+import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
 import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 import com.slb.ttdandroidframework.util.config.ReadCodeUtil;
@@ -62,6 +64,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.slb.ttdandroidframework.util.config.BizcContant.SP_IS_FIRST;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_IE;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_IO;
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_MIS;
@@ -69,6 +72,7 @@ import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAIL
 import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAILURE_UTC;
 
 public class NewReadErrorCodeActivity extends BaseActivity {
+    private AlertDialog.Builder builder;
     @BindView(R.id.mTvName)
     TextView mTvName;
     @BindView(R.id.mIvBack)
@@ -123,7 +127,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     break;
                 case OBD_COMMAND_FAILURE_IO:
 //                    showToastMsg(getString(R.string.text_obd_command_failure) + " IO");
-                    showToastMsg("读取故障码：设备已断开连接，请重新连接");
+                    showToastMsg(BizcContant.STR_OBD_DISCONNECTED);
                     BluetoothUtil.closeSocket();
                     Logger.d("读取故障码：设备已断开连接，请重新连接");
                     finish();
@@ -135,7 +139,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     showToastMsg(getString(R.string.text_obd_command_failure) + " MIS");
                     break;
                 case OBD_COMMAND_FAILURE_UTC:
-                    showToastMsg("读取故障码：设备已断开连接，请重新连接");
+                    showToastMsg(BizcContant.STR_OBD_DISCONNECTED);
                     BluetoothUtil.closeSocket();
                     Logger.d("读取故障码：设备已断开连接，请重新连接");
                     finish();
@@ -228,7 +232,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
         });
 
             if(!BluetoothUtil.isRunning){
-                showToastMsg("暂未连接OBD");
+                showToastMsg(getString(R.string.text_bluetooth_nodevice));
             }
         mTvConfirmErrorCodeNum.setText(mCodeNum+getString(R.string.confirmed_dtcs));
         mTvWaitErrorCodeNum.setText(mWaitCodeNum+getString(R.string.pending_dtcs));
@@ -257,7 +261,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
             case R.id.mTvAgain:
                 Logger.d("读取故障码：点击重新扫描");
                 if(!BluetoothUtil.isRunning){
-                    showToastMsg("暂未连接OBD");
+                    showToastMsg(getString(R.string.text_bluetooth_nodevice));
                     return;
                 }
                 mCodeNum = 0;
@@ -275,7 +279,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                     sock = BluetoothUtil.getSockInstance();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    showToastMsg("蓝牙连接失败，请重新连接");
+                    showToastMsg(getString(R.string.text_bluetooth_error_connecting));
                     Logger.d("读取故障码：sock连接异常:-------"+e.getMessage());
                     return;
                 }
@@ -283,21 +287,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                 mTvAgain.setText(getString(R.string.rescan));
                 break;
             case R.id.BtnClearError:
-                Logger.d("读取故障码：点击清除");
-                if(!BluetoothUtil.isRunning){
-                    showToastMsg("暂未连接OBD");
-                    return;
-                }
-                try {
-                    sock = BluetoothUtil.getSockInstance();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Logger.d("读取故障码：sock连接异常:-------"+e.getMessage());
-                    showToastMsg("蓝牙连接失败，请重新连接");
-                    return;
-                }
-                executeResetTroubleCodesCommand();
-                break;
+                showWarning_2();
         }
     }
 
@@ -344,7 +334,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
-            showWaitDialog("刷新中");
+            showWaitDialog("loading...");
         }
 
         @Override
@@ -494,7 +484,6 @@ public class NewReadErrorCodeActivity extends BaseActivity {
             //Get the current thread's token
             synchronized (this) {
                 try {
-                    onProgressUpdate(5);
                     ResetTroubleCodesCommand tcoc  = new ResetTroubleCodesCommand();
                     tcoc.run(sock.getInputStream(), sock.getOutputStream());
                     result = tcoc;
@@ -594,13 +583,13 @@ public class NewReadErrorCodeActivity extends BaseActivity {
     private void showDialog() {
         CustomDialog.Builder dialog = new CustomDialog.Builder(this);
         dialog
-                .setTitle("提示")
-                .setMessage("是否上传错误码？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.prompt))
+                .setMessage(getString(R.string.prompt_content))
+                .setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(Base.getUserEntity().getVehicleEntityList() == null ||Base.getUserEntity().getObdEntityList() == null){
-                            showToastMsg("暂未绑定设备或汽车");
+                            showToastMsg("no car or no device");
                             mCommonAlertDialog.dismiss();
                             return;
                         }
@@ -623,7 +612,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                         ActivityUtil.next(NewReadErrorCodeActivity.this,SubmitErrorCodeActivity.class,bundle,false);
                         dialogInterface.dismiss();
                     }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.NO), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -634,4 +623,36 @@ public class NewReadErrorCodeActivity extends BaseActivity {
         mCommonAlertDialog.show();
     }
 
+    /**
+     * dialog
+     */
+    private void showWarning_2() {
+        builder = new AlertDialog.Builder(this)
+                .setMessage(R.string.Warning_2).setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Logger.d("读取故障码：点击清除");
+                        if(!BluetoothUtil.isRunning){
+                            showToastMsg(getString(R.string.text_bluetooth_nodevice));
+                            return;
+                        }
+                        try {
+                            sock = BluetoothUtil.getSockInstance();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Logger.d("读取故障码：sock连接异常:-------"+e.getMessage());
+                            showToastMsg("蓝牙连接失败，请重新连接");
+                            return;
+                        }
+                        executeResetTroubleCodesCommand();
+                        dialogInterface.dismiss();
+                    }
+                }).setNegativeButton(getString(R.string.NO), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+        builder.create().show();
+    }
 }

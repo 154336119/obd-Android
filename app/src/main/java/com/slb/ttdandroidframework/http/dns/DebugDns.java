@@ -16,7 +16,7 @@ public class DebugDns implements Dns {
     }
     @Override
     public String getCommonBaseUrl() {
-        return "http://13.59.50.210:9999/";
+        return "http://erp.veepeak.net:9999/";
     }
 
     @Override

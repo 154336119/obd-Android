@@ -1,20 +1,24 @@
 package com.slb.ttdandroidframework.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.slb.ttdandroidframework.R;
+import com.slb.ttdandroidframework.http.bean.ModeSixEntity;
 import com.slb.ttdandroidframework.http.bean.MoudleFiveEntity;
 import com.slb.ttdandroidframework.ui.adapter.base.CommonBaseAdapter;
+import com.slb.ttdandroidframework.util.config.Mode5Util;
 
 
 /**
  *
  */
-public class ModeFiveMyListAdapter extends CommonBaseAdapter<MoudleFiveEntity> {
+public class ModeFiveMyListAdapter extends CommonBaseAdapter<ModeSixEntity> {
 
 	public ModeFiveMyListAdapter(Context context) {
 		super(context);
@@ -31,11 +35,12 @@ public class ModeFiveMyListAdapter extends CommonBaseAdapter<MoudleFiveEntity> {
 			mHolder.TvValue = (TextView) convertView.findViewById(R.id.TvValue);
 			mHolder.TvNum = (TextView) convertView.findViewById(R.id.TvNum);
 			mHolder.TvDes = (TextView) convertView.findViewById(R.id.TvDes);
+			mHolder.IvState = (ImageView) convertView.findViewById(R.id.IvState);
 			convertView.setTag(mHolder);
 		} else {
 			mHolder = (ViewHolder) convertView.getTag();
 		}
-		MoudleFiveEntity entity = getItem(position);
+		ModeSixEntity entity = getItem(position);
 		if(!TextUtils.isEmpty(entity.getMax())){
 			mHolder.TvMax.setText(mContext.getString(R.string.max)+entity.getMax()+entity.getUnit());
 		}else{
@@ -47,15 +52,23 @@ public class ModeFiveMyListAdapter extends CommonBaseAdapter<MoudleFiveEntity> {
 			mHolder.TvMin.setText(mContext.getString(R.string.min)+mContext.getString(R.string.nothing));
 		}
 		if(!TextUtils.isEmpty(entity.getValue())){
-			mHolder.TvValue.setText(mContext.getString(R.string.values)+entity.getMax()+entity.getUnit());
+			mHolder.TvValue.setText(mContext.getString(R.string.values)+entity.getValue()+entity.getUnit());
 		}else{
 			mHolder.TvValue.setText(mContext.getString(R.string.values)+mContext.getString(R.string.nothing));
 		}
-		if(!TextUtils.isEmpty(entity.getNum())){
-			mHolder.TvNum.setText("$"+entity.getNum());
+		if(!TextUtils.isEmpty(entity.getTid())){
+			mHolder.TvNum.setText("$"+entity.getTid());
 		}
-		if(!TextUtils.isEmpty(entity.getName())){
-			mHolder.TvDes.setText(entity.getName());
+		if(!TextUtils.isEmpty(entity.getTid())){
+			mHolder.TvDes.setText(Mode5Util.getDes(entity.getTid()));
+		}
+
+		if(!entity.isState()){
+			mHolder.TvValue.setTextColor(mContext.getResources().getColor(R.color.colors_b5));
+			mHolder.IvState.setImageResource(R.mipmap.ic_not_ok);
+		}else{
+			mHolder.TvValue.setTextColor(mContext.getResources().getColor(R.color.white));
+			mHolder.IvState.setImageResource(R.mipmap.ic_ok);
 		}
 		return convertView;
 	}
@@ -65,6 +78,7 @@ public class ModeFiveMyListAdapter extends CommonBaseAdapter<MoudleFiveEntity> {
 		private TextView TvValue;
 		private TextView TvNum;
 		private TextView TvDes;
+		private ImageView IvState;
 	}
 
 }

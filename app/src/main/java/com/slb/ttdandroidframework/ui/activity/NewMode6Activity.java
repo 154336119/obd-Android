@@ -1,53 +1,40 @@
 package com.slb.ttdandroidframework.ui.activity;
 
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
 import com.hwangjr.rxbus.RxBus;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.model.Response;
 import com.orhanobut.logger.Logger;
 import com.slb.frame.ui.activity.BaseActivity;
-import com.slb.ttdandroidframework.Base;
 import com.slb.ttdandroidframework.R;
-import com.slb.ttdandroidframework.command.mode2.Service2Command;
 import com.slb.ttdandroidframework.command.mode6.Mode6AvailablePidsCommand_01_20;
 import com.slb.ttdandroidframework.command.mode6.Mode6AvailablePidsCommand_21_40;
 import com.slb.ttdandroidframework.command.mode6.Mode6AvailablePidsCommand_41_60;
 import com.slb.ttdandroidframework.command.mode6.Service6Command;
 import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
-import com.slb.ttdandroidframework.http.bean.FreezeFrameEntity;
-import com.slb.ttdandroidframework.http.bean.FreezeFrameInsideEntity;
 import com.slb.ttdandroidframework.http.bean.ModeSixEntity;
-import com.slb.ttdandroidframework.http.callback.ActivityDialogCallback;
-import com.slb.ttdandroidframework.http.dns.DnsFactory;
-import com.slb.ttdandroidframework.http.model.LzyResponse;
-import com.slb.ttdandroidframework.ui.adapter.FreezeFrameAdapter;
 import com.slb.ttdandroidframework.ui.adapter.ModeSixAdapter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
 import com.slb.ttdandroidframework.util.config.BizcContant;
-import com.slb.ttdandroidframework.util.config.Mode2Util;
 import com.slb.ttdandroidframework.util.config.ObdConfig;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,7 +51,8 @@ import static com.slb.ttdandroidframework.util.config.ObdConfig.OBD_COMMAND_FAIL
  * 邮箱：154336119@qq.com
  * 描述：mode6
  */
-public class Mode6Activity extends BaseActivity {
+public class NewMode6Activity extends BaseActivity {
+    private AlertDialog.Builder builder;
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     private ModeSixAdapter mAdapter;
@@ -90,7 +78,7 @@ public class Mode6Activity extends BaseActivity {
                 case OBD_COMMAND_FAILURE_IO:
                     showToastMsg(BizcContant.STR_OBD_DISCONNECTED);
                     BluetoothUtil.closeSocket();
-                    Logger.d("模式6：设备已断开连接，请重新连接");
+                    showToastMsg(getString(R.string.text_bluetooth_error_connecting));
                     finish();
                     break;
                 case OBD_COMMAND_FAILURE_IE:
@@ -105,7 +93,6 @@ public class Mode6Activity extends BaseActivity {
 //                    showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
                     showToastMsg(BizcContant.STR_OBD_DISCONNECTED);
                     BluetoothUtil.closeSocket();
-                    Logger.d("模式6：设备已断开连接，请重新连接");
                     finish();
                     break;
                 case OBD_COMMAND_FAILURE_NODATA:
@@ -166,7 +153,7 @@ public class Mode6Activity extends BaseActivity {
             showToastMsg("Bluetooth connect failed");
             return;
         }
-        executeMode6Command();
+        showWarning_3();
     }
 
     /**
@@ -205,61 +192,58 @@ public class Mode6Activity extends BaseActivity {
             //Get the current thread's token
             synchronized (this) {
                 try {
-                    //Step2:查询mode6可用的tid
-//                    Logger.d("模式6：=======查询mode6可用的tid");
-//                    List<String> tidList = new ArrayList<>();
-//                    try {
-//                        Mode6AvailablePidsCommand_01_20 available1 = new Mode6AvailablePidsCommand_01_20();
-//                        available1.run(sock.getInputStream(),sock.getOutputStream());
-//                        String result1 = available1.getFormattedResult();
-//                        tidList.addAll(Arrays.asList(result1.split(",")));
-//                    } catch (Exception e) {
-//                        Logger.d("模式6：Mode6AvailablePidsCommand_01_20===========异常:-------"+e.getMessage());
-//                    }
-//
-//                    try {
-//                        Mode6AvailablePidsCommand_21_40 available2 = new Mode6AvailablePidsCommand_21_40();
-//                        available2.run(sock.getInputStream(),sock.getOutputStream());
-//                        String result2 = available2.getFormattedResult();
-//                        tidList.addAll(Arrays.asList(result2.split(",")));
-//                    } catch (Exception e) {
-//                        Logger.d("模式6：Mode6AvailablePidsCommand_21_40===========异常:-------"+e.getMessage());
-//                    }
-//
-//                    try {
-//                        Mode6AvailablePidsCommand_41_60 available3 = new Mode6AvailablePidsCommand_41_60();
-//                        available3.run(sock.getInputStream(),sock.getOutputStream());
-//                        String result3 = available3.getFormattedResult();
-//                        tidList.addAll(Arrays.asList(result3.split(",")));
-//                    } catch (Exception e) {
-//                        Logger.d("模式6：Mode6AvailablePidsCommand_41_60===========异常:-------"+e.getMessage());
-//                    }
-//
-//                    System.out.println("要查询的mode6 TID集合:"+tidList);
-//                    Logger.d("模式6：=======要查询的mode6 TID集合:"+tidList);
+//                    Step2:查询mode6可用的tid
+                    Logger.d("模式6：=======查询mode6可用的tid");
+                    List<String> midList = new ArrayList<>();
+                    try {
+                        Mode6AvailablePidsCommand_01_20 available1 = new Mode6AvailablePidsCommand_01_20();
+                        available1.run(sock.getInputStream(),sock.getOutputStream());
+                        String result1 = available1.getFormattedResult();
+                        midList.addAll(Arrays.asList(result1.split(",")));
+                    } catch (Exception e) {
+                        Logger.d("模式6：Mode6AvailablePidsCommand_01_20===========异常:-------"+e.getMessage());
+                    }
+
+                    try {
+                        Mode6AvailablePidsCommand_21_40 available2 = new Mode6AvailablePidsCommand_21_40();
+                        available2.run(sock.getInputStream(),sock.getOutputStream());
+                        String result2 = available2.getFormattedResult();
+                        midList.addAll(Arrays.asList(result2.split(",")));
+                    } catch (Exception e) {
+                        Logger.d("模式6：Mode6AvailablePidsCommand_21_40===========异常:-------"+e.getMessage());
+                    }
+
+                    try {
+                        Mode6AvailablePidsCommand_41_60 available3 = new Mode6AvailablePidsCommand_41_60();
+                        available3.run(sock.getInputStream(),sock.getOutputStream());
+                        String result3 = available3.getFormattedResult();
+                        midList.addAll(Arrays.asList(result3.split(",")));
+                    } catch (Exception e) {
+                        Logger.d("模式6：Mode6AvailablePidsCommand_41_60===========异常:-------"+e.getMessage());
+                    }
+
+                    System.out.println("要查询的mode6 MID集合:"+midList);
+                    Logger.d("模式6：=======要查询的mode6 MID集合:"+midList);
 //                    //Step2
 
                     //Step3:执行mode6查询命令并解析结果
                     String commandString;
-                    Logger.d("模式6：=======执行mode6查询命令并解析结果");
-                    commandString = "06 21";
-                    Logger.d("模式6：=======commandString:"+commandString);
-                    Service6Command command = new Service6Command(commandString);
-                    command.run(sock.getInputStream(),sock.getOutputStream());
-//                    for (String tid : tidList) {
-//                        commandString = "06 "+tid;
-//                        Logger.d("模式6：=======commandString:"+commandString);
-//                        Service6Command command = new Service6Command(commandString);
-//                        command.run(sock.getInputStream(),sock.getOutputStream());
-//                        if(!TextUtils.isEmpty(command.getFormattedResult())){
-//                            list.addAll(command.getList());
-//                            for(ModeSixEntity modeSixEntity : command.getList()){
-//                                Logger.d("模式6：=======modeSixEntity:"+ modeSixEntity.toString());
-//                            }
-//                        }else{
-//                            Logger.d("模式6：======没新的数据:");
-//                        }
-//                    }
+//                    Logger.d("模式6：=======执行mode6查询命令并解析结果");
+//                    commandString = "06 21";
+//                    Logger.d("模式6：=======commandString:"+commandString);
+//                    Service6Command command = new Service6Command(commandString);
+//                    command.run(sock.getInputStream(),sock.getOutputStream());
+                    for (String mid : midList) {
+                        commandString = "06 "+mid;
+                        Logger.d("模式6：=======commandString:"+commandString);
+                        Service6Command command = new Service6Command(commandString,mid);
+                        command.run(sock.getInputStream(),sock.getOutputStream());
+                        if(!TextUtils.isEmpty(command.getFormattedResult())){
+                            list.addAll(command.getNewList());
+                        }else{
+                            Logger.d("模式6：======没新的数据:");
+                        }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("DTCERR", e.getMessage());
@@ -327,4 +311,24 @@ public class Mode6Activity extends BaseActivity {
         RxBus.get().post(new ObdServiceStateEvent(true));
     }
 
+    /**
+     * dialog
+     */
+    private void showWarning_3() {
+        builder = new AlertDialog.Builder(this)
+                .setMessage(R.string.Warning_3).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        executeMode6Command();
+                        dialogInterface.dismiss();
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        finish();
+                    }
+                });
+        builder.create().show();
+    }
 }

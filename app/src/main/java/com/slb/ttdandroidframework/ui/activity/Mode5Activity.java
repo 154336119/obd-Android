@@ -169,7 +169,7 @@ public class Mode5Activity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
-            showWaitDialog("刷新中");
+            showWaitDialog("loading...");
         }
 
         @Override
@@ -189,7 +189,7 @@ public class Mode5Activity extends BaseActivity {
                             service5Command.run(sock.getInputStream(), sock.getOutputStream());
                             mInsideList.add(service5Command.getMoudleFiveEntity());
                         }
-                        bankSensorEntiity.setList(mInsideList);
+//                        bankSensorEntiity.setList(mInsideList);
                         list.add(bankSensorEntiity);
                     }
                 } catch (IOException e) {

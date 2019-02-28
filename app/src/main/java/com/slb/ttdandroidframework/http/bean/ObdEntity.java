@@ -20,6 +20,16 @@ public class ObdEntity implements IPickerViewData, Parcelable {
     private String bluetoothName;
     private String bluetoothAddress;
 
+    public Boolean getContect() {
+        return isContect;
+    }
+
+    public void setContect(Boolean contect) {
+        isContect = contect;
+    }
+
+    private Boolean isContect = false;
+
     public String getObdModel() {
         return obdModel;
     }
@@ -47,10 +57,12 @@ public class ObdEntity implements IPickerViewData, Parcelable {
     public ObdEntity() {
     }
 
+
     @Override
     public String getPickerViewText() {
         return bluetoothName;
     }
+
 
     @Override
     public int describeContents() {
@@ -63,6 +75,7 @@ public class ObdEntity implements IPickerViewData, Parcelable {
         dest.writeString(this.obdModel);
         dest.writeString(this.bluetoothName);
         dest.writeString(this.bluetoothAddress);
+        dest.writeValue(this.isContect);
     }
 
     protected ObdEntity(Parcel in) {
@@ -70,6 +83,7 @@ public class ObdEntity implements IPickerViewData, Parcelable {
         this.obdModel = in.readString();
         this.bluetoothName = in.readString();
         this.bluetoothAddress = in.readString();
+        this.isContect = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<ObdEntity> CREATOR = new Parcelable.Creator<ObdEntity>() {

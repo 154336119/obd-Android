@@ -65,25 +65,29 @@ public class ModeSixAdapter extends BaseQuickAdapter<ModeSixEntity,BaseViewHolde
             }
         });
         cb.setChecked(mCheckStates.get(mData.indexOf(entity), false));
+        if(!TextUtils.isEmpty(entity.getMid())){
+            baseViewHolder.setText(R.id.TvMID,"MID:"+entity.getMid());
+        }
         if(!TextUtils.isEmpty(entity.getTid())){
             baseViewHolder.setText(R.id.TvTID,"TID:"+entity.getTid());
         }
-        if(!TextUtils.isEmpty(entity.getCid())){
-            baseViewHolder.setText(R.id.TvCID,"MID:"+entity.getCid());
-        }
-
         if(!TextUtils.isEmpty(entity.getMax())){
-            baseViewHolder.setText(R.id.TvMax,mContext.getString(R.string.max)+entity.getMax());
+            baseViewHolder.setText(R.id.TvMax,mContext.getString(R.string.max)+entity.getMax() +entity.getUnit());
         }else{
             baseViewHolder.setText(R.id.TvMax,mContext.getString(R.string.max)+mContext.getString(R.string.nothing));
         }
         if(!TextUtils.isEmpty(entity.getMin())){
-            baseViewHolder.setText(R.id.TvMin,mContext.getString(R.string.min)+entity.getMin());
+            baseViewHolder.setText(R.id.TvMin,mContext.getString(R.string.min)+entity.getMin() +entity.getUnit());
         }else{
             baseViewHolder.setText(R.id.TvMin,mContext.getString(R.string.min)+mContext.getString(R.string.nothing));
         }
         if(!TextUtils.isEmpty(entity.getValue())){
-            baseViewHolder.setText(R.id.TvValue,mContext.getString(R.string.values)+entity.getValue());
+//            if(entity.isState()){
+//                baseViewHolder.setTextColor(R.id.TvValue,R.color.white);
+//            }else{
+//                baseViewHolder.setTextColor(R.id.TvValue,R.color.google_red);
+//            }
+            baseViewHolder.setText(R.id.TvValue,mContext.getString(R.string.values)+entity.getValue()+entity.getUnit());
         }else{
             baseViewHolder.setText(R.id.TvValue,mContext.getString(R.string.values)+mContext.getString(R.string.nothing));
         }
@@ -98,7 +102,7 @@ public class ModeSixAdapter extends BaseQuickAdapter<ModeSixEntity,BaseViewHolde
         }
     }
     private void getDes(final BaseViewHolder baseViewHolder,final ModeSixEntity entity){
-        OkGo.<LzyResponse<ModeSixDesEntity>>get(DnsFactory.getInstance().getDns().getCommonBaseUrl()+"api/command/model/"+entity.getCid()+"/"+entity.getTid())
+        OkGo.<LzyResponse<ModeSixDesEntity>>get(DnsFactory.getInstance().getDns().getCommonBaseUrl()+"api/command/model/"+entity.getMid()+"/"+entity.getTid())
                 .tag(this)
                 .headers("Authorization","Bearer "+Base.getUserEntity().getToken())
                 .execute(new ActivityDialogCallback<LzyResponse<ModeSixDesEntity>>(baseActivity) {

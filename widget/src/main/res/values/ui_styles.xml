@@ -14,10 +14,13 @@
         <item name="android:textViewStyle">@style/BaseTextView</item>
         <item name="android:buttonStyle">@style/btn_bottom_single</item>
         <item name="android:editTextStyle">@style/edit_base</item>
-        <item name="buttonTextColor">@color/colors_a5</item>
+        <item name="buttonTextColor">@color/blue</item>
         <item name="buttonBg">@color/colorPrimary</item>
         <item name="buttonBgClick">@color/colors_b2</item>
         <item name="buttonBgEnable">@color/colors_b3</item>
+
+        <item name="buttonBarPositiveButtonStyle">@style/positiveBtnStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/negativeBtnstyle</item>
     </style>
     <style name="wrap">
         <item name="android:layout_width">wrap_content</item>

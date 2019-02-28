@@ -17,7 +17,7 @@ public class ReleaseDns implements Dns {
 
     @Override
     public String getCommonBaseUrl() {
-        return "http://139.224.138.105:13811/";
+        return "http://erp.veepeak.net:9999/";
     }
 
     @Override

@@ -37,6 +37,19 @@
             android:gravity="center"
             android:text="当前值：无"
             android:textColor="@color/white"/>
+        <LinearLayout
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white">
+            <ImageView
+                android:id="@+id/IvState"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@mipmap/ic_un_connect"
+                android:layout_centerInParent="true"/>
+        </LinearLayout>
     </LinearLayout>
     <TextView
         android:id="@+id/TvDes"

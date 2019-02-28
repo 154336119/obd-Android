@@ -27,12 +27,16 @@ import com.slb.ttdandroidframework.ui.activity.EmissionTestActivity;
 import com.slb.ttdandroidframework.ui.activity.FreezeFrameActivity;
 import com.slb.ttdandroidframework.ui.activity.Mode5Activity;
 import com.slb.ttdandroidframework.ui.activity.Mode6Activity;
+import com.slb.ttdandroidframework.ui.activity.NewMode5Activity;
+import com.slb.ttdandroidframework.ui.activity.NewMode6Activity;
 import com.slb.ttdandroidframework.ui.activity.NewReadErrorCodeActivity;
 import com.slb.ttdandroidframework.ui.activity.ReadErrorCodeActivity;
 import com.slb.ttdandroidframework.ui.activity.TroubleLightSActivity;
 import com.slb.ttdandroidframework.ui.contract.HomeContract;
 import com.slb.ttdandroidframework.ui.presenter.HomePresenter;
 import com.slb.ttdandroidframework.util.BluetoothUtil;
+import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
+import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.weight.CustomDialog;
 
 import java.io.IOException;
@@ -175,7 +179,7 @@ public class HomeFragment
                 //氧气传感器
                 if(!checkObd()){return;}
                 RxBus.get().post(new ObdServiceStateEvent(false));
-                ActivityUtil.next(_mActivity, Mode5Activity.class);
+                ActivityUtil.next(_mActivity, NewMode5Activity.class);
                 break;
             case R.id.Fl05:
                 //故障灯状态
@@ -187,7 +191,7 @@ public class HomeFragment
                 //车载监控
                 if(!checkObd()){return;}
                 RxBus.get().post(new ObdServiceStateEvent(false));
-                ActivityUtil.next(_mActivity, Mode6Activity.class);
+                ActivityUtil.next(_mActivity, NewMode6Activity.class);
                 break;
             case R.id.tvConnect:
                 ActivityUtil.next(_mActivity,AddDeviceListActivity.class);
@@ -199,10 +203,15 @@ public class HomeFragment
     public void onObdConnectStateEvent(ObdConnectStateEvent event) {
         if(event.isConnect()){
             tvConnect.setText("Connected");
+            String dev = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.SP_CONNECT_DEV, "");
+            tv01.setText(dev);
         }else{
             tvConnect.setText("Connect");
+            tv01.setText("obd");
         }
     }
+
+
 
     /**
      * 显示dialog
@@ -210,9 +219,9 @@ public class HomeFragment
     private void showDialog() {
         CustomDialog.Builder dialog = new CustomDialog.Builder(_mActivity);
         dialog
-                .setTitle("提示")
-                .setMessage("是否断开OBD连接？")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.prompt))
+                .setMessage(getString(R.string.prompt_content))
+                .setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         BluetoothUtil.setIsRunning(false);
@@ -222,7 +231,7 @@ public class HomeFragment
                         RxBus.get().post(new ObdConnectStateEvent(false));
                         dialogInterface.dismiss();
                     }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.NO), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

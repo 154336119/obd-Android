@@ -132,7 +132,7 @@ public class HistoryDetailActivity extends BaseActivity {
                         @Override
                         public void onStart(Request<LzyResponse<Object>, ? extends Request> request) {
                             super.onStart(request);
-                            showWaitDialog("加载中");
+                            showWaitDialog("loading...");
                         }
                     });
     }

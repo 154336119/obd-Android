@@ -95,7 +95,7 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
             Log.d(TAG, "Message received on handler");
             switch (msg.what) {
                 case NO_BLUETOOTH_DEVICE_SELECTED:
-                    showToastMsg("连接失败");
+                    showToastMsg(getString(R.string.text_bluetooth_error_connecting));
                     // showToastMsg(getString(R.string.text_bluetooth_nodevice));
                     break;
                 case CANNOT_CONNECT_TO_DEVICE:
@@ -103,7 +103,7 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
                     //    showToastMsg(getString(R.string.text_bluetooth_error_connecting));
                     break;
                 case OBD_COMMAND_FAILURE:
-                    showToastMsg("连接失败");
+                    showToastMsg(getString(R.string.text_bluetooth_error_connecting));
                     //   showToastMsg(getString(R.string.text_obd_command_failure));
                     break;
                 case OBD_COMMAND_FAILURE_IO:
@@ -111,7 +111,7 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
                     //   showToastMsg(getString(R.string.text_obd_command_failure) + " IO");
                     break;
                 case OBD_COMMAND_FAILURE_IE:
-                    showToastMsg("连接失败");
+                    showToastMsg(getString(R.string.text_bluetooth_error_connecting));
                     //   showToastMsg(getString(R.string.text_obd_command_failure) + " IE");
                     break;
                 case OBD_COMMAND_FAILURE_MIS:
@@ -119,7 +119,7 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
                     //   showToastMsg(getString(R.string.text_obd_command_failure) + " MIS");
                     break;
                 case OBD_COMMAND_FAILURE_UTC:
-                    showToastMsg("连接失败");
+                    showToastMsg(getString(R.string.text_bluetooth_error_connecting));
                     //  showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
                     break;
                 case OBD_COMMAND_FAILURE_NODATA:
@@ -269,7 +269,7 @@ public class DeviceActivity extends BaseMvpActivity<DeviceContract.IView, Device
 
     @Subscribe
     public void onConnectEvent(ConnectEvent event) {
-        showLoadingDialog("连接中");
+        showLoadingDialog(BizcContant.STR_CONNECTING);
 //                dialog.dismiss();
         try {
             if (BluetoothUtil.getSockInstance() != null) {
