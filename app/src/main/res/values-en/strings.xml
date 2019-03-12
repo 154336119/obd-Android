@@ -139,7 +139,6 @@
     <string name="confirmed_dtcs"> Confirmed DTCs</string>
     <string name="clear_dtcs">Clear DTCs</string>
     <string name="rescan">Rescan</string>
-    <string name="Read_DTCs">Read DTCs</string>
     <string name="Upload_DTCs">Upload DTCs</string>
     <!--尾气检测-->
     <string name="pid">PID</string>
@@ -159,14 +158,14 @@
     <string name="Distance_Since_Trouble_Codes_Cleared">Distance Since Trouble Codes Cleared</string>
     <string name="Run_Time_Since_Engine_Start">Run Time Since Engine Start</string>
     <string name="unit1_on">On</string>
-    <string name="unit1_off">Offw</string>
+    <string name="unit1_off">Off</string>
 
     <string name="Scanning">Scanning</string>
     <string name="Scan">Scan</string>
 
     <string name="Filter">Filter</string>
     <string name="Choose_your_OBD_device">Choose your OBD device</string>
-    <string name="Choose_your_vehicle">Choose your vehicle</string>
+    <string name="Choose_your_vehicle_">Choose your vehicle</string>
     <string name="Period">Period</string>
     <string name="Start_date">Start date</string>
     <string name="End_date">End date</string>
@@ -223,20 +222,19 @@
     Distance travelled while CEL activated Engine run time while CEL activated Distance travelled since DTCs cleared The loss of data may cause the vehicle to run poorly for a short period of time while      the ECU recalibrates itself.
     Do you want to continue?</string>
     <string name="Warning_3">This feature is currently only available on vehicles using CAN protocols. Would you like to continue?</string>
-    <string name="Warning_4">Please fist go to Bluetooth setting and pair with the OBD device.</string>
-    <string name="prompt">prompt</string>string>
+    <string name="Warning_4">Please first go to Bluetooth setting and pair with the OBD device.</string>
+    <string name="prompt">Note</string>string>
     <string name="prompt_upload_error_codes_content">Do you upload error codes?</string>
     <string name="prompt_disconnect_content">Are you sure to disconnect</string>
-    <string name="YES">Yes</string>
-    <string name="NO">No</string>
-    <string name="NO_DATA">no data</string>
+    <string name="YES">Confirm</string>
+    <string name="NO">Cancel</string>
+    <string name="NO_DATA">No Data</string>
+    <string name="YES1">Confirm</string>
+    <string name="Ignore_this_message">Do not show this message again</string>
 
-    <string name="add_a_vehicle">add a vehicle</string>
-    <string name="Ignore_this_message">Ignore this message</string>
-
-    <string name="product_model">product model</string>
-    <string name="entry_product_model">entry product model</string>
-    <string name="Enter_your_username">Enter your username</string>
+    <string name="product_model">Product Model</string>
+    <string name="entry_product_model">Enter the product model</string>
+    <string name="Enter_your_username">Enter new username</string>
 
     <!--&lt;!&ndash;修改车辆&ndash;&gt;-->
     <!--<string name="Edit_Vehicle">Edit Vehicle</string>-->
@@ -244,13 +242,34 @@
     <!--<string name="Enter_your_profile_name">Enter your profile name</string>-->
     <!--<string name="Confirm">Confirm</string>-->
 
-    <!--<string name="Make">Make</string>-->
-    <!--<string name="Model">Model</string>-->
+    <string name="Make">Make</string>
+    <string name="Model">Model</string>
 
-    <!--&lt;!&ndash;添加车辆&ndash;&gt;-->
-    <!--<string name="Add_a_vehicle">Add a vehicle</string>-->
-    <!--<string name="Vehicle_year_Vehicle_Make">Vehicle year Vehicle Make</string>-->
-    <!--<string name="Vehicle_Year">Vehicle Year</string>-->
-    <!--<string name="Vehicle_Model">Vehicle Model</string>-->
+    <!--添加车辆-->
+    <string name="Add_a_vehicle">Add a vehicle</string>
+    <string name="Vehicle_profile">Vehicle profile</string>
+    <string name="Vehicle_Make">Vehicle Make</string>
+    <string name="Vehicle_Year">Vehicle Year</string>
+    <string name="Vehicle_Model">Vehicle Model</string>
 
+    <string name="mod_a_vehicle">Edit Vehicle</string>
+    <string name="Delete">Delete</string>
+
+    <string name="Choose_PIDs">Choose PIDs</string>
+    <string name="read_dtcs_rescan">read dtcs rescan</string>
+    <string name="Upload_DTCs_">Upload DTCs</string>
+    <string name="Cancel_OBD_device_">Cancel OBD device</string>
+
+    <string name="Reset">Reset</string>
+
+    <string name="Please_enter_your_current_password">Please enter your current password</string>
+    <string name="Please_enter_the_model">Please enter the model</string>
+    <string name="Please_enter_your_new_password">Please enter your new password</string>
+    <string name="The_two_password_is_inconsistent">The two password is inconsistent</string>
+
+    <string name="Please_enter_the_vehicle_age">Please enter the vehicle age</string>
+    <string name="Please_enter_the_vehicle_name">Please enter the vehicle name</string>
+
+    <string name="Please_choise_the_obd">Please choose your OBD devices</string>
+    <string name="Please_choise_the_vehicle">Please choose your vehicle</string>
 </resources>

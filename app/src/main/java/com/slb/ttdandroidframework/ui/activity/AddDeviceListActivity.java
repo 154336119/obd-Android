@@ -1,5 +1,6 @@
 package com.slb.ttdandroidframework.ui.activity;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Entity;
 import android.graphics.Canvas;
@@ -13,8 +14,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Adapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +42,7 @@ import com.slb.ttdandroidframework.event.ObdServiceStateEvent;
 import com.slb.ttdandroidframework.event.RefreshMineObdListtEvent;
 import com.slb.ttdandroidframework.http.bean.ObdEntity;
 import com.slb.ttdandroidframework.http.bean.ObdSEntity;
+import com.slb.ttdandroidframework.http.bean.UserEntity;
 import com.slb.ttdandroidframework.http.callback.ActivityDialogCallback;
 import com.slb.ttdandroidframework.http.dns.DnsFactory;
 import com.slb.ttdandroidframework.http.model.LzyResponse;
@@ -70,8 +78,14 @@ public class AddDeviceListActivity extends BaseActivity {
     private static final int OBD_COMMAND_FAILURE_IE = 13;
     private static final int OBD_COMMAND_FAILURE_MIS = 14;
     private static final int OBD_COMMAND_FAILURE_NODATA = 15;
+    private Button btConfirm;
+    private Button btCancel ;
+    private CheckBox checkBox;
+    private boolean isCheck = false ;
+
     private CustomDialog mCommonAlertDialog;
     private int mTemPosition = 0;
+    private Dialog mDialog;
     private Handler mHandler = new Handler(new Handler.Callback() {
         private ObdHelper obdHelper;
 
@@ -226,8 +240,10 @@ public class AddDeviceListActivity extends BaseActivity {
                                 }
                             }
                         }
-                            List<ObdEntity> obdEntities = entity.getObds();
-                            Base.getUserEntity().setObdEntityList(obdEntities);
+                        List<ObdEntity> obdEntities = entity.getObds();
+                        UserEntity userEntity = Base.getUserEntity();
+                        userEntity.setObdEntityList(obdEntities);
+                        Base.setUserEntity(userEntity);
                             mAdapter.setNewData( obdEntities);
                             //提示
                         Boolean isIgnore = (Boolean) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.SP_IGNORE_OPEN_BLUE, false);
@@ -295,8 +311,8 @@ public class AddDeviceListActivity extends BaseActivity {
                 .execute(new ActivityDialogCallback<LzyResponse<ObdSEntity>>(this) {
                     @Override
                     public void onSuccess(Response<LzyResponse<ObdSEntity>> response) {
-                        ObdSEntity entity = response.body().data;
-                        Base.getUserEntity().setObdEntityList(mAdapter.getData());
+//                        ObdSEntity entity = response.body().data;
+//                        Base.getUserEntity().setObdEntityList(mAdapter.getData());
                     }
                 });
     }
@@ -329,26 +345,85 @@ public class AddDeviceListActivity extends BaseActivity {
         mCommonAlertDialog.show();
     }
 
-    /**
-     * dialog
-     */
-    private void showWarning_4() {
-        builder = new AlertDialog.Builder(this)
-                .setMessage(R.string.Warning_4).setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //ToDo: 你想做的事情
-                        SharedPreferencesUtils.setParam(AddDeviceListActivity.this, SP_IS_FIRST,false);
-                        dialogInterface.dismiss();
-                    }
-                }).setNegativeButton(getString(R.string.Ignore_this_message), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //ToDo: 你想做的事情
-                        SharedPreferencesUtils.setParam(AddDeviceListActivity.this, SP_IGNORE_OPEN_BLUE,true);
-                        dialogInterface.dismiss();
-                    }
-                });
-        builder.create().show();
+//    /**
+//     * dialog
+//     */
+//    private void showWarning_4() {
+//        builder = new AlertDialog.Builder(this)
+//                .setMessage(R.string.Warning_4).setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        //ToDo: 你想做的事情
+//                        SharedPreferencesUtils.setParam(AddDeviceListActivity.this, SP_IS_FIRST,false);
+//                        dialogInterface.dismiss();
+//                    }
+//                }).setNegativeButton(getString(R.string.Ignore_this_message), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        //ToDo: 你想做的事情
+//                        SharedPreferencesUtils.setParam(AddDeviceListActivity.this, SP_IGNORE_OPEN_BLUE,true);
+//                        dialogInterface.dismiss();
+//                    }
+//                });
+//        builder.create().show();
+//    }
+
+    private void showWarning_4(){
+        mDialog = new Dialog(this);
+        //去除标题栏
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //2.填充布局
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View           dialogView     = inflater.inflate(R.layout.dialog_normal_layout_one, null);
+        //将自定义布局设置进去
+        mDialog.setContentView(dialogView);
+        //3.设置指定的宽高,如果不设置的话，弹出的对话框可能不会显示全整个布局，当然在布局中写死宽高也可以
+        WindowManager.LayoutParams lp     = new WindowManager.LayoutParams();
+        Window                     window = mDialog.getWindow();
+        lp.copyFrom(window.getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        //注意要在Dialog show之后，再将宽高属性设置进去，才有效果
+        mDialog.show();
+        window.setAttributes(lp);
+
+        //设置点击其它地方不让消失弹窗
+        mDialog.setCancelable(false);
+        initDialogView(dialogView);
+
+        initDialogListener();
     }
+
+    private void initDialogView(View view) {
+        btConfirm = (Button) view.findViewById(R.id.positiveButton);
+        btCancel = (Button) view.findViewById(R.id.negativeButton);
+        checkBox = (CheckBox) view.findViewById(R.id.cb);
+    }
+
+    private void initDialogListener() {
+        btConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferencesUtils.setParam(AddDeviceListActivity.this, SP_IS_FIRST,false);
+                mDialog.dismiss();
+            }
+        });
+
+        btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+                if(isCheck){
+                    SharedPreferencesUtils.setParam(AddDeviceListActivity.this, SP_IGNORE_OPEN_BLUE,true);
+                }
+            }
+        });
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isCheck = isChecked;
+            }
+        });
+    }
+
 }

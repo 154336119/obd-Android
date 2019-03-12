@@ -44,7 +44,7 @@ public class SubmitErrorCodeActivity extends BaseActivity {
 
     @Override
     protected String setToolbarTitle() {
-        return "上传故障码";
+        return getString(R.string.Upload_DTCs);
     }
 
     @Override
@@ -94,9 +94,11 @@ public class SubmitErrorCodeActivity extends BaseActivity {
                 mSelectObdEntity =  Base.getUserEntity().getObdEntityList().get(options1);
             }
         })
-                .setSubmitText("确定")//确定按钮文字
-                .setCancelText("取消")//取消按钮文字
-                .setTitleText("选择OBD设备")//标题
+                .setSubmitText(getString(R.string.YES))//确定按钮文字
+                .setCancelText(getString(R.string.Cancel_OBD_device_))//取消按钮文字
+                .setTitleText(getString(R.string.Choose_your_OBD_device))//标题
+                .setTitleSize(14)
+                .setSubCalSize(14)
                 .build();
 
         pvObdOptions.setPicker(Base.getUserEntity().getObdEntityList());//添加数据源
@@ -112,9 +114,11 @@ public class SubmitErrorCodeActivity extends BaseActivity {
                 mSelectVehicleEntity =  Base.getUserEntity().getVehicleEntityList().get(options1);
             }
         })
-                .setSubmitText("确定")//确定按钮文字
-                .setCancelText("取消")//取消按钮文字
-                .setTitleText("选择车辆")//标题
+                .setSubmitText(getString(R.string.YES))//确定按钮文字
+                .setCancelText(getString(R.string.NO))//取消按钮文字
+                .setTitleText(getString(R.string.Choose_your_OBD_device))//标题
+                .setTitleSize(14)
+                .setSubCalSize(14)
                 .build();
 
         pvCarOptions.setPicker(Base.getUserEntity().getVehicleEntityList());//添加数据源
@@ -123,11 +127,11 @@ public class SubmitErrorCodeActivity extends BaseActivity {
 
     private void submit(){
         if(mSelectObdEntity == null){
-            showToastMsg("请选择OBD");
+            showToastMsg(getString(R.string.Please_choise_the_obd));
             return;
         }
         if(mSelectVehicleEntity == null){
-            showToastMsg("请选择车辆");
+            showToastMsg(getString(R.string.Please_choise_the_vehicle));
             return;
         }
         OkGo.<LzyResponse<String>>post(DnsFactory.getInstance().getDns().getCommonBaseUrl()+"api/command-log/dtc")

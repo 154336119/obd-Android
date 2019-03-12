@@ -1,0 +1,82 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:padding="20.0dip" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_custom_dialog">
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/message"
+                android:textColor="#555555"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.5"
+                android:paddingTop="20dp"
+                android:paddingBottom="15.0dip"
+                android:paddingLeft="20.0dip"
+                android:paddingRight="20.0dip"
+                android:text="@string/Warning_4"
+                />
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/positiveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/YES"
+                android:background="@null"
+                android:textColor="#3d82f7"
+                android:textSize="15sp"
+                android:layout_alignLeft="@+id/negativeButton"
+                android:layout_alignParentRight="true"/>
+            <View
+                android:id="@+id/view_line"
+                android:layout_width="1.0px"
+                android:layout_height="20dp"
+                android:background="#d6def3"
+                android:layout_marginLeft="20dp"/>
+            <Button
+                android:id="@+id/negativeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20.0dip"
+                android:gravity="center"
+                android:text="@string/Ignore_this_message"
+                android:layout_below="@+id/positiveButton"
+                android:background="@null"
+                android:textColor="#555555"
+                android:layout_toLeftOf="@+id/cb"
+                android:textSize="15sp" />
+            <CheckBox
+                android:id="@+id/cb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/positiveButton"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</FrameLayout>

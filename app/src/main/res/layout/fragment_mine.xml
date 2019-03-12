@@ -79,7 +79,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:textColor="@color/white"
-                        android:text="@string/add_a_vehicle"
+                        android:text="@string/Add_a_vehicle"
                         android:layout_marginRight="20dp"/>
                 </RelativeLayout>
                 <android.support.v7.widget.RecyclerView

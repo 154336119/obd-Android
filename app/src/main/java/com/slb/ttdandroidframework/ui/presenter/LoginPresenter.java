@@ -62,6 +62,11 @@ public class LoginPresenter extends AbstractBasePresenter<LoginContract.IView>
 //						Logger.d("response:"+response.body().data);
 						Base.setUserEntity(response.body().data);
 						Base.getUserEntity().setToken(mToken);
+
+						UserEntity userEntity = Base.getUserEntity();
+						userEntity.setToken(mToken);
+						Base.setUserEntity(userEntity);
+
 						Logger.d(Base.getUserEntity().getEmail());
 						mView.loginSuccess();
 					}

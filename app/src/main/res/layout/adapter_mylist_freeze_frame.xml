@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/TvDes"
-            android:layout_width="250dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
@@ -29,7 +29,7 @@
             />
         <TextView
             android:id="@+id/TvValue"
-            android:layout_width="75dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="15sp"
@@ -49,7 +49,7 @@
             android:layout_toLeftOf="@+id/TvUtil" />
         <TextView
             android:id="@+id/TvUtil"
-            android:layout_width="45dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:gravity="center"

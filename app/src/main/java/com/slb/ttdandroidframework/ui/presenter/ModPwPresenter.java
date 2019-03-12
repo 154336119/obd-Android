@@ -7,6 +7,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.slb.frame.ui.presenter.AbstractBasePresenter;
 import com.slb.ttdandroidframework.Base;
+import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.http.bean.UserEntity;
 import com.slb.ttdandroidframework.http.callback.DialogCallback;
 import com.slb.ttdandroidframework.http.dns.DnsFactory;
@@ -25,19 +26,19 @@ public class ModPwPresenter extends AbstractBasePresenter<ModPasswordContract.IV
     @Override
     public void reset(String oldPw, String newPw, String againNewPw) {
         if(TextUtils.isEmpty(oldPw)){
-            mView.showMsg("请输入当前密码");
+            mView.showMsg(Base.getContext().getString(R.string.Please_enter_your_current_password));
             return;
         }
         if(TextUtils.isEmpty(newPw)){
-            mView.showMsg("请输入新密码");
+            mView.showMsg(Base.getContext().getString(R.string.Please_enter_your_new_password));
             return;
         }
         if(TextUtils.isEmpty(againNewPw)){
-            mView.showMsg("请确认密码");
+            mView.showMsg(Base.getContext().getString(R.string.Please_enter_your_new_password));
             return;
         }
         if(!newPw.equals(againNewPw)){
-            mView.showMsg("两次密码不一致");
+            mView.showMsg(Base.getContext().getString(R.string.The_two_password_is_inconsistent));
             return;
         }
         String id = Base.getUserEntity().getId();

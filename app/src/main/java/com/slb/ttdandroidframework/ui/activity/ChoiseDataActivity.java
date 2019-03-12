@@ -83,7 +83,7 @@ public class ChoiseDataActivity
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mTvAgain.setVisibility(View.GONE);
-        mTvName.setText("选择数据");
+        mTvName.setText(getString(R.string.Choose_PIDs));
         mAdapter = new ChoiseDataAdapter(ObdConfig.getAllCommandsName());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);

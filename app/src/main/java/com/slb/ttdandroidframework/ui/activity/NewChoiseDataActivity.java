@@ -166,7 +166,7 @@ public class NewChoiseDataActivity
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         mTvAgain.setVisibility(View.GONE);
-        mTvName.setText("选择数据");
+        mTvName.setText(getString(R.string.Choose_PIDs));
         mAdapter = new DataAdapter(mList);
         mAdapter.setChoiseData(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

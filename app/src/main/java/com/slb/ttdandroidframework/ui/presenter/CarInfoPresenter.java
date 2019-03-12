@@ -7,6 +7,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.slb.frame.ui.presenter.AbstractBasePresenter;
 import com.slb.ttdandroidframework.Base;
+import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.http.bean.CarMakeEntity;
 import com.slb.ttdandroidframework.http.bean.CarModelEntity;
 import com.slb.ttdandroidframework.http.bean.UserEntity;
@@ -29,15 +30,15 @@ public class CarInfoPresenter extends AbstractBasePresenter<CarInfoContract.IVie
     public void addCar( CarModelEntity carModelEntity ,String year,String name) {
 
         if(carModelEntity == null){
-            mView.showMsg("请输入型号");
+            mView.showMsg(Base.getContext().getString(R.string.Please_enter_the_model));
             return;
         }
         if(year == null){
-            mView.showMsg("请选择车辆年代");
+            mView.showMsg(Base.getContext().getString(R.string.Please_enter_the_vehicle_age));
             return;
         }
         if(name == null){
-            mView.showMsg("请输入车辆名称");
+            mView.showMsg(Base.getContext().getString(R.string.Please_enter_the_vehicle_name));
             return;
         }
         String id = Base.getUserEntity().getId();
@@ -64,15 +65,15 @@ public class CarInfoPresenter extends AbstractBasePresenter<CarInfoContract.IVie
             ,String year
             ,String name) {
         if(carModelEntity == null){
-            mView.showMsg("请输入型号");
+            mView.showMsg(Base.getContext().getString(R.string.Please_enter_the_model));
             return;
         }
         if(year == null){
-            mView.showMsg("请选择车辆年代");
+            mView.showMsg(Base.getContext().getString(R.string.Please_enter_the_vehicle_age));
             return;
         }
         if(name == null){
-            mView.showMsg("请输入车辆名称");
+            mView.showMsg(Base.getContext().getString(R.string.Please_enter_the_vehicle_name));
             return;
         }
         String id = Base.getUserEntity().getId();

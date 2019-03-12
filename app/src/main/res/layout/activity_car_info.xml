@@ -14,7 +14,7 @@
             android:id="@+id/edtName"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
-            android:hint="请输入车辆名称"
+            android:hint="@string/Vehicle_profile"
             android:lines="1"
             android:background="#3C444F"
             android:layout_marginTop="15dp"/>
@@ -22,7 +22,7 @@
             android:id="@+id/edtYear"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
-            android:hint="请选择车辆年代"
+            android:hint="@string/Vehicle_Year"
             android:lines="1"
             android:background="#3C444F"
             android:layout_marginTop="15dp"/>
@@ -30,7 +30,7 @@
             android:id="@+id/edtMake"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
-            android:hint="请输入您的品牌"
+            android:hint="@string/Vehicle_Make"
             android:lines="1"
             android:background="#3C444F"
             android:layout_marginTop="15dp"/>
@@ -38,7 +38,7 @@
             android:id="@+id/edtModel"
             style="@style/edit_padding_10"
             android:completionThreshold="1"
-            android:hint="请输入您的型号"
+            android:hint="@string/Vehicle_Model"
             android:lines="1"
             android:background="#3C444F"
             android:layout_marginTop="15dp"/>
@@ -48,6 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/distance_30"
-            android:text="确认" />
+            android:text="@string/YES" />
     </LinearLayout>
 </LinearLayout>

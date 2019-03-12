@@ -29,7 +29,6 @@ public class ModPasswordActivity extends BaseMvpActivity<ModPasswordContract.IVi
     }
     @Override
     public void resetSuccess() {
-        showMsg("修改成功");
         finish();
     }
 

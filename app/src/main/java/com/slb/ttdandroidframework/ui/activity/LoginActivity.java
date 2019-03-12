@@ -84,7 +84,7 @@ public class LoginActivity extends BaseMvpActivity<LoginContract.IView, LoginCon
         if(isfirst){
             showWarning_1();
         }
-        String userJsonStr = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.SP_USER, "");
+        String userJsonStr = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.SP_USER,  "");
         if(!TextUtils.isDigitsOnly(userJsonStr)){
             UserEntity entity =JSONObject.parseObject(userJsonStr,UserEntity.class);
             Base.setUserEntity(entity);

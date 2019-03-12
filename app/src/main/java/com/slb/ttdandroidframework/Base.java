@@ -2,14 +2,21 @@ package com.slb.ttdandroidframework;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.slb.frame.cache.ACache;
+import com.slb.frame.utils.ActivityUtil;
 import com.slb.ttdandroidframework.http.bean.ObdEntity;
 import com.slb.ttdandroidframework.http.bean.UserEntity;
+import com.slb.ttdandroidframework.util.SharedPreferencesUtils;
+import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.util.io.AbstractGatewayService;
 
 import java.util.List;
+
+import static com.slb.ttdandroidframework.util.config.BizcContant.SP_USER;
 
 
 /**
@@ -56,10 +63,11 @@ public class Base {
      * @return
      */
     public static UserEntity getUserEntity() {
+
         if(mUserEntity == null){
-            if(ACache.get(getContext()).getAsObject("userEnity") !=null){
-                return (UserEntity)ACache.get(getContext()).getAsObject("userEnity");
-            }
+            String userJsonStr = (String) SharedPreferencesUtils.getParam(Base.getContext(), BizcContant.SP_USER, "");
+            UserEntity entity =JSONObject.parseObject(userJsonStr,UserEntity.class);
+            Base.setUserEntity(entity);
         }
         return mUserEntity;
     }
@@ -69,7 +77,8 @@ public class Base {
      * @return
      */
     public static void setUserEntity(final UserEntity mUserEntity) {
-        ACache.get(getContext()).put("userEnity",mUserEntity);
+        String userJsonStr = JSONObject.toJSONString(mUserEntity);//将java对象转换为json对象
+        SharedPreferencesUtils.setParam(mContext, SP_USER,userJsonStr);
         Base.mUserEntity = mUserEntity;
     }
 

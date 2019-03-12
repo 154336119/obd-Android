@@ -220,7 +220,7 @@ public class HomeFragment
         CustomDialog.Builder dialog = new CustomDialog.Builder(_mActivity);
         dialog
                 .setTitle(getString(R.string.prompt))
-                .setMessage(getString(R.string.prompt_content))
+                .setMessage(getString(R.string.prompt))
                 .setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

@@ -62,9 +62,9 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
     @Override
     protected String setToolbarTitle() {
         if (mOperation == BizcContant.ADD) {
-            return "添加车辆";
+            return getString(R.string.Add_a_vehicle);
         } else if (mOperation == BizcContant.EDIT) {
-            return "修改车辆";
+            return getString(R.string.mod_a_vehicle);
         }
         return null;
     }
@@ -208,9 +208,11 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
                 mPresenter.getCarModeList(mSeleceCarBrandEntity.getId());
             }
         })
-                .setTitleText("类型选择")
+                .setTitleText(getString(R.string.Make))
                 .setContentTextSize(20)//设置滚轮文字大小
                 .setSelectOptions(0, 1)//默认选中项
+                .setSubmitText(getString(R.string.YES))
+                .setCancelText(getString(R.string.NO))
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .build();
         pvCarBrandOptions.setPicker(mCarBrandList);//二级选择器
@@ -224,9 +226,11 @@ public class CarInfoActivity extends BaseMvpActivity<CarInfoContract.IView, CarI
                 mSelectCarModelEntity = mCarModelList.get(options1);
             }
         })
-                .setTitleText("类型选择")
+                .setTitleText(getString(R.string.Model))
                 .setContentTextSize(20)//设置滚轮文字大小
                 .setSelectOptions(0, 1)//默认选中项
+                .setSubmitText(getString(R.string.YES))
+                .setCancelText(getString(R.string.NO))
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .build();
         pvCarModelOptions.setPicker(mCarModelList);//二级选择器

@@ -1,252 +1,276 @@
 <resources>
-    <string name="app_name">OBDChecks</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_clear_codes">Clear Codes</string>
-    <string name="notification_action">Tap to open OBD-Reader</string>
-    <string name="command_list">Choose a command</string>
-    <string name="service_starting">Starting OBD connection..</string>
-    <string name="service_started">OBD connection has started.</string>
-    <string name="service_stopped">OBD connection has stopped.</string>
-    <string name="notification_label">Tap to open OBD-Reader.</string>
-    <string name="title_activity_trouble_codes">Trouble Codes</string>
-    <string name="pref_upload_category_title">Data Upload</string>
-    <string name="pref_upload_category" translatable="false">upload_category</string>
-    <string name="title_activity_trips_list">TripsList</string>
-    <string name="menu_trip_list">Trips</string>
-    <string name="menu_item_trip_delete">Delete</string>
-    <string name="pref_gps_category" translatable="false">gps_category</string>
-    <string name="dialog_loading_title">loading...</string>
-    <string name="dialog_loading_body">loading...</string>
-    <string name="menu_start_live_data">Start Live Data</string>
-    <string name="menu_stop_live_data">Stop Live Data</string>
-    <string name="menu_settings">Settings</string>
-    <string name="menu_get_dtc">Get DTC</string>
-    <string name="text_gps" translatable="false">GPS</string>
-    <string name="text_obd" translatable="false">OBD</string>
-    <string name="text_bluetooth" translatable="false">Bluetooth</string>
-    <string name="text_orientation_default" translatable="false">N</string>
-    <string name="text_zero" translatable="false">0</string>
-    <string name="text_consumption_default" translatable="false">0l/100km</string>
-    <string name="text_runtime_default" translatable="false">00:00:00</string>
-    <string name="title_pref_obd">OBD Preferences</string>
-    <string name="title_pref_commands">OBD Commands</string>
-    <string name="title_pref_bluetooth" translatable="false">Bluetooth</string>
-    <string name="title_pref_gps" translatable="false">GPS</string>
-    <string name="text_no_bluetooth_id">Sorry, your device doesn\'t support Bluetooth</string>
-    <string name="text_bluetooth_disabled">You have Bluetooth disabled. Please enable it (using Mock service)</string>
-    <string name="text_bluetooth_nodevice">No Bluetooth device selected</string>
-    <string name="text_bluetooth_error_connecting">Cannot connect to bluetooth device!</string>
-    <string name="text_no_orientation_sensor">Orientation sensor missing?</string>
-    <string name="text_no_gps_support">Sorry, your device doesn\'t support or has disabled GPS.</string>
-    <string name="text_save_trip_not_available">Sorry, trip will not be saved.</string>
-    <string name="text_obd_command_failure">OBD command failure!</string>
-    <string name="text_dtc_no_data">No DTC stored</string>
-    <string name="status_no_bluetooth_id">unavailable</string>
-    <string name="status_bluetooth_disabled">disabled</string>
-    <string name="status_bluetooth_ok">ready</string>
-    <string name="status_bluetooth_connecting">connecting&#8230;</string>
-    <string name="status_bluetooth_connected">connected</string>
-    <string name="status_bluetooth_error_connecting">connection failed</string>
-    <string name="status_gps_fix">fix acquired</string>
-    <string name="status_gps_no_fix">fix not acquired</string>
-    <string name="status_gps_started">started</string>
-    <string name="status_gps_stopped">stopped</string>
-    <string name="status_gps_ready">ready</string>
-    <string name="status_gps_no_support">not available</string>
-    <string name="status_gps_not_used">not used</string>
-    <string name="status_obd_ready">OK</string>
-    <string name="status_obd_data">receiving data&#8230;</string>
-    <string name="status_obd_disconnected">disconnected</string>
-    <string name="status_obd_no_support">NA</string>
-    <string name="pref_upload_title">Enable Data Upload</string>
-    <string name="pref_upload_summaryOff">Enable http data upload</string>
-    <string name="pref_upload_summaryOn">Disable http data upload</string>
-    <string name="pref_upload_url_title">Upload URL</string>
-    <string name="pref_upload_url_summary">POST URL that will accept real-time data</string>
-    <string name="pref_vehicle_id_title">Vehicle ID</string>
-    <string name="pref_vehicle_id_summary">Optional unique id of this vehicle, used with uploaded data</string>
-    <string name="pref_bluetooth_title">Enable Bluetooth</string>
-    <string name="pref_bluetooth_summaryOff">Turn on Bluetooth</string>
-    <string name="pref_bluetooth_summaryOn">Turn off Bluetooth</string>
-    <string name="pref_bluetooth_list_devices_summary">List of paired bluetooth devices.</string>
-    <string name="pref_bluetooth_list_devices_title">Bluetooth Devices</string>
-    <string name="pref_gps_category_title">Enable GPS</string>
-    <string name="pref_gps_category_summaryOff">Turn on GPS</string>
-    <string name="pref_gps_category_summaryOn">Turn off GPS</string>
-    <string name="pref_gps_update_period_title">Update Period in Seconds</string>
-    <string name="pref_gps_update_period_summary">The length of time between querying new position in seconds</string>
-    <string name="pref_gps_distance_period_title">Update Period in Meters</string>
-    <string name="pref_gps_distance_period_summary">Min Distance between location updates, in meters</string>
-    <string name="pref_obd_protocols_title">OBD Protocol</string>
-    <string name="pref_obd_protocols_summary">Select OBD Protocol to use</string>
-    <string name="pref_imperial_units_title">Imperial Units</string>
-    <string name="pref_imperial_units_summaryOff">Enable imperial units</string>
-    <string name="pref_imperial_units_summaryOn">Go back to metric units</string>
-    <string name="pref_obd_update_period_title">Update Period in Seconds</string>
-    <string name="pref_obd_update_period_summary">The length of time between querying vehicle data in seconds</string>
-    <string name="pref_max_fuel_econ_title">Maximum Fuel Economy Value</string>
-    <string name="pref_max_fuel_econ_summary">Any fuel economy values larger than this will be thrown out</string>
-    <string name="pref_volumetric_efficiency_dialog_title">Volumetric Efficiency (eg 0.85)</string>
-    <string name="pref_volumetric_efficiency_summary">Used for fuel economy on vehicles without MAF sensor</string>
-    <string name="pref_volumetric_efficiency_title">Volumetric Efficiency</string>
-    <string name="pref_engine_displacement_title">Engine Displacement (liters)</string>
-    <string name="pref_engine_displacement_summary">Used for fuel economy on vehicles without MAF sensor</string>
-    <string name="pref_reader_config_title">Reader Config Commands</string>
-    <string name="pref_reader_config_summary">Commands to configure bluetooth reader, separate with new line</string>
-    <string name="title_pref_commands_summary">Select the commands you would like to see in real-time.</string>
-    <string name="title_pref_commands_title">OBD Commands</string>
-    <string name="title_pref_full_logging"> Full logging configuration </string>
-    <string name="pref_enable_full_logging_summary"> Enables full offline logging with upload</string>
-    <string name="pref_enable_full_logging_title"> Enable full logging </string>
-    <string name="default_dirname_full_logging">OBDReaderLogs</string>
-    <string name="pref_dirname_dialogTitle">Choose the name of the directory to save the logs</string>
-    <string name="pref_dirname_title">Directory name</string>
-    <string name="pref_dirname_summary">Name of the directory where to save the files</string>
-    <string name="pref_dev_email_title">Developer Email</string>
-    <string name="pref_dev_email_summary">Logs will be emailed to this address</string>
-    <string name="text_noerrors">There were no errors found.!</string>
-    <!--注册-->
-    <string name="register_title">注册</string>
-    <string name="enter_the_validation_code">输入验证码</string>
-    <string name="send_the_validation_code">发送验证码</string>
-    <string name="register_immediately">注册</string>
-    <!--登录-->
-    <string name="sign_in_title">登录</string>
-    <string name="sign_in">登录</string>
-    <string name="email_address">请输入您的邮箱</string>
-    <string name="password">请输入您的密码</string>
-    <string name="register">免费注册</string>
-    <string name="forget_your_passoword">找回密码</string>
-    <!--修改密码-->
-    <string name="Change_your_password">修改密码</string>
-    <string name="Current_password">请输入当前密码</string>
-    <string name="New_password">请输入新密码</string>
-    <string name="Confirm_password">请确认新密码</string>
-    <string name="Save">保存</string>
-    <!--主页面-->
-    <string name="read_dtcs">读取故障码</string>
-    <string name="freeze_frame">冻结帧</string>
-    <string name="smog_check">尾气检测</string>
-    <string name="mode_5">氧气传感器</string>
-    <string name="mode_6">车载监控</string>
-    <string name="mil_status">故障灯状态</string>
-    <string name="diagnostics">诊断</string>
-    <string name="live_data">数据</string>
-    <string name="history">历史</string>
-    <string name="my_device">我的</string>
+<string name="app_name">OBDChecks</string>
+<string name="action_settings">Settings</string>
+<string name="action_clear_codes">Clear Codes</string>
+<string name="notification_action">Tap to open OBD-Reader</string>
+<string name="command_list">Choose a command</string>
+<string name="service_starting">Starting OBD connection..</string>
+<string name="service_started">OBD connection has started.</string>
+<string name="service_stopped">OBD connection has stopped.</string>
+<string name="notification_label">Tap to open OBD-Reader.</string>
+<string name="title_activity_trouble_codes">Trouble Codes</string>
+<string name="pref_upload_category_title">Data Upload</string>
+<string name="pref_upload_category" translatable="false">upload_category</string>
+<string name="title_activity_trips_list">TripsList</string>
+<string name="menu_trip_list">Trips</string>
+<string name="menu_item_trip_delete">Delete</string>
+<string name="pref_gps_category" translatable="false">gps_category</string>
+<string name="dialog_loading_title">loading...</string>
+<string name="dialog_loading_body">loading...</string>
+<string name="menu_start_live_data">Start Live Data</string>
+<string name="menu_stop_live_data">Stop Live Data</string>
+<string name="menu_settings">Settings</string>
+<string name="menu_get_dtc">Get DTC</string>
+<string name="text_gps" translatable="false">GPS</string>
+<string name="text_obd" translatable="false">OBD</string>
+<string name="text_bluetooth" translatable="false">Bluetooth</string>
+<string name="text_orientation_default" translatable="false">N</string>
+<string name="text_zero" translatable="false">0</string>
+<string name="text_consumption_default" translatable="false">0l/100km</string>
+<string name="text_runtime_default" translatable="false">00:00:00</string>
+<string name="title_pref_obd">OBD Preferences</string>
+<string name="title_pref_commands">OBD Commands</string>
+<string name="title_pref_bluetooth" translatable="false">Bluetooth</string>
+<string name="title_pref_gps" translatable="false">GPS</string>
+<string name="text_no_bluetooth_id">Sorry, your device doesn\'t support Bluetooth</string>
+<string name="text_bluetooth_disabled">You have Bluetooth disabled. Please enable it (using Mock service)</string>
+<string name="text_bluetooth_nodevice">No Bluetooth device selected</string>
+<string name="text_bluetooth_error_connecting">Cannot connect to bluetooth device!</string>
+<string name="text_no_orientation_sensor">Orientation sensor missing?</string>
+<string name="text_no_gps_support">Sorry, your device doesn\'t support or has disabled GPS.</string>
+<string name="text_save_trip_not_available">Sorry, trip will not be saved.</string>
+<string name="text_obd_command_failure">OBD command failure!</string>
+<string name="text_dtc_no_data">No DTC stored</string>
+<string name="status_no_bluetooth_id">unavailable</string>
+<string name="status_bluetooth_disabled">disabled</string>
+<string name="status_bluetooth_ok">ready</string>
+<string name="status_bluetooth_connecting">connecting&#8230;</string>
+<string name="status_bluetooth_connected">connected</string>
+<string name="status_bluetooth_error_connecting">connection failed</string>
+<string name="status_gps_fix">fix acquired</string>
+<string name="status_gps_no_fix">fix not acquired</string>
+<string name="status_gps_started">started</string>
+<string name="status_gps_stopped">stopped</string>
+<string name="status_gps_ready">ready</string>
+<string name="status_gps_no_support">not available</string>
+<string name="status_gps_not_used">not used</string>
+<string name="status_obd_ready">OK</string>
+<string name="status_obd_data">receiving data&#8230;</string>
+<string name="status_obd_disconnected">disconnected</string>
+<string name="status_obd_no_support">NA</string>
+<string name="pref_upload_title">Enable Data Upload</string>
+<string name="pref_upload_summaryOff">Enable http data upload</string>
+<string name="pref_upload_summaryOn">Disable http data upload</string>
+<string name="pref_upload_url_title">Upload URL</string>
+<string name="pref_upload_url_summary">POST URL that will accept real-time data</string>
+<string name="pref_vehicle_id_title">Vehicle ID</string>
+<string name="pref_vehicle_id_summary">Optional unique id of this vehicle, used with uploaded data</string>
+<string name="pref_bluetooth_title">Enable Bluetooth</string>
+<string name="pref_bluetooth_summaryOff">Turn on Bluetooth</string>
+<string name="pref_bluetooth_summaryOn">Turn off Bluetooth</string>
+<string name="pref_bluetooth_list_devices_summary">List of paired bluetooth devices.</string>
+<string name="pref_bluetooth_list_devices_title">Bluetooth Devices</string>
+<string name="pref_gps_category_title">Enable GPS</string>
+<string name="pref_gps_category_summaryOff">Turn on GPS</string>
+<string name="pref_gps_category_summaryOn">Turn off GPS</string>
+<string name="pref_gps_update_period_title">Update Period in Seconds</string>
+<string name="pref_gps_update_period_summary">The length of time between querying new position in seconds</string>
+<string name="pref_gps_distance_period_title">Update Period in Meters</string>
+<string name="pref_gps_distance_period_summary">Min Distance between location updates, in meters</string>
+<string name="pref_obd_protocols_title">OBD Protocol</string>
+<string name="pref_obd_protocols_summary">Select OBD Protocol to use</string>
+<string name="pref_imperial_units_title">Imperial Units</string>
+<string name="pref_imperial_units_summaryOff">Enable imperial units</string>
+<string name="pref_imperial_units_summaryOn">Go back to metric units</string>
+<string name="pref_obd_update_period_title">Update Period in Seconds</string>
+<string name="pref_obd_update_period_summary">The length of time between querying vehicle data in seconds</string>
+<string name="pref_max_fuel_econ_title">Maximum Fuel Economy Value</string>
+<string name="pref_max_fuel_econ_summary">Any fuel economy values larger than this will be thrown out</string>
+<string name="pref_volumetric_efficiency_dialog_title">Volumetric Efficiency (eg 0.85)</string>
+<string name="pref_volumetric_efficiency_summary">Used for fuel economy on vehicles without MAF sensor</string>
+<string name="pref_volumetric_efficiency_title">Volumetric Efficiency</string>
+<string name="pref_engine_displacement_title">Engine Displacement (liters)</string>
+<string name="pref_engine_displacement_summary">Used for fuel economy on vehicles without MAF sensor</string>
+<string name="pref_reader_config_title">Reader Config Commands</string>
+<string name="pref_reader_config_summary">Commands to configure bluetooth reader, separate with new line</string>
+<string name="title_pref_commands_summary">Select the commands you would like to see in real-time.</string>
+<string name="title_pref_commands_title">OBD Commands</string>
+<string name="title_pref_full_logging"> Full logging configuration </string>
+<string name="pref_enable_full_logging_summary"> Enables full offline logging with upload</string>
+<string name="pref_enable_full_logging_title"> Enable full logging </string>
+<string name="default_dirname_full_logging">OBDReaderLogs</string>
+<string name="pref_dirname_dialogTitle">Choose the name of the directory to save the logs</string>
+<string name="pref_dirname_title">Directory name</string>
+<string name="pref_dirname_summary">Name of the directory where to save the files</string>
+<string name="pref_dev_email_title">Developer Email</string>
+<string name="pref_dev_email_summary">Logs will be emailed to this address</string>
+<string name="text_noerrors">There were no errors found.!</string>
+<!--注册-->
+<string name="register_title">注册</string>
+<string name="enter_the_validation_code">输入验证码</string>
+<string name="send_the_validation_code">发送验证码</string>
+<string name="register_immediately">注册</string>
+<!--登录-->
+<string name="sign_in_title">登录</string>
+<string name="sign_in">登录</string>
+<string name="email_address">请输入您的邮箱</string>
+<string name="password">请输入您的密码</string>
+<string name="register">免费注册</string>
+<string name="forget_your_passoword">找回密码</string>
+<!--修改密码-->
+<string name="Change_your_password">修改密码</string>
+<string name="Current_password">请输入当前密码</string>
+<string name="New_password">请输入新密码</string>
+<string name="Confirm_password">请确认新密码</string>
+<string name="Save">保存</string>
+<!--主页面-->
+<string name="read_dtcs">读取故障码</string>
+<string name="freeze_frame">冻结帧</string>
+<string name="smog_check">尾气检测</string>
+<string name="mode_5">氧气传感器</string>
+<string name="mode_6">车载监控</string>
+<string name="mil_status">故障灯状态</string>
+<string name="diagnostics">诊断</string>
+<string name="live_data">数据</string>
+<string name="history">历史</string>
+<string name="my_device">我的</string>
 
-    <!--扫描故障码-->
-    <string name="read_dtcs_rescan">读取故障码</string>
-    <string name="pending_dtcs"> 个等待故障码</string>
-    <string name="confirmed_dtcs"> 个确认故障码</string>
-    <string name="clear_dtcs">清除故障码</string>
-    <string name="rescan">重新扫描</string>
-    <string name="Upload_DTCs">上传故障码</string>
-    <!--冻结帧-->
-    <string name="pid">PID</string>
-    <string name="description">描述</string>
-    <string name="value">值</string>
-    <!--设置-->
-    <string name="Settings">设置</string>
-    <string name="Username">昵称</string>
-    <string name="Change_Password">修改密码</string>
-    <string name="Logout_Current_Account">退出当前账户</string>
-    <!--修改昵称-->
-    <string name="Change_Username">Change Username</string>
-    <!--故障灯-->
-    <string name="Your_Check_Engine_Light_MIL_is_ON_OFF">故障灯状态</string>
-    <string name="Run_Time_with_Check_Engine_Light_On">检查故障灯亮时的运行时间</string>
-    <string name="Distance_with_Check_Engine_Light_On">检查故障灯亮时的运行距离</string>
-    <string name="Run_Time_Since_Trouble_Codes_Cleared">从故障代码清除后的运行时间</string>
-    <string name="Distance_Since_Trouble_Codes_Cleared">清除代码后的距离</string>
-    <string name="Run_Time_Since_Engine_Start">发动机启动后的运行时间</string>
-    <string name="unit1_on">ON</string>
-    <string name="unit1_off">OFF</string>
-
-
-    <string name="Filter">筛选</string>
-    <string name="Choose_your_OBD_device">OBD选择</string>
-    <string name="Choose_your_vehicle">车辆选择</string>
-    <string name="Period">时间段</string>
-    <string name="Start_date">起始日期</string>
-    <string name="End_date">结束日期</string>
-
-    <string name="Scanning">扫描中</string>
-    <string name="Scan">扫描</string>
-
-    <string name="My_Account">我的</string>
-    <string name="My_Vehicle">我的汽车</string>
-    <string name="My_OBD_Device">我的OBD</string>
-    <string name="Product_serial_number">产品序列号</string>
-    <string name="Product_Model">产品型号</string>
-
-    <!--邮箱验证-->
-    <string name="Mailbox_validation">邮箱验证</string>
-    <string name="next">下一步</string>
-    <string name="No_description">暂无描述</string>
-    <string name="unit">单位</string>
+<!--扫描故障码-->
+<string name="read_dtcs_rescan">读取故障码</string>
+<string name="pending_dtcs"> 个等待故障码</string>
+<string name="confirmed_dtcs"> 个确认故障码</string>
+<string name="clear_dtcs">清除故障码</string>
+<string name="rescan">重新扫描</string>
+<string name="Upload_DTCs">上传故障码</string>
+<!--冻结帧-->
+<string name="pid">PID</string>
+<string name="description">描述</string>
+<string name="value">值</string>
+<!--设置-->
+<string name="Settings">设置</string>
+<string name="Username">昵称</string>
+<string name="Change_Password">修改密码</string>
+<string name="Logout_Current_Account">退出当前账户</string>
+<!--修改昵称-->
+<string name="Change_Username">Change Username</string>
+<!--故障灯-->
+<string name="Your_Check_Engine_Light_MIL_is_ON_OFF">故障灯状态</string>
+<string name="Run_Time_with_Check_Engine_Light_On">检查故障灯亮时的运行时间</string>
+<string name="Distance_with_Check_Engine_Light_On">检查故障灯亮时的运行距离</string>
+<string name="Run_Time_Since_Trouble_Codes_Cleared">从故障代码清除后的运行时间</string>
+<string name="Distance_Since_Trouble_Codes_Cleared">清除代码后的距离</string>
+<string name="Run_Time_Since_Engine_Start">发动机启动后的运行时间</string>
+<string name="unit1_on">ON</string>
+<string name="unit1_off">OFF</string>
 
 
-    <!--冻结桢-->
-    <string name="Calculated_Load_Threshold">计算的荷载阈值</string>
-    <string name="Engine_Coolant_Temperature">发动机冷却液温度</string>
-    <string name="Fuel_Rail_Pressure">进气歧管绝对压力</string>
-    <string name="Engine_RPM">发动机RPM</string>
-    <string name="Vehicle_Speed">车辆速度</string>
-    <string name="Mass_Air_Flow">空气流速</string>
-    <string name="Absolute_throttle_position">节气门绝对位置</string>
+<string name="Filter">筛选</string>
+<string name="Choose_your_OBD_device">选择OBD</string>
+<string name="Choose_your_vehicle_">选择车辆</string>
+<string name="Period">时间段</string>
+<string name="Start_date">起始日期</string>
+<string name="End_date">结束日期</string>
 
-    <string name="normal">正常</string>
-    <string name="failed">错误</string>
+<string name="Scanning">扫描中</string>
+<string name="Scan">扫描</string>
 
-    <string name="max">最大值： </string>
-    <string name="min">最小值： </string>
-    <string name="values">当前值： </string>
-    <string name="nothing">无</string>
+<string name="My_Account">我的</string>
+<string name="My_Vehicle">我的汽车</string>
+<string name="My_OBD_Device">我的OBD</string>
+<string name="Product_serial_number">产品序列号</string>
+<string name="Product_Model">产品型号</string>
 
-    <!--氧气传感器-->
-    <string name="Rich_to_lean_sensorthreshold_voltage">Rich to lean sensor threshold voltage</string>
-    <string name="Lean_to_rich_sensor_threshold_voltage">Lean to rich sensor threshold voltage</string>
-    <string name="Low_sensor_voltage_for_switch_time_calculation">Low sensor voltage for switch time calculation</string>
-    <string name="High_sensor_voltage_for_switch_time_calculation">High sensor voltage for switch time calculation</string>
-    <string name="Rich_to_lean_sensor_switch_time">Rich to lean sensor switch time</string>
-    <string name="Lean_to_lean_sensor_switch_time">Lean to lean sensor switch time</string>
-    <string name="Minimum_sensor_voltage_for_test_cycle">Minimum sensor voltage for test cycle</string>
-    <string name="Maximum_sensor_voltage_for_test_cycle">Maximum sensor voltage for test cycle</string>
-    <string name="Time_between_sensor_transitions">Time between sensor transitions</string>
-    <string name="Sensor_period">Sensor period</string>
+<!--邮箱验证-->
+<string name="Mailbox_validation">邮箱验证</string>
+<string name="next">下一步</string>
+<string name="No_description">暂无描述</string>
+<string name="unit">单位</string>
 
-    <string name="OBD_is_not_connect">OBD未连接</string>
-    <string name="device">设备</string>
-    <string name="add">新增</string>
 
-    <string name="Warning_1">Attempting to operate a phone or touchscreen device whiledriving is dangerous and is not recommended. Many functions of this applicationare not intended for use while driving. Do not try to enter information or navigate this application while driving. Doing so can result in serious injury,death, or damage to property and could be unlawful.
+<!--冻结桢-->
+<string name="Calculated_Load_Threshold">计算的荷载阈值</string>
+<string name="Engine_Coolant_Temperature">发动机冷却液温度</string>
+<string name="Fuel_Rail_Pressure">进气歧管绝对压力</string>
+<string name="Engine_RPM">发动机RPM</string>
+<string name="Vehicle_Speed">车辆速度</string>
+<string name="Mass_Air_Flow">空气流速</string>
+<string name="Absolute_throttle_position">节气门绝对位置</string>
+
+<string name="normal">正常</string>
+<string name="failed">错误</string>
+
+<string name="max">最大值： </string>
+<string name="min">最小值： </string>
+<string name="values">当前值： </string>
+<string name="nothing">无</string>
+
+<!--氧气传感器-->
+<string name="Rich_to_lean_sensorthreshold_voltage">Rich to lean sensor threshold voltage</string>
+<string name="Lean_to_rich_sensor_threshold_voltage">Lean to rich sensor threshold voltage</string>
+<string name="Low_sensor_voltage_for_switch_time_calculation">Low sensor voltage for switch time calculation</string>
+<string name="High_sensor_voltage_for_switch_time_calculation">High sensor voltage for switch time calculation</string>
+<string name="Rich_to_lean_sensor_switch_time">Rich to lean sensor switch time</string>
+<string name="Lean_to_lean_sensor_switch_time">Lean to lean sensor switch time</string>
+<string name="Minimum_sensor_voltage_for_test_cycle">Minimum sensor voltage for test cycle</string>
+<string name="Maximum_sensor_voltage_for_test_cycle">Maximum sensor voltage for test cycle</string>
+<string name="Time_between_sensor_transitions">Time between sensor transitions</string>
+<string name="Sensor_period">Sensor period</string>
+
+<string name="OBD_is_not_connect">OBD未连接</string>
+<string name="device">设备</string>
+<string name="add">新增</string>
+
+<string name="Warning_1">Attempting to operate a phone or touchscreen device whiledriving is dangerous and is not recommended. Many functions of this applicationare not intended for use while driving. Do not try to enter information or navigate this application while driving. Doing so can result in serious injury,death, or damage to property and could be unlawful.
         Many features of this application are meant for diagnosticpurposes only. We strongly recommend that you do not initiate a connection to the vehicle or perform diagnostics functions while the vehicle is in motion.
         If you ignore this warning, you do so at your own risk and agree to not hold the developer liable for any consequences.</string>
 
-    <string name="Warning_2">This will reset the check engine light and clear all emission-related diagnostic information, including: Diagnostics trouble codes Freeze frame data Oxygen sensor test data Status of system monitoring tests On-board monitoring test result
+<string name="Warning_2">This will reset the check engine light and clear all emission-related diagnostic information, including: Diagnostics trouble codes Freeze frame data Oxygen sensor test data Status of system monitoring tests On-board monitoring test result
     Distance travelled while CEL activated Engine run time while CEL activated Distance travelled since DTCs cleared The loss of data may cause the vehicle to run poorly for a short period of time while      the ECU recalibrates itself.
     Do you want to continue?</string>
 
-    <string name="Warning_3">This feature is currently only available on vehicles using CAN protocols. Would you like to continue?</string>
+<string name="Warning_3">This feature is currently only available on vehicles using CAN protocols. Would you like to continue?</string>
 
-    <string name="Warning_4">Please fist go to Bluetooth setting and pair with the OBD device.</string>
-
-
-
-    <string name="prompt">提示</string>string>
-    <string name="prompt_upload_error_codes_content">是否上传故障码？</string>
-    <string name="prompt_disconnect_content">是否断开OBD连接？</string>
-
-    <string name="YES">确定</string>
-    <string name="NO">取消</string>
-    <string name="NO_DATA">暂无数据</string>
-
-    <string name="add_a_vehicle">添加车辆</string>
-    <string name="Ignore_this_message">忽略</string>
-    <string name="product_model">产品型号</string>
-    <string name="entry_product_model">请输入产品型号</string>
-    <string name="Enter_your_username">请输入新昵称</string>
+<string name="Warning_4">Please first go to Bluetooth setting and pair with the OBD device.</string>
 
 
+
+<string name="prompt">提示</string>string>
+<string name="prompt_upload_error_codes_content">是否上传故障码？</string>
+<string name="prompt_disconnect_content">是否断开OBD连接？</string>
+
+    <string name="YES1">确定</string>
+<string name="YES">确认</string>
+<string name="NO">取消</string>
+<string name="NO_DATA">暂无数据</string>
+
+<string name="Ignore_this_message">忽略</string>
+<string name="product_model">产品型号</string>
+<string name="entry_product_model">请输入产品型号</string>
+<string name="Enter_your_username">请输入新昵称</string>
+
+<string name="Add_a_vehicle">添加车辆</string>
+<string name="Vehicle_profile">请输入车辆名称</string>
+<string name="Vehicle_Make">请输入您的品牌</string>
+<string name="Vehicle_Year">请选择车辆年代</string>
+<string name="Vehicle_Model">请输入您的型号</string>
+
+<string name="mod_a_vehicle">修改车辆</string>
+<string name="Delete">删除</string>
+<string name="Make">品牌</string>
+<string name="Model">型号</string>
+<string name="Choose_PIDs">选择数据</string>
+<string name="Upload_DTCs_">提交故障码</string>
+    <string name="Cancel_OBD_device_">Cancel OBD device</string>
+    <string name="Reset">重置</string>
+
+    <string name="Please_enter_your_current_password">请输入当前密码</string>
+    <string name="Please_enter_your_new_password">请输入新密码</string>
+    <string name="The_two_password_is_inconsistent">两次密码不一致</string>
+
+    <string name="Please_enter_the_model">请输入型号</string>
+    <string name="Please_enter_the_vehicle_age">请输入车辆年代</string>
+    <string name="Please_enter_the_vehicle_name">请输入车辆名称</string>
+
+    <string name="Please_choise_the_obd">请选择OBD</string>
+    <string name="Please_choise_the_vehicle">请选择车辆</string>
 </resources>

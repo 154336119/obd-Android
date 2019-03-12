@@ -146,7 +146,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
 //                    showToastMsg(getString(R.string.text_obd_command_failure) + " UTC");
                     break;
                 case OBD_COMMAND_FAILURE_NODATA:
-                    showToastMsg("暂无数据");
+                    showToastMsg(getString(R.string.NO_DATA));
 //                    showToastMsg(getString(R.string.text_noerrors));
                     break;
                 case ObdConfig.NO_DATA:
@@ -293,7 +293,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
 
     public void dataOkCode(Map<Integer,List<ErrorCodeEntity>> map) {
         if(map.isEmpty()){
-            showToastMsg("暂无数据");
+            showToastMsg(getString(R.string.NO_DATA));
             Logger.d("读取故障码:暂无数据");
             return;
         }
@@ -400,7 +400,6 @@ public class NewReadErrorCodeActivity extends BaseActivity {
                 }
 
             }
-
             return result;
         }
 
@@ -411,7 +410,6 @@ public class NewReadErrorCodeActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(Map<Integer,List<ErrorCodeEntity>> result) {
-            Logger.d("读取故障码：onPostExecute().Map<Integer,List<ErrorCodeEntity>> result.size()"+result.size());
             hideWaitDialog();
             mHandler.obtainMessage(DATA_OK_CODE, result).sendToTarget();
         }
@@ -584,7 +582,7 @@ public class NewReadErrorCodeActivity extends BaseActivity {
         CustomDialog.Builder dialog = new CustomDialog.Builder(this);
         dialog
                 .setTitle(getString(R.string.prompt))
-                .setMessage(getString(R.string.prompt_content))
+                .setMessage(getString(R.string.prompt_upload_error_codes_content))
                 .setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

@@ -43,7 +43,7 @@ public class EmissionTestMyListAdapter extends CommonBaseAdapter<EmissionTestSma
 				mHolder.TvContent.setText("OK");
 				mHolder.Iv.setImageResource(R.mipmap.ic_ok);
 			}else{
-				mHolder.TvContent.setText("Unvailable");
+				mHolder.TvContent.setText("Unavailable");
 				mHolder.Iv.setImageResource(R.mipmap.ic_na);
 			}
 
