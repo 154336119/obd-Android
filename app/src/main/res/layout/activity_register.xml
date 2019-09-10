@@ -61,7 +61,18 @@
                 android:text="@string/send_the_validation_code"
                 android:textColor="#00A4EF"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/distance_20"/>
+                android:layout_marginRight="@dimen/distance_20"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/IvCode"
+                android:layout_width="100dp"
+                android:layout_height="@dimen/dp_40"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:text="@string/send_the_validation_code"
+                android:textColor="#00A4EF" />
         </RelativeLayout>
 
         <EditText

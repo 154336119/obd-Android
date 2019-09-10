@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.slb.frame.ui.activity.BaseMvpActivity;
@@ -13,6 +14,7 @@ import com.slb.ttdandroidframework.R;
 import com.slb.ttdandroidframework.event.ResetEvent;
 import com.slb.ttdandroidframework.ui.contract.MailboxVerificationContract;
 import com.slb.ttdandroidframework.ui.presenter.MailboxVerificationPresenter;
+import com.slb.ttdandroidframework.util.IdentifyingCode;
 import com.slb.ttdandroidframework.util.config.BizcContant;
 import com.slb.ttdandroidframework.weight.CountTimerButton;
 
@@ -34,6 +36,8 @@ public class MailboxVerificationActivity extends BaseMvpActivity<MailboxVerifica
     Button btnComfirm;
     @BindView(R.id.BtnGetCode)
     CountTimerButton BtnGetCode;
+    @BindView(R.id.IvCode)
+    ImageView IvCode;
 
     @Override
     protected String setToolbarTitle() {
@@ -54,6 +58,7 @@ public class MailboxVerificationActivity extends BaseMvpActivity<MailboxVerifica
     public void initView() {
         super.initView();
         ButterKnife.bind(this);
+        IvCode.setImageBitmap(IdentifyingCode.getInstance().createBitmap());
     }
 
 
@@ -68,7 +73,7 @@ public class MailboxVerificationActivity extends BaseMvpActivity<MailboxVerifica
         BtnGetCode.startCountTimer();
     }
 
-    @OnClick({R.id.BtnGetCode, R.id.btnComfirm})
+    @OnClick({R.id.BtnGetCode, R.id.btnComfirm,R.id.IvCode})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.BtnGetCode:
@@ -85,11 +90,19 @@ public class MailboxVerificationActivity extends BaseMvpActivity<MailboxVerifica
                     showToastMsg("请输入验证码");
                     return;
                 }
+
+                String realCode=IdentifyingCode.getInstance().getCode().toLowerCase();
+                if(!realCode.equals(code)){
+                    showMsg("验证码错误");
+                    return;
+                }
                 Bundle bundle = new Bundle();
                 bundle.putString(BizcContant.PARA_EMAIL, email);
                 bundle.putString(BizcContant.PARA_CODE, code);
                 ActivityUtil.next(this, ResetPasswordActivity.class, bundle, false);
                 break;
+            case R.id.IvCode:
+                IvCode.setImageBitmap(IdentifyingCode.getInstance().createBitmap());
         }
     }
 
